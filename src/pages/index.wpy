@@ -1,0 +1,276 @@
+<template>
+  <view class='body-wrapper'>
+    <view class="index-container">
+      <image class="banner" src='../assets/index/banner.png'></image>
+      <view class="header">
+        <view class="logo-wrapper">
+          <image src='../assets/index/logo.png' class='logo'></image>
+        </view>
+        <view class='search-wrapper'>
+          <input type="text" placeholder="搜索职位" class='input-inner' />
+          <image class='search-icon' src='../assets/index/search.png'></image>
+        </view>
+      </view>
+    </view>
+    <view class='index-container'>
+      <view class='action'>
+        <view class='action-item'>
+          <text>快速兼职</text>
+          <image src='../assets/index/arrow-down.png'></image>
+        </view>
+        <view class='action-item'>
+          <text>薪酬优先</text>
+        </view>
+        <view class='action-item'>
+          <text>区域选择</text>
+        </view>
+        <view class="action-item">
+          <text>筛选</text>
+          <image src='../assets/index/arrow-down.png'></image>
+        </view>
+      </view>
+    </view>
+    <view class='index-container'>
+      <repeat for={{jobs}} item='job'>
+        <view class="jobs">
+          <view class="job-item">
+            <view class="job-detail">
+              <view class="avatar-wrapper">
+                <image src={{job.avatar}} class='avatar'></image>
+              </view>
+              <view class="detail-wrapper">
+                <text class='block grey'>{{labels.square}}: {{job.square}}</text>
+                <view class='date grey'>
+                  <text>{{job.date}}</text>
+                </view>
+                <text class="major block">{{job.major}}</text>
+                <text class="company block grey">{{job.company}}</text>
+                <view class="salary">
+                  <text>{{job.salary}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="job-action-list">
+              <view class="job-action-item">
+                <text class="block grey">{{labels.publisher}}</text>
+                <text class="block dark">{{job.publisher}}</text>
+              </view>
+              <view class="job-action-item">
+                <text class="block grey">{{labels.majorIn}}</text>
+                <text class="block dark">{{job.majorIn}}</text>
+              </view>
+              <view class="job-action-item">
+                <text class="block grey">{{labels.phone}}</text>
+                <text class="block dark">{{job.phone}}</text>
+              </view>
+              <view class="job-action-item">
+                <image src='../assets/index/phone.png' class='phone'></image>
+              </view>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { formatPhone } from '../utils'
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '求职'
+  }
+  data = {
+    jobs: [{
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }, {
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }, {
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }, {
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }],
+    labels: {
+      spuare: '行业',
+      publisher: '联系人',
+      majorIn: '职位',
+      phone: '联系电话'
+    },
+    formatPhone
+  }
+  methods = {
+    formatPhone
+  }
+}
+</script>
+
+<style lang="scss">
+page {
+  background: #f0f0f0;
+}
+.index-container {
+  font-size: 24rpx;
+  position: relative;
+  .banner {
+    width: 750rpx;
+    height: 304rpx;
+  }
+  .header {
+    position: absolute;
+    top: 24rpx;
+    left: 34rpx;
+    width: 676rpx;
+    display: flex;
+    height: 64rpx;
+  }
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      width: 48rpx;
+      height: 48rpx;
+      display: flex;
+      margin-right: 16rpx;
+      vertical-align: middle;
+    }
+  }
+  .search-wrapper {
+    vertical-align: middle;
+    flex: 1;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    align-items: center;
+    border-radius: 6rpx;
+    padding-left: 20rpx;
+    .input-inner {
+      font-size: 30rpx;
+      height: 100%;
+      background: transparent;
+      border: none;
+      outline: 0;
+      color: rgba(255, 255, 255, 0.8);
+      flex: 1;
+    }
+    .search-icon {
+      margin-left: 24rpx;
+      margin-right: 24rpx;
+      width: 32rpx;
+      height: 32rpx;
+    }
+  }
+  .action {
+    background: #fff;
+    height: 56rpx;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    border-bottom: 1rpx solid rgba(0,0,0, .1);
+    justify-content: space-around;
+    .action-item text {
+      vertical-align: middle;
+    }
+    .action-item image{
+      margin-left: 4rpx;
+      width: 26rpx;
+      height: 26rpx;
+      vertical-align: middle;
+    }
+  }
+  .jobs {
+    width: 100%;
+  }
+  .job-item {
+    padding: 12rpx 22rpx;
+    margin-top: 16rpx;
+    background: #fff;
+    .grey {
+      color: #aaa;
+      font-size: 20rpx;
+    }
+    .job-detail {
+      display: flex;
+      border-bottom: 1rpx solid rgba(0,0,0, .1);
+      .company {
+        font-size: 28rpx;
+      }
+      .major {
+        font-size: 32rpx;
+      }
+      .detail-wrapper {
+        margin-left: 20rpx;
+        position: relative;
+        flex: 1;
+      }
+      .date {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+      .salary {
+        position: absolute;
+        right: 0;
+        bottom: 4rpx;
+        font-size: 28rpx;
+        color: #e065ee;
+      }
+    }
+    .job-action-list {
+      display: flex;
+      padding: 16rpx 20rpx 4rpx 16rpx;
+      justify-content: space-between;
+      align-items: center;
+      .job-action-item {
+      }
+      .phone {
+        width: 44rpx;
+        height: 44rpx;
+      }
+    }
+    .dark {
+      margin-top: 10rpx;
+      color: #333;
+      font-size: 24rpx;
+    }
+
+    .avatar {
+      width: 110rpx;
+      height: 110rpx;
+    }
+  }
+}
+</style>

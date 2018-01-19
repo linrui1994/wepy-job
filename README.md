@@ -1,6 +1,6 @@
 ## a wepy demo
 
-## start
+> start
 
 ```shell
 npm run dev

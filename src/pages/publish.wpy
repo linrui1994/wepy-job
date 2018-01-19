@@ -1,0 +1,59 @@
+<template>
+  <view class="constainer">
+    <view class="logo-wrapper">
+      <image src='../assets/post.png'></image>
+    </view>
+    <view class="action-wrapper">
+      <view class="action-item">
+        <button>找兼职</button>
+      </view>
+      <view class="action-item">
+        <button>招兼职</button>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Publish extends wepy.page {
+  config = {
+    navigationBarTitleText: '发布'
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+}
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 78rpx;
+  image {
+    width: 594rpx;
+    height: 594rpx;
+  }
+}
+.action-wrapper {
+  display: flex;
+  height: 96rpx;
+  width: 686rpx;
+  margin-top: 110rpx;
+  margin-left: 32rpx;
+  .action-item {
+    flex: 1;
+    &.action-item {
+      margin-left: 16rpx;
+    }
+    button {
+      font-size: 32rpx;
+      &::after {
+        border: none;
+      }
+      color: #e065ee;
+    }
+  }
+}
+</style>

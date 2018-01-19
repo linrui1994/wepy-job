@@ -1,20 +1,3 @@
-<style lang="scss">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-.float-right {
-  float: right;
-}
-.block {
-  display: block;
-}
-</style>
-
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
@@ -22,13 +5,34 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/publish',
       'pages/index'
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
-      navigationBarTextStyle: 'black'
+      navigationBarBackgroundColor: '#333',
+      navigationBarTitleText: '求职',
+      navigationBarTextStyle: 'white'
+    },
+    tabBar: {
+      color: '#333',
+      selectedColor: '#e065ee',
+      list: [{
+        pagePath: 'pages/index',
+        iconPath: './assets/footer/index.png',
+        selectedIconPath: './assets/footer/index-active.png',
+        text: '首页'
+      }, {
+        pagePath: 'pages/publish',
+        iconPath: './assets/footer/plus.png',
+        selectedIconPath: './assets/footer/plus-active.png',
+        text: '发布'
+      }, {
+        pagePath: 'pages/publish',
+        iconPath: './assets/footer/profile.png',
+        selectedIconPath: './assets/footer/profile-active.png',
+        text: '我的'
+      }]
     }
   }
 
@@ -72,3 +76,20 @@ export default class extends wepy.app {
   }
 }
 </script>
+
+<style lang="scss">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.float-right {
+  float: right;
+}
+.block {
+  display: block;
+}
+</style>

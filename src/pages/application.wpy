@@ -1,0 +1,120 @@
+<template>
+  <view>
+    <view class='index-container'>
+      <view class='action'>
+        <view class='action-item'>
+          <text>全部</text>
+        </view>
+        <view class='action-item'>
+          <text>进行中</text>
+        </view>
+        <view class='action-item'>
+          <text>审核中</text>
+        </view>
+        <view class="action-item">
+          <text>已结束</text>
+        </view>
+      </view>
+    </view>
+    <view class='index-container'>
+      <repeat for={{jobs}} item='job' key='index'>
+        <view class="jobs">
+          <job :job="job" :labels="labels"></job>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import job from '../components/job'
+
+export default class Application extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的申请'
+  }
+  components = {
+    job
+  }
+  data = {
+    jobs: [{
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }, {
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }, {
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }, {
+      avatar: '../assets/post.png',
+      square: '互联网',
+      major: '新媒体运营',
+      company: '深圳软件公司',
+      date: '12-12',
+      salary: '5000-8000元/月',
+      publisher: '李先生',
+      majorIn: '经理',
+      phone: '13666666666'
+    }],
+    labels: {
+      spuare: '行业',
+      publisher: '联系人',
+      majorIn: '职位',
+      phone: '联系电话'
+    }
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+}
+.index-container {
+  font-size: 24rpx;
+  position: relative;
+}
+.action {
+  background: #fff;
+  height: 56rpx;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  border-bottom: 1rpx solid rgba(0,0,0, .1);
+  justify-content: space-around;
+  .action-item text {
+    vertical-align: middle;
+  }
+  .action-item image{
+    margin-left: 4rpx;
+    width: 26rpx;
+    height: 26rpx;
+    vertical-align: middle;
+  }
+}
+
+</style>

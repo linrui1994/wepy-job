@@ -43,7 +43,8 @@ import wepy from 'wepy'
 export default class Job extends wepy.component {
   props = {
     job: {
-      type: Object
+      type: Array,
+      labels: Object
     }
   }
 }

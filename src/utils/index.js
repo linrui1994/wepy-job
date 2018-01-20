@@ -8,3 +8,12 @@ export function formatPhone (phone) {
     return phone
   }
 }
+
+export function checkSession () {
+  return new Promise((resolve, reject) => {
+    wx.checkSession({
+      success: resolve,
+      fail: reject
+    })
+  })
+}

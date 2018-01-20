@@ -33,7 +33,7 @@
     <view class='index-container'>
       <repeat for={{jobs}} item='job' key='index'>
         <view class="jobs">
-          <job :job="job"></job>
+          <job :job="job" :labels="labels"></job>
         </view>
       </repeat>
     </view>
@@ -98,7 +98,7 @@ export default class Index extends wepy.page {
       phone: '13666666666'
     }],
     labels: {
-      spuare: '行业',
+      square: '行业',
       publisher: '联系人',
       majorIn: '职位',
       phone: '联系电话'

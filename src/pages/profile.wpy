@@ -9,7 +9,7 @@
     </view>
     <view class="action-wrapper">
       <repeat for={{actions}} item='item' key='index' index='index'>
-        <view class="action-item" :class="{'first-item': index === 0, 'last-item': index === actions.length - 1, 'next-item': index === actions.length - 2}">
+        <view class="action-item" :class="{'first-item': index === 0, 'last-item': index === actions.length - 1, 'next-item': index === actions.length - 2}" @tap="go({{item}})">
           <view class="action">
             <image class="action-icon" src={{item.src}}></image>
             <text class="action-label">{{item.label}}</text>
@@ -41,7 +41,8 @@ export default class Profile extends wepy.page {
       label: '我的发布'
     }, {
       src: '../assets/profile/edit.png',
-      label: '我的申请'
+      label: '我的申请',
+      url: 'application'
     }, {
       src: '../assets/profile/add.png',
       label: '我的招募'
@@ -55,6 +56,16 @@ export default class Profile extends wepy.page {
       src: '../assets/profile/config.png',
       label: '设置'
     }]
+  }
+
+  methods = {
+    go(item) {
+      if (item.url) {
+        wx.navigateTo({
+          url: item.url
+        })
+      }
+    }
   }
 }
 </script>

@@ -1,13 +1,15 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
+import { checkSession } from './utils/index.js'
 
 export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
       'pages/publish',
-      'pages/profile'
+      'pages/profile',
+      'pages/application'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -48,6 +50,7 @@ export default class extends wepy.app {
 
   onLaunch() {
     this.testAsync()
+    checkSession().then(console.log).catch(console.log)
   }
 
   sleep (s) {

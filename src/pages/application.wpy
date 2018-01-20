@@ -80,7 +80,7 @@ export default class Application extends wepy.page {
       phone: '13666666666'
     }],
     labels: {
-      spuare: '行业',
+      square: '行业',
       publisher: '联系人',
       majorIn: '职位',
       phone: '联系电话'

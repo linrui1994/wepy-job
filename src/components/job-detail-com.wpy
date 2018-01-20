@@ -1,0 +1,93 @@
+<template>
+  <view class="container">
+    <view class="logo-wrapper">
+      <image src={{detail.companyLogo}}></image>
+    </view>
+    <view class="block-wrapper">
+      <text class="block big">{{detail.jobName}}</text>
+      <view>
+        <image class='icon' src='../assets/application/company.png'></image>
+        <text>{{detail.city}}</text>
+        <image class="icon mr-left" src="../assets/application/education.png"></image>
+        <text>{{detail.education}}</text>
+        <image class="icon mr-left" src='../assets/application/person.png'></image>
+        <text>招{{detail.count}}人</text>
+      </view>
+      <view>
+        <image class="icon" src='../assets/application/time.png'></image>
+        <text>工作时间：{{detail.experience}}</text>
+        <image class="icon mr-left" src='../assets/application/time.png'></image>
+        <text>每周工作：{{detail.workPerWeek}}天</text>
+      </view>
+      <view>
+        <image class="icon" src='../assets/application/address.png'></image>
+        <text>工作地点：{{detail.location}}</text>
+      </view>
+    </view>
+    <view class="block-wrapper">
+      <text class="big bq block">工作职责</text>
+      <text class="block">{{detail.ability}}</text>
+    </view>
+    <view class="block-wrapper">
+      <text class="big bq block">{{detail.company}}</text>
+      <text class="block">{{detail.introduction}}</text>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class JobDetailCom extends wepy.component {
+  props = {
+    detail: {
+      type: Object
+    }
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+  font-size: 24rpx;
+}
+.logo-wrapper {
+  margin-top: 32rpx;
+  margin-left: 24rpx;
+  margin-bottom: 8rpx;
+  image {
+    width: 750rpx - 48rpx;
+    height: 232rpx;
+  }
+}
+.big {
+  font-size: 36rpx;
+  margin-bottom: 10rpx;
+}
+.block-wrapper {
+  padding: 16rpx 30rpx;
+  box-sizing: border-box;
+  width: 750rpx - 64rpx;
+  border-radius: 6rpx;
+  background: #fff;
+  margin-top: 8rpx;
+  margin-left: 32rpx;
+  .icon {
+    width: 28rpx;
+    height: 28rpx;
+    vertical-align: middle;
+    margin-right: 6rpx;
+  }
+  text {
+    vertical-align: middle;
+  }
+}
+.mr-left {
+  margin-left: 40rpx;
+}
+.bq {
+  padding: 0 16rpx;
+  border-left: 8rpx solid #e065ee;
+}
+</style>

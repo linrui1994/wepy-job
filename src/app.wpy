@@ -6,6 +6,7 @@ import { checkSession } from './utils/index.js'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/job-detail',
       'pages/index',
       'pages/publish',
       'pages/profile',

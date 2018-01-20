@@ -1,5 +1,5 @@
 <template>
-  <view class="job-item">
+  <view class="job-item" @tap="go">
     <view class="job-detail">
       <view class="avatar-wrapper">
         <image src={{job.avatar}} class='avatar'></image>
@@ -34,7 +34,6 @@
       </view>
     </view>
   </view>
-
 </template>
 
 <script>
@@ -45,6 +44,14 @@ export default class Job extends wepy.component {
     job: {
       type: Array,
       labels: Object
+    }
+  }
+
+  methods = {
+    go() {
+      wx.navigateTo({
+        url: 'job-detail'
+      })
     }
   }
 }

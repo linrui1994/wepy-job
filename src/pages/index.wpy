@@ -31,43 +31,9 @@
       </view>
     </view>
     <view class='index-container'>
-      <repeat for={{jobs}} item='job'>
+      <repeat for={{jobs}} item='job' key='index'>
         <view class="jobs">
-          <view class="job-item">
-            <view class="job-detail">
-              <view class="avatar-wrapper">
-                <image src={{job.avatar}} class='avatar'></image>
-              </view>
-              <view class="detail-wrapper">
-                <text class='block grey'>{{labels.square}}: {{job.square}}</text>
-                <view class='date grey'>
-                  <text>{{job.date}}</text>
-                </view>
-                <text class="major block">{{job.major}}</text>
-                <text class="company block grey">{{job.company}}</text>
-                <view class="salary">
-                  <text>{{job.salary}}</text>
-                </view>
-              </view>
-            </view>
-            <view class="job-action-list">
-              <view class="job-action-item">
-                <text class="block grey">{{labels.publisher}}</text>
-                <text class="block dark">{{job.publisher}}</text>
-              </view>
-              <view class="job-action-item">
-                <text class="block grey">{{labels.majorIn}}</text>
-                <text class="block dark">{{job.majorIn}}</text>
-              </view>
-              <view class="job-action-item">
-                <text class="block grey">{{labels.phone}}</text>
-                <text class="block dark">{{job.phone}}</text>
-              </view>
-              <view class="job-action-item">
-                <image src='../assets/index/phone.png' class='phone'></image>
-              </view>
-            </view>
-          </view>
+          <job :job="job"></job>
         </view>
       </repeat>
     </view>
@@ -79,10 +45,15 @@
 
 <script>
 import wepy from 'wepy'
+import job from '../components/job'
 import { formatPhone } from '../utils'
+
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '求职'
+  }
+  components = {
+    job
   }
   data = {
     jobs: [{

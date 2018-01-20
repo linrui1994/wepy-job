@@ -5,8 +5,9 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/index',
       'pages/publish',
-      'pages/index'
+      'pages/profile'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -28,7 +29,7 @@ export default class extends wepy.app {
         selectedIconPath: './assets/footer/plus-active.png',
         text: '发布'
       }, {
-        pagePath: 'pages/publish',
+        pagePath: 'pages/profile',
         iconPath: './assets/footer/profile.png',
         selectedIconPath: './assets/footer/profile-active.png',
         text: '我的'
@@ -78,14 +79,6 @@ export default class extends wepy.app {
 </script>
 
 <style lang="scss">
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
 .float-right {
   float: right;
 }

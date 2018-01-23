@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <jobDetailCom :detail="detail"></jobDetailCom>
+    <jobDetailCom :detail.sync="detail"></jobDetailCom>
     <view class="footer-wrapper">
       <button class='default'>收藏</button>
       <button type='primary' class='primary'>我要申请</button>
@@ -27,8 +27,12 @@ export default class JobDetail extends wepy.page {
   }
 
   onLoad({id}) {
-    getOrder(id).then(data => {
-      console.log(data)
+    getOrder(id).then(res => {
+      console.log(res.data)
+      res.data.date = (res.data.updatetime || res.data.updateat || res.data.createat || res.data.creationtime).substr(5, 5)
+      res.data.avatar = res.data.img
+      this.detail = res.data
+      this.$apply()
     })
   }
 }

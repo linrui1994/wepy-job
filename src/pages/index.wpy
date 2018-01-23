@@ -37,9 +37,6 @@
         </view>
       </repeat>
     </view>
-    <view>
-      <canvas style="width: 300px; height: 200px;" canvas-id="firstCanvas"></canvas>
-    </view>  
   </view>
 </template>
 
@@ -47,6 +44,7 @@
 import wepy from 'wepy'
 import job from '../components/job'
 import { formatPhone } from '../utils'
+import { getAllOrder } from '../api'
 
 export default class Index extends wepy.page {
   config = {
@@ -56,52 +54,12 @@ export default class Index extends wepy.page {
     job
   }
   data = {
-    jobs: [{
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }, {
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }, {
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }, {
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }],
+    jobs: [],
     labels: {
-      square: '行业',
-      publisher: '联系人',
-      majorIn: '职位',
-      phone: '联系电话'
+      industry: '行业',
+      contact: '联系人',
+      post: '职位',
+      tel: '联系电话'
     },
     formatPhone
   }
@@ -109,24 +67,22 @@ export default class Index extends wepy.page {
     formatPhone
   }
   onReady () {
-    var context = wx.createCanvasContext('firstCanvas')
-
-    context.setStrokeStyle('#00ff00')
-    context.setLineWidth(5)
-    context.rect(0, 0, 200, 200)
-    context.stroke()
-    context.setStrokeStyle('#ff0000')
-    context.setLineWidth(2)
-    context.moveTo(160, 100)
-    context.arc(100, 100, 60, 0, 2 * Math.PI, true)
-    context.moveTo(140, 100)
-    context.arc(100, 100, 40, 0, Math.PI, false)
-    context.moveTo(85, 80)
-    context.arc(80, 80, 5, 0, 2 * Math.PI, true)
-    context.moveTo(125, 80)
-    context.arc(120, 80, 5, 0, 2 * Math.PI, true)
-    context.stroke()
-    context.draw()
+    this.$parent.getUserInfo().then(userInfo => {
+      this.userInfo = userInfo
+      getAllOrder().then(data => {
+        console.log(data)
+        data.rows.forEach(item => {
+          item.date = (item.updatetime || item.creationtime).substr(5, 5)
+          item.avatar = item.img
+        })
+        this.jobs = data.rows
+        this.$apply()
+      })
+    }).catch(() => {
+      this.$parent.globalData.userInfo = null
+      wx.removeStorageSync('userInfo')
+      this.$parent.getUserInfo()
+    })
   }
 }
 </script>
@@ -207,64 +163,6 @@ page {
   }
   .jobs {
     width: 100%;
-  }
-  .job-item {
-    padding: 12rpx 22rpx;
-    margin-top: 16rpx;
-    background: #fff;
-    .grey {
-      color: #aaa;
-      font-size: 20rpx;
-    }
-    .job-detail {
-      display: flex;
-      border-bottom: 1rpx solid rgba(0,0,0, .1);
-      .company {
-        font-size: 28rpx;
-      }
-      .major {
-        font-size: 32rpx;
-      }
-      .detail-wrapper {
-        margin-left: 20rpx;
-        position: relative;
-        flex: 1;
-      }
-      .date {
-        position: absolute;
-        right: 0;
-        top: 0;
-      }
-      .salary {
-        position: absolute;
-        right: 0;
-        bottom: 4rpx;
-        font-size: 28rpx;
-        color: #e065ee;
-      }
-    }
-    .job-action-list {
-      display: flex;
-      padding: 16rpx 20rpx 4rpx 16rpx;
-      justify-content: space-between;
-      align-items: center;
-      .job-action-item {
-      }
-      .phone {
-        width: 44rpx;
-        height: 44rpx;
-      }
-    }
-    .dark {
-      margin-top: 10rpx;
-      color: #333;
-      font-size: 24rpx;
-    }
-
-    .avatar {
-      width: 110rpx;
-      height: 110rpx;
-    }
   }
 }
 </style>

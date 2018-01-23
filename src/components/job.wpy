@@ -5,12 +5,12 @@
         <image src={{job.avatar}} class='avatar'></image>
       </view>
       <view class="detail-wrapper">
-        <text class='block grey'>{{labels.square}}: {{job.square}}</text>
+        <text class='block grey'>{{labels.industry}}: {{job.industry}}</text>
         <view class='date grey'>
           <text>{{job.date}}</text>
         </view>
-        <text class="major block">{{job.major}}</text>
-        <text class="company block grey">{{job.company}}</text>
+        <text class="title block">{{job.title}}</text>
+        <text class="intro block grey">{{job.intro}}</text>
         <view class="salary">
           <text>{{job.salary}}</text>
         </view>
@@ -18,16 +18,16 @@
     </view>
     <view class="job-action-list">
       <view class="job-action-item">
-        <text class="block grey">{{labels.publisher}}</text>
-        <text class="block dark">{{job.publisher}}</text>
+        <text class="block grey">{{labels.contact}}</text>
+        <text class="block dark">{{job.contact}}</text>
       </view>
       <view class="job-action-item">
-        <text class="block grey">{{labels.majorIn}}</text>
-        <text class="block dark">{{job.majorIn}}</text>
+        <text class="block grey">{{labels.post}}</text>
+        <text class="block dark">{{job.post}}</text>
       </view>
       <view class="job-action-item">
-        <text class="block grey">{{labels.phone}}</text>
-        <text class="block dark">{{job.phone}}</text>
+        <text class="block grey">{{labels.tel}}</text>
+        <text class="block dark">{{job.tel}}</text>
       </view>
       <view class="job-action-item">
         <image src='../assets/index/phone.png' class='phone'></image>
@@ -50,7 +50,7 @@ export default class Job extends wepy.component {
   methods = {
     go() {
       wx.navigateTo({
-        url: 'job-detail'
+        url: 'job-detail?id=' + this.job.id
       })
     }
   }
@@ -69,10 +69,10 @@ export default class Job extends wepy.component {
   .job-detail {
     display: flex;
     border-bottom: 1rpx solid rgba(0,0,0, .1);
-    .company {
+    .intro {
       font-size: 28rpx;
     }
-    .major {
+    .title {
       font-size: 32rpx;
     }
     .detail-wrapper {

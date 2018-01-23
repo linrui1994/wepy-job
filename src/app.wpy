@@ -1,16 +1,16 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import { checkSession } from './utils/index.js'
+import { wxGetUserInfo, checkSession, wxLogin, getOpenid } from './api/index.js'
 
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/job-detail',
       'pages/index',
       'pages/publish',
       'pages/profile',
-      'pages/application'
+      'pages/application',
+      'pages/job-detail'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -50,34 +50,30 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    this.testAsync()
-    checkSession().then(console.log).catch(console.log)
-  }
-
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
+    checkSession().catch(() => {
+      wx.removeStorageSync('userInfo')
     })
   }
 
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
-
-  getUserInfo(cb) {
-    const that = this
+  async getUserInfo() {
     if (this.globalData.userInfo) {
       return this.globalData.userInfo
     }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
+    let userInfo = wx.getStorageSync('userInfo')
+    if (userInfo) {
+      this.globalData.userInfo = userInfo
+      return userInfo
+    }
+    const { code } = await wxLogin()
+    let { sessionid } = await getOpenid(code)
+    console.log(sessionid, 'sessionid')
+    if (sessionid) {
+      wx.setStorageSync('sessionid', sessionid)
+    }
+    userInfo = this.globalData.userInfo = (await wxGetUserInfo()).userInfo
+    console.log(userInfo, 'userInfo')
+    wx.setStorageSync('userInfo', userInfo)
+    return userInfo
   }
 }
 </script>

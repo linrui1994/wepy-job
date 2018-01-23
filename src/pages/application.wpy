@@ -48,42 +48,12 @@ export default class Application extends wepy.page {
       publisher: '李先生',
       majorIn: '经理',
       phone: '13666666666'
-    }, {
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }, {
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }, {
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
     }],
     labels: {
-      square: '行业',
-      publisher: '联系人',
-      majorIn: '职位',
-      phone: '联系电话'
+      industry: '行业',
+      contact: '联系人',
+      post: '职位',
+      tel: '联系电话'
     }
   }
 }

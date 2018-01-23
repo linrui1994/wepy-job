@@ -11,6 +11,7 @@
 <script>
 import wepy from 'wepy'
 import jobDetailCom from '../components/job-detail-com'
+import { getOrder } from '../api'
 
 export default class JobDetail extends wepy.page {
   config = {
@@ -22,19 +23,13 @@ export default class JobDetail extends wepy.page {
   }
 
   data = {
-    detail: {
-      company: '深圳软件公司',
-      jobName: '新媒体运营',
-      companyLogo: '../assets/index/banner.png',
-      city: '深圳',
-      education: '本科',
-      count: 2,
-      experience: '一年',
-      workPerWeek: 5,
-      location: '深圳市南山区南海大道绿岛大厦2000号',
-      ability: '注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作注册全面工作',
-      introduction: '全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先全球领先'
-    }
+    detail: {}
+  }
+
+  onLoad({id}) {
+    getOrder(id).then(data => {
+      console.log(data)
+    })
   }
 }
 </script>

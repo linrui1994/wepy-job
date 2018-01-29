@@ -1,36 +1,36 @@
 <template>
   <view class="container">
     <view class="logo-wrapper">
-      <image src={{detail.companyLogo}}></image>
+      <image src='../assets/index/banner.png'></image>
     </view>
     <view class="block-wrapper">
-      <text class="block big">{{detail.jobName}}</text>
+      <text class="block big">{{detail.title}}</text>
       <view>
         <image class='icon' src='../assets/application/company.png'></image>
         <text>{{detail.city}}</text>
         <image class="icon mr-left" src="../assets/application/education.png"></image>
         <text>{{detail.education}}</text>
         <image class="icon mr-left" src='../assets/application/person.png'></image>
-        <text>招{{detail.count}}人</text>
+        <text>招{{detail.targetdegree}}人</text>
       </view>
       <view>
         <image class="icon" src='../assets/application/time.png'></image>
-        <text>工作时间：{{detail.experience}}</text>
+        <text>工作时间：{{detail.workingTime}}</text>
         <image class="icon mr-left" src='../assets/application/time.png'></image>
-        <text>每周工作：{{detail.workPerWeek}}天</text>
+        <text>每周工作：{{detail.workTimeWeek}}</text>
       </view>
       <view>
         <image class="icon" src='../assets/application/address.png'></image>
-        <text>工作地点：{{detail.location}}</text>
+        <text>工作地点：{{detail.site}}</text>
       </view>
     </view>
     <view class="block-wrapper">
       <text class="big bq block">工作职责</text>
-      <text class="block">{{detail.ability}}</text>
+      <text class="block">{{detail.responsibility}}</text>
     </view>
     <view class="block-wrapper">
-      <text class="big bq block">{{detail.company}}</text>
-      <text class="block">{{detail.introduction}}</text>
+      <text class="big bq block">{{detail.companyname}}</text>
+      <text class="block">{{detail.company}}</text>
     </view>
   </view>
 </template>

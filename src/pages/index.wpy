@@ -1,5 +1,5 @@
 <template>
-  <view class='body-wrapper'>
+  <scroll-view style="height: {{height + 'px'}}" scroll-y bindscrolltolower='loadmore' class='body-wrapper'>
     <view class="index-container">
       <image class="banner" src='../assets/index/banner.png'></image>
       <view class="header">
@@ -37,13 +37,12 @@
         </view>
       </repeat>
     </view>
-  </view>
+  </scroll-view>
 </template>
 
 <script>
 import wepy from 'wepy'
 import job from '../components/job'
-import { formatPhone } from '../utils'
 import { getAllOrder } from '../api'
 
 export default class Index extends wepy.page {
@@ -61,23 +60,45 @@ export default class Index extends wepy.page {
       post: '职位',
       tel: '联系电话'
     },
-    formatPhone
+    height: 1000
   }
   methods = {
-    formatPhone
+    loadmore(e) {
+      if (this.jobs && this.jobs.length >= this.total) {
+        return
+      }
+      if (this.fetching) {
+        return
+      }
+      this.fetching = true
+      this.getJobs().then(() => {
+        this.fetching = false
+      })
+    }
+  }
+  getJobs(refresh = false) {
+    if (refresh) {
+      this.jobs = []
+    }
+    getAllOrder(this.jobs.length).then(data => {
+      console.log(data)
+      this.total = data.total
+      data.rows.forEach(item => {
+        item.date = (item.updatetime || item.creationtime).substr(5, 5)
+        item.avatar = item.img
+      })
+      this.jobs = this.jobs.concat(data.rows)
+      this.$apply()
+      return Promise.resolve()
+    })
   }
   onReady () {
+    const height = wx.getSystemInfoSync().screenHeight
+    this.height = height
+    this.$apply()
     this.$parent.getUserInfo().then(userInfo => {
       this.userInfo = userInfo
-      getAllOrder().then(data => {
-        console.log(data)
-        data.rows.forEach(item => {
-          item.date = (item.updatetime || item.creationtime).substr(5, 5)
-          item.avatar = item.img
-        })
-        this.jobs = data.rows
-        this.$apply()
-      })
+      this.getJobs()
     }).catch(() => {
       this.$parent.globalData.userInfo = null
       wx.removeStorageSync('userInfo')

@@ -2,59 +2,89 @@
   <view>
     <view class='index-container'>
       <view class='action'>
-        <view class='action-item'>
+        <view class='action-item' :class="{'active-action': activeIndex === -1}" @tap="activeIn(-1)">
           <text>全部</text>
         </view>
-        <view class='action-item'>
+        <view class='action-item' :class="{'active-action': activeIndex === 0}" @tap="activeIn(0)">
           <text>进行中</text>
         </view>
-        <view class='action-item'>
+        <view class='action-item' :class="{'active-action': activeIndex === 1}" @tap="activeIn(1)">
           <text>审核中</text>
         </view>
-        <view class="action-item">
+        <view class="action-item" :class="{'active-action': activeIndex === 2}" @tap="activeIn(2)">
           <text>已结束</text>
         </view>
       </view>
     </view>
     <view class='index-container'>
       <repeat for={{jobs}} item='job' key='index'>
-        <view class="jobs">
-          <job :job="job" :labels="labels"></job>
+        <view class="jobs" wx:if='{{activeIndex === -1 || activeIndex === job.status}}'>
+          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :activeIndex.sync="activeIndex" :simple.sync="simple"></job>
         </view>
       </repeat>
     </view>
+    <toast />
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
 import job from '../components/job'
+import { getAllOrderPersonaly } from '../api'
+import toast from 'wepy-com-toast'
 
 export default class Application extends wepy.page {
   config = {
     navigationBarTitleText: '我的申请'
   }
   components = {
-    job
+    job,
+    toast
   }
   data = {
-    jobs: [{
-      avatar: '../assets/post.png',
-      square: '互联网',
-      major: '新媒体运营',
-      company: '深圳软件公司',
-      date: '12-12',
-      salary: '5000-8000元/月',
-      publisher: '李先生',
-      majorIn: '经理',
-      phone: '13666666666'
-    }],
+    jobs: [],
     labels: {
       industry: '行业',
       contact: '联系人',
       post: '职位',
       tel: '联系电话'
+    },
+    showstatus: true,
+    simple: true,
+    activeIndex: -1
+  }
+  methods = {
+    activeIn(index) {
+      this.activeIndex = parseInt(index)
+      this.$apply()
     }
+  }
+  onLoad() {
+    getAllOrderPersonaly().then(res => {
+      Array.isArray(res.data) && res.data.forEach(_row => {
+        const row = _row.introrderDO
+        row.date = (row.updatetime || row.updateat || row.createat || row.creationtime).substr(5, 5)
+        row.avatar = row.img
+        if (_row.status === 0) {
+          row.statusText = '进行中'
+        } else if (_row.status === 1) {
+          row.statusText = '审核中'
+        } else if (_row.status === 2) {
+          row.statusText = '已结束'
+        }
+        row.status = _row.status
+      })
+      this.jobs = res.data.map(row => {
+        return row.introrderDO
+      })
+      if (res.code === 500) {
+        this.$invoke('toast', 'show', {
+          title: res.msg,
+          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+        })
+      }
+      this.$apply()
+    })
   }
 }
 </script>
@@ -76,6 +106,9 @@ page {
   align-items: center;
   border-bottom: 1rpx solid rgba(0,0,0, .1);
   justify-content: space-around;
+  .action-item.active-action text{
+    color: #e065ee;
+  }
   .action-item text {
     vertical-align: middle;
   }

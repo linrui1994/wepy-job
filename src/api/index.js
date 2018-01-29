@@ -8,8 +8,12 @@ export function getAllOrder (offset = 0, limit = 10) {
   })
 }
 
-export function getOrder (id) {
+export function getJob (id) {
   return http(`/lh/order/selOrderById/${id}`)
+}
+
+export function getOrder (id) {
+  return http(`/lh/order/selOrderByUser/${id}`)
 }
 
 export function getOpenid (code) {
@@ -25,7 +29,7 @@ export function getResume () {
 }
 
 export function applyOrder (oid) {
-  return http('/lh/order/applyOrder', { oid })
+  return http('/lh/order/applyOrder', { oid }, 'post')
 }
 
 export function getAllOrderPersonaly () {
@@ -34,6 +38,10 @@ export function getAllOrderPersonaly () {
 
 export function getAllRecruit () {
   return http('/lh/userbyuser/selMyRecruit')
+}
+
+export function starJob (id) {
+  return http('/lh/order/start', { id })
 }
 
 export function wxGetUserInfo () {

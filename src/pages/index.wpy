@@ -81,7 +81,6 @@ export default class Index extends wepy.page {
       this.jobs = []
     }
     getAllOrder(this.jobs.length).then(data => {
-      console.log(data)
       this.total = data.total
       data.rows.forEach(item => {
         item.date = (item.updatetime || item.creationtime).substr(5, 5)

@@ -4,13 +4,34 @@ import 'wepy-async-function'
 import { wxGetUserInfo, checkSession, wxLogin, getOpenid } from './api/index.js'
 
 export default class extends wepy.app {
+  constructor() {
+    super()
+    this.use('requestfix')
+
+    this.intercept('request', {
+      config (p) {
+        return p
+      },
+      success (p) {
+        console.log('success')
+        return p
+      },
+      fail (p) {
+        console.log('fail')
+        return p
+      }
+    })
+  }
+
   config = {
     pages: [
-      'pages/index',
-      'pages/publish',
       'pages/profile',
       'pages/application',
-      'pages/job-detail'
+      'pages/index',
+      'pages/publish',
+      'pages/job-detail',
+      'pages/order-detail',
+      'pages/resume'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -44,11 +65,6 @@ export default class extends wepy.app {
     userInfo: null
   }
 
-  constructor () {
-    super()
-    this.use('requestfix')
-  }
-
   onLaunch() {
     checkSession().catch(() => {
       wx.removeStorageSync('userInfo')
@@ -66,12 +82,14 @@ export default class extends wepy.app {
     }
     const { code } = await wxLogin()
     let { sessionid } = await getOpenid(code)
-    console.log(sessionid, 'sessionid')
     if (sessionid) {
       wx.setStorageSync('sessionid', sessionid)
+    } else {
+      this.globalData.userInfo = null
+      wx.removeStorageSync('userInfo')
+      return this.getUserInfo()
     }
     userInfo = this.globalData.userInfo = (await wxGetUserInfo()).userInfo
-    console.log(userInfo, 'userInfo')
     wx.setStorageSync('userInfo', userInfo)
     return userInfo
   }

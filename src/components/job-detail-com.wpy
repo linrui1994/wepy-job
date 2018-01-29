@@ -24,6 +24,27 @@
         <text>工作地点：{{detail.site}}</text>
       </view>
     </view>
+    <view wx:if="{{showstatus}}" class="block-wrapper status-block">
+      <text class="block big">审核进度</text>
+      <view class='status-wrapper'>
+        <view class="dot green"></view>
+        <view class="artical {{detail.orderstatus >= 1 ? 'green' : ''}}"></view>
+        <view class="dot {{detail.orderstatus >= 1 ? 'green' : ''}}"></view>
+        <view class="artical {{detail.orderstatus === 2 ? 'green' : ''}}"></view>
+        <view class="dot {{detail.orderstatus === 2 ? 'green' : ''}}"></view>
+      </view>
+      <view class='status-wrapper text-wrapper'>
+        <view>
+          <text>审核中</text>
+        </view>
+        <view>
+          <text>进行中</text>
+        </view>
+        <view>
+          <text>已结束</text>
+        </view>
+      </view>
+    </view>
     <view class="block-wrapper">
       <text class="big bq block">工作职责</text>
       <text class="block">{{detail.responsibility}}</text>
@@ -42,7 +63,16 @@ export default class JobDetailCom extends wepy.component {
   props = {
     detail: {
       type: Object
+    },
+    showstatus: {
+      type: Boolean
     }
+  }
+
+  onLoad() {
+    setTimeout(() => {
+      this.$apply()
+    }, 100)
   }
 }
 </script>
@@ -91,5 +121,31 @@ page {
 .bq {
   padding: 0 16rpx;
   border-left: 8rpx solid #e065ee;
+}
+.status-wrapper {
+  display: flex;
+  padding: 20rpx 40rpx;
+  margin-right: -6rpx;
+  align-items: center;
+  justify-content: space-between;
+  .dot, .artical {
+    background: #a0a0a0;
+    &.green {
+      background: #74bf6e;
+    }
+  }
+  .dot {
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 10rpx;
+  }
+  .artical {
+    width: 220rpx;
+    height: 20rpx;
+    border-radius: 10rpx;
+  }
+  &.text-wrapper {
+    padding: 0 20rpx;
+  }
 }
 </style>

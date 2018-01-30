@@ -7,31 +7,18 @@ export default class extends wepy.app {
   constructor() {
     super()
     this.use('requestfix')
-
-    this.intercept('request', {
-      config (p) {
-        return p
-      },
-      success (p) {
-        console.log('success')
-        return p
-      },
-      fail (p) {
-        console.log('fail')
-        return p
-      }
-    })
   }
 
   config = {
     pages: [
+      'pages/edit-resume',
+      'pages/resume',
+      'pages/index',
       'pages/profile',
       'pages/application',
-      'pages/index',
       'pages/publish',
       'pages/job-detail',
       'pages/order-detail',
-      'pages/resume'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -87,6 +74,7 @@ export default class extends wepy.app {
     } else {
       this.globalData.userInfo = null
       wx.removeStorageSync('userInfo')
+      console.log('clear')
       return this.getUserInfo()
     }
     userInfo = this.globalData.userInfo = (await wxGetUserInfo()).userInfo
@@ -97,10 +85,23 @@ export default class extends wepy.app {
 </script>
 
 <style lang="scss">
+@import 'node_modules/weui-wxss/dist/style/weui.wxss';
 .float-right {
   float: right;
 }
 .block {
   display: block;
+}
+.gray {
+  color: #aaa;
+}
+button.primary {
+  background: #4fa0bd;
+}
+.button-hover[type="primary"] {
+  background: #387A96;
+}
+.weui-cells__title {
+  margin-bottom: .77em;
 }
 </style>

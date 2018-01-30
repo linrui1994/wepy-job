@@ -1,23 +1,78 @@
 <template>
   <view class="container">
     <view class="avatar-wrapper">
-      <image class="avatar" src='../assets/个人简历-五边形.png'></image>
+      <image class="avatar" src={{info.img}}></image>
     </view>
     <view class="info-wrapper">
       <text class="block">{{info.username}}</text>
-      <view>
+      <view class='flex'>
         <text class="sex">{{info.sex}}</text>
         <text class="birth">{{info.birthday}}</text>
         <text class="education">{{info.education}}</text>
-        <text class="major">{{info.specialty}}</text>
+        <text class="major">{{info.specialty}}专业</text>
       </view>
-      <view>
+      <view class='flex'>
         <text class="school">{{info.school}}</text>
       </view>
-      <view>
+      <view class='flex'>
         <text class="tel">{{info.tel}}</text>
         <text class="email">{{info.email}}</text>
       </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class='text-wrapper'>
+        <text class="block hope gray">期待工作日</text>
+      </view>
+      <view class="day-wrapper">
+        <repeat for={{days}} key="item">
+          <text :class="{highlight: item.highlight}">{{item.day}}</text>
+        </repeat>
+      </view>
+      <view class='text-wrapper'>
+        <text class="block hope gray" style='margin-top: 16rpx'>兼职类型</text>
+      </view>
+      <view style='text-align: center; margin-top: 16rpx;'>
+        <text>{{info.job}}</text>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block gray">能力评价</text>
+      </view>
+      <view class='flex' style='margin-left: 40rpx; position: relative'>
+        <canvas canvas-id="firstCanvas" style="width: 200px; height: 200px; transform: rotate(-17deg)"></canvas>
+        <repeat for={{labels}} key='index'>
+          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
+        </repeat>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class='text-wrapper'>
+        <text class="block hope gray">个人技能</text>
+      </view>
+      <view class='skill-wrapper'>
+        <repeat for={{skills}} key="index">
+          <view class='skill'>
+            <view>{{item.label}}</view>
+            <view class='star-wrapper'>
+              <repeat for={{item.value}} key="index">
+                <text class='star'>⭐</text>
+              </repeat>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class='text-wrapper'>
+        <text class="block hope gray">自我评价</text>
+      </view>
+      <view style='text-indent: 2em;padding: 16rpx 0'>
+        <text>{{info.information}}</text>
+      </view>
+    </view>
+    <view class="footer-wrapper">
+      <button type='primary' class='primary' @tap='edit'>编辑简历</button>
     </view>
   </view>
 </template>
@@ -31,14 +86,114 @@ export default class Resume extends wepy.page {
     navigationBarTitleText: '简历'
   }
   data = {
-    info: {}
+    info: {},
+    days: [],
+    labels: [{
+      label: '工作效率',
+      left: '188rpx',
+      top: '15rpx'
+    }, {
+      label: '诚信守时',
+      left: '392rpx',
+      top: '140rpx'
+    }, {
+      label: '工作态度',
+      left: '264rpx',
+      top: '332rpx'
+    }, {
+      label: '专业技能',
+      left: '72rpx',
+      top: '332rpx'
+    }, {
+      label: '沟通能力',
+      left: '-24rpx',
+      top: '140rpx'
+    }],
+    skills: [{
+      label: '中文能力',
+      value: 4
+    }, {
+      label: '英汉翻译能力',
+      value: 5
+    }, {
+      label: '中文能力',
+      value: 4
+    }, {
+      label: '英汉翻译能力',
+      value: 5
+    }]
+  }
+  methods = {
+    edit() {
+      wx.navigateTo({
+        url: 'edit-resume'
+      })
+    }
+  }
+  draw() {
+    let values = [0.8, 0.6, 1, 0.82, 0.75]
+    function _draw (side, part, values) {
+      let context = wx.createCanvasContext('firstCanvas')
+      let [width, height] = [200, 200]
+      let xCenter = width * 0.5
+      let yCenter = height * 0.5
+      let radius = width * 0.35
+      let space = radius / part
+      let theta = Math.PI * 2 / side
+
+      // 绘制能力多边形
+      context.beginPath()
+      for (let i = 0; i <= side; i++) {
+        let x = Math.cos(i * theta) * radius * values[i % side] + xCenter
+        let y = -Math.sin(i * theta) * radius * values[i % side] + yCenter
+        context.lineTo(x, y)
+      }
+      context.setFillStyle('#badff5')
+      context.fill()
+      context.closePath()
+
+      // 绘制渐变多边形底层
+      for (let j = part; j >= 1; j--) {
+        context.beginPath()
+        for (let i = 0; i <= side; i++) {
+          context.lineTo(Math.cos(i * theta) * space * j + xCenter, -Math.sin(i * theta) * space * j + yCenter)
+        }
+        context.setLineWidth(0.3)
+        context.setFillStyle('#cccccc')
+        context.stroke()
+        context.closePath()
+      }
+
+      for (let j = part; j > 1; j--) {
+        for (let i = 0; i < side; i++) {
+          if (j === part) {
+            context.beginPath()
+            context.moveTo(xCenter, yCenter)
+            context.lineTo(Math.cos(i * theta) * space * j + xCenter, -Math.sin(i * theta) * space * j + yCenter)
+            context.stroke()
+            context.closePath()
+          }
+        }
+      }
+      context.draw()
+    }
+    _draw(5, 5, values)
   }
   onLoad() {
+    this.draw()
     getResume().then(res => {
       if (res.code === 500) {
         this.$invoke('toast', 'show', {
           title: res.msg,
           img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+        })
+      }
+      res.data.hope = (res.data.workday || '').split(',')
+      console.log(res.data.hope)
+      for (let i = 1; i <= 7; i++) {
+        this.days.push({
+          day: i,
+          highlight: res.data.hope.indexOf(i.toString()) !== -1
         })
       }
       this.info = res.data || {}
@@ -54,6 +209,7 @@ page {
   font-size: 28rpx;
   color: #000;
   padding: 0 32rpx;
+  padding-bottom: 108rpx;
 }
 .avatar-wrapper {
   position: absolute;
@@ -71,16 +227,87 @@ page {
   }
 }
 .info-wrapper {
+  padding-bottom: 16rpx;
   margin-top: 160rpx;
   padding-top: 90rpx;
-  text-align: center;
   box-sizing: border-box;
   width: 750rpx - 64rpx;
   background: #fff;
   border-radius: 8rpx;
-  .major {
-    font-size: 20rpx;
-    margin-top: 6rpx;
+  .block {
+    text-align: center;
+  }
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    padding: 6rpx 40rpx;
+  }
+  .text-wrapper {
+    margin: 0 auto;
+    width: 280rpx;
+    border-bottom: 1rpx solid #f0f0f0;
+    padding-bottom: 12rpx;
+    text-align: center;
+  }
+  .hope {
+    font-size: 28rpx;
+  }
+  .day-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20rpx 90rpx;
+    border-bottom: 1px solid #f0f0f0;
+    text {
+      font-size: 32rpx;
+      width: 32rpx;
+      height: 32rpx;
+      line-height: 32rpx;
+      &.highlight {
+        border: 1rpx solid #e065ee;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 32rpx;
+        color: #e065ee;
+      }
+    }
+  }
+}
+.block-wrapper {
+  margin-top: 16rpx;
+  padding: 20rpx 60rpx;
+}
+.absolute {
+  color: #888;
+  position: absolute;
+}
+.skill {
+  margin: 10rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-wrapper {
+  position: fixed;
+  left: 0;
+  background: #fff;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 750rpx;
+  height: 100rpx;
+  display: flex;
+  padding: 0 40rpx;
+  align-items: center;
+  justify-content: center;
+  button {
+    height: 64rpx;
+    font-size: 24rpx;
+    line-height: 64rpx;
+    color: #e065ee;
+  }
+  .primary {
+    color: #fff;
+    flex: 1;
   }
 }
 </style>

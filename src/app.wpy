@@ -45,7 +45,8 @@ export default class extends wepy.app {
         selectedIconPath: './assets/footer/profile-active.png',
         text: '我的'
       }]
-    }
+    },
+    debug: true
   }
 
   globalData = {

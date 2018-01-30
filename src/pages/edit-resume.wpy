@@ -70,8 +70,8 @@
           <view class="weui-label">出生日期</view>
         </view>
         <view class="weui-cell__bd">
-          <picker mode="date" class='weui-input' value="{{info.birthday || date}}" start="1970-01-01" end="2017-01-01" @change="change('birthday')">
-            <view class="picker">{{info.birthday}}</view>
+          <picker mode="date" class='weui-input' value="{{info.birthday}}" start="1970-01-01" end="2017-01-01" @change="change('birthday')">
+            <view>{{info.birthday || '请选择出生日期'}}</view>
           </picker>
         </view>
       </view>
@@ -120,7 +120,7 @@
         </view>
         <view class="weui-cell__bd">
           <picker @change="changeSkill('value', {{index}})" class='weui-input' value="{{item.value   - 1}}" range="{{stars}}">
-            <view class="picker">{{item.value}}</view>
+            <view>{{item.value}}</view>
           </picker>
         </view>
       </view>

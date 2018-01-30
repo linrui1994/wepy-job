@@ -133,14 +133,16 @@
     <view class="weui-cells__title">个人技能:</view>
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input" wx:for='{{info.skills}}' wx:key='{{index}}' >
-        <view class="weui-cell__hd">
+        <view class="weui-cell__hd skill-hd">
           <view class="weui-label">
             <input class="weui-input" @change="changeSkill('label', {{index}})" placeholder="请输入技能" value='{{item.label}}'/>
           </view>
         </view>
         <view class="weui-cell__bd">
           <picker @change="changeSkill('value', {{index}})" class='weui-input' value="{{item.value   - 1}}" range="{{stars}}">
-            <view class="picker">{{item.value}}</view>
+            <view class='star-wrapper'>
+              <text class='star' wx:for='{{item.value}}' wx:key='{{index}}'>⭐</text>
+            </view>
           </picker>
         </view>
       </view>
@@ -312,5 +314,11 @@ export default class EditResume extends wepy.page {
 .placeholder {
   height: 16rpx;
   background: #f0f0f0;
+}
+.skill-hd .weui-label {
+  width: 300rpx;
+}
+.star-wrapper {
+  text-align: right;
 }
 </style>

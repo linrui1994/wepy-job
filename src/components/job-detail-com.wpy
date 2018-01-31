@@ -71,6 +71,7 @@ export default class JobDetailCom extends wepy.component {
 
   onLoad() {
     setTimeout(() => {
+      console.log(this.showstatus)
       this.$apply()
     }, 100)
   }

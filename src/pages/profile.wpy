@@ -43,7 +43,8 @@ export default class Profile extends wepy.page {
       url: 'resume'
     }, {
       src: '../assets/profile/poster.png',
-      label: '我的发布'
+      label: '我的发布',
+      url: 'personal-publish'
     }, {
       src: '../assets/profile/edit.png',
       label: '我的申请',

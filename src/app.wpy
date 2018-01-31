@@ -11,14 +11,15 @@ export default class extends wepy.app {
 
   config = {
     pages: [
+      'pages/profile',
       'pages/edit-resume',
       'pages/index',
       'pages/resume',
-      'pages/profile',
       'pages/application',
       'pages/publish',
       'pages/job-detail',
-      'pages/order-detail'
+      'pages/order-detail',
+      'pages/personal-publish'
     ],
     window: {
       backgroundTextStyle: 'light',

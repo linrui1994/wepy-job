@@ -299,6 +299,7 @@ page {
   padding: 0 40rpx;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
   button {
     height: 64rpx;
     font-size: 24rpx;

@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <jobDetailCom :detail.sync="detail" :showstatus.sync="showstatus"></jobDetailCom>
-    <view class="footer-wrapper">
+    <view class="footer-wrapper" wx:if="{{!slient}}">
       <button class='default' @tap='star'>收藏</button>
       <button type='primary' class='primary' @tap='applyOrder'>我要申请</button>
     </view>
@@ -27,7 +27,8 @@ export default class JobDetail extends wepy.page {
 
   data = {
     detail: {},
-    showstatus: false
+    showstatus: false,
+    slient: false
   }
 
   methods = {
@@ -49,8 +50,9 @@ export default class JobDetail extends wepy.page {
     }
   }
 
-  onLoad({id, showstatus}) {
-    this.showstatus = showstatus
+  onLoad({id, showstatus, slient}) {
+    this.showstatus = Boolean(showstatus)
+    this.slient = Boolean(slient)
     this.$apply()
     getJob(id).then(res => {
       res.data.date = (res.data.updatetime || res.data.updateat || res.data.createat || res.data.creationtime).substr(5, 5)

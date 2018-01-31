@@ -27,7 +27,7 @@ export default class JobDetail extends wepy.page {
   }
 
   onLoad({id, showstatus}) {
-    this.showstatus = showstatus
+    this.showstatus = Boolean(showstatus)
     this.$apply()
     console.log('order-detail.wpy', 'showstatus', showstatus)
     getOrder(id).then(res => {

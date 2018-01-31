@@ -2,7 +2,7 @@
   <view class="job-item" @tap="go">
     <view class="job-detail no-border">
       <view class="avatar-wrapper">
-        <image src={{job.avatar}} class='avatar'></image>
+        <image src='{{job.avatar}}' class='avatar'></image>
       </view>
       <view class="detail-wrapper">
         <text class='block grey'>{{labels.industry}}: {{job.industry}}</text>
@@ -33,7 +33,7 @@
         <text class="block dark">{{job.tel}}</text>
       </view>
       <view class="job-action-item">
-        <image src='../assets/index/phone.png' class='phone'></image>
+        <image src='../assets/index/phone.png' class='phone' />
       </view>
     </view>
   </view>
@@ -58,18 +58,22 @@ export default class Job extends wepy.component {
     },
     activeIndex: {
       type: Number
+    },
+    slient: {
+      type: Boolean
     }
   }
 
   methods = {
     go() {
+      // 坑爹传递的是string 'false' -> true 所以false转为空字符串吧
       if (this.simple) {
         wx.navigateTo({
-          url: 'order-detail?id=' + this.job.id + '&showstatus=' + this.showstatus
+          url: 'order-detail?id=' + this.job.id + '&showstatus=' +( this.showstatus ? true : '')
         })
       } else {
         wx.navigateTo({
-          url: 'job-detail?id=' + this.job.id + '&showstatus=' + this.showstatus
+          url: 'job-detail?id=' + this.job.id + '&showstatus=' + (this.showstatus ? true : '') + '&slient=' + (this.slient ? true : '')
         })
       }
     }
@@ -121,8 +125,6 @@ export default class Job extends wepy.component {
     padding: 16rpx 20rpx 4rpx 16rpx;
     justify-content: space-between;
     align-items: center;
-    .job-action-item {
-    }
     .phone {
       width: 44rpx;
       height: 44rpx;

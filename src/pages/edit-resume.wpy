@@ -1,5 +1,11 @@
 <template>
   <view class="container">
+    <view class="weui-cells__title">个人头像:</view>
+    <view class="weui-cells weui-cells_after-title avatar-wrapper" @tap="chooseImg">
+      <image class="avatar" src="{{info.imgArray && info.imgArray[0]}}" wx:if="{{info.imgArray && info.imgArray[0]}}"></image>
+      <view class="avatar" wx:else>上传头像</view>
+    </view>
+    <view class="placeholder"></view>
     <view class="weui-cells__title">性别:</view>
     <view class="weui-cells weui-cells_after-title">
       <radio-group @change="change('sex')">
@@ -110,16 +116,14 @@
     </view>
 
     <view class="placeholder"></view>
-    <view class="weui-cells__title">个人能力:</view>
+    <view class="weui-cells__title">个人技能:</view>
     <view class="weui-cells weui-cells_after-title">
-      <view class="weui-cell weui-cell_input" wx:for='{{info.skills}}' wx:key='{{index}}' >
+      <view class="weui-cell weui-cell_input" wx:for='{{info.ability}}' wx:key='{{index}}' >
         <view class="weui-cell__hd skill-hd">
-          <view class="weui-label">
-            <input class="weui-input" @change="changeSkill('label', {{index}})" placeholder="请输入技能" value='{{item.label}}'/>
-          </view>
+          <input class="weui-input" @change="changeSkill('label', {{index}})" placeholder="请输入技能" value='{{item.label}}'/>
         </view>
         <view class="weui-cell__bd">
-          <picker @change="changeSkill('value', {{index}})" class='weui-input' value="{{item.value   - 1}}" range="{{stars}}">
+          <picker @change="changeSkill('value', {{index}})" class='weui-input' value="{{item.value  - 1}}" range="{{stars}}">
             <view class='star-wrapper'>
               <text class='star' wx:for='{{item.value}}' wx:key='{{index}}'>⭐</text>
             </view>
@@ -132,16 +136,14 @@
     </view>
 
     <view class="placeholder"></view>
-    <view class="weui-cells__title">个人技能:</view>
+    <view class="weui-cells__title">能力评价:</view>
     <view class="weui-cells weui-cells_after-title">
-      <view class="weui-cell weui-cell_input" wx:for='{{info.skills}}' wx:key='{{index}}' >
+      <view class="weui-cell weui-cell_input" wx:for='{{info.currency}}' wx:key='{{index}}' >
         <view class="weui-cell__hd skill-hd">
-          <view class="weui-label">
-            <input class="weui-input" @change="changeSkill('label', {{index}})" placeholder="请输入技能" value='{{item.label}}'/>
-          </view>
+          <view class="weui-label">{{item.label}}</view>
         </view>
         <view class="weui-cell__bd">
-          <picker @change="changeSkill('value', {{index}})" class='weui-input' value="{{item.value   - 1}}" range="{{stars}}">
+          <picker @change="changeCurrency({{index}})" class='weui-input' value="{{item.value   - 1}}" range="{{stars}}">
             <view class='star-wrapper'>
               <text class='star' wx:for='{{item.value}}' wx:key='{{index}}'>⭐</text>
             </view>
@@ -160,7 +162,7 @@
           <textarea class="weui-textarea" placeholder="请输入自我评价" value="{{info.information}}" style="height: 6.6em" maxlength='200'  @input="change(information)" />
           <view class="weui-textarea-counter">{{info.information.length}}/200</view>
         </view>
-      </view> 
+      </view>
     </view>
     <view class="footer-wrapper">
       <button type='primary' class='primary' @tap='save'>保存简历</button>
@@ -171,7 +173,7 @@
 
 <script>
 import wepy from 'wepy'
-import { getResume } from '../api'
+import { getResume, upload, updateResume } from '../api'
 import toast from 'wepy-com-toast'
 import { isEmail, isMobile } from 'lv-util'
 
@@ -265,30 +267,73 @@ export default class EditResume extends wepy.page {
       this.$apply()
     },
     changeSkill(target, index, e) {
+      console.log(e.detail.value)
       if (target === 'value') {
-        this.info.skills[index][target] = this.stars[e.detail.value]
+        this.info.ability[index][target] = this.stars[e.detail.value]
         return
       }
-      this.info.skills[index][target] = e.detail.value
+      this.info.ability[index][target] = Number(e.detail.value)
     },
     addSkill() {
-      this.info.skills.push({
+      this.info.ability.push({
         label: '',
         value: 4
       })
       this.$apply()
     },
+    changeCurrency(index, e) {
+      const { key } = this.info.currency[index]
+      this.info[key] = this.info.currency[index].value = this.stars[e.detail.value]
+      this.$apply()
+    },
+    chooseImg() {
+      const _this = this
+      wx.chooseImage({
+        count: 1,
+        success(res) {
+          const filePath = res.tempFilePaths[0]
+          console.log(filePath)
+          upload(filePath).then(res => {
+            console.log(res)
+            if (res && typeof res.data === 'string') {
+              res.data = JSON.parse(res.data)
+            }
+            _this.$invoke('toast', 'show', {
+              title: res.msg,
+              img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+            })
+            if (res.data && res.data.fileName) {
+              _this.info.imgArray = [res.data.fileName]
+            }
+            _this.$apply()
+          })
+        },
+        fail() {
+          this.$invoke('toast', 'show', {
+            title: '选择图片失败',
+            img: '../assets/error.png'
+          })
+        }
+      })
+    },
     save() {
-      // TODO
-    }
-  }
-  onLoad() {
-    getResume().then(res => {
-      if (res.code === 500) {
+      updateResume(this.info).then(res => {
+        console.log(res)
         this.$invoke('toast', 'show', {
           title: res.msg,
           img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
         })
+      })
+    }
+  }
+  onLoad() {
+    getResume().then(res => {
+      if (res.code === 500 || !res.data) {
+        this.$invoke('toast', 'show', {
+          title: res.msg,
+          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+        })
+        return
       }
       res.data.hope = (res.data.workday || '').split(',')
       for (let i = 1; i <= 7; i++) {
@@ -304,14 +349,34 @@ export default class EditResume extends wepy.page {
           this.types[1].checked = true
         }
       })
-      res.data.skills = res.data.skills || [{
-        label: '中文',
-        value: 4
-      }, {
-        label: '英文',
-        value: 5
-      }]
-      this.info = res.data || {}
+      res.data.ability = res.data.ability || []
+      const currency = res.data.currency = []
+      currency.push({
+        label: '工作效率',
+        key: 'efficiency',
+        value: res.data.efficiency
+      })
+      currency.push({
+        label: '沟通能力',
+        key: 'communication',
+        value: res.data.communication
+      })
+      currency.push({
+        label: '专业技能',
+        key: 'major',
+        value: res.data.major
+      })
+      currency.push({
+        label: '工作状态',
+        key: 'workstatus',
+        value: res.data.workstatus
+      })
+      currency.push({
+        label: '诚信守时',
+        key: 'honest',
+        value: res.data.honest
+      })
+      this.info = res.data
       this.$apply()
     })
   }
@@ -321,6 +386,20 @@ export default class EditResume extends wepy.page {
 <style lang='scss'>
 page {
   padding-bottom: 108rpx;
+}
+.avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 360rpx;
+}
+.avatar {
+  display: block;
+  line-height: 240rpx;
+  text-align: center;
+  width: 170rpx;
+  height: 240rpx;
+  background: #f0f0f0;  
 }
 .placeholder {
   height: 16rpx;

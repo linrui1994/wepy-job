@@ -141,5 +141,4 @@ export default class Job extends wepy.component {
     height: 110rpx;
   }
 }
-
 </style>

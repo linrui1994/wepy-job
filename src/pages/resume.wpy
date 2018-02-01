@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <view class="avatar-wrapper">
-      <image class="avatar" src={{info.img}}></image>
+      <image class="avatar" src="{{info.imgArray && info.imgArray[0]}}"></image>
     </view>
     <view class="info-wrapper">
       <text class="block">{{info.username}}</text>

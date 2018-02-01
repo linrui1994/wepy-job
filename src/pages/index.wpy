@@ -43,7 +43,7 @@
 <script>
 import wepy from 'wepy'
 import job from '../components/job'
-import { getAllOrder } from '../api'
+import { getJobList } from '../api'
 
 export default class Index extends wepy.page {
   config = {
@@ -80,7 +80,9 @@ export default class Index extends wepy.page {
     if (refresh) {
       this.jobs = []
     }
-    getAllOrder(this.jobs.length).then(data => {
+    getJobList({
+      offset: this.jobs.length
+    }).then(data => {
       if (!data.rows) {
         this.$parent.globalData.userInfo = null
         wx.removeStorageSync('userInfo')

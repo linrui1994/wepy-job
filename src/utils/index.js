@@ -1,16 +1,20 @@
-import {isMobile as isPhone} from 'lv-util'
-import {baseUrl} from '../config/index.js'
+import { isMobile as isPhone } from 'lv-util'
+import { baseUrl } from '../config/index.js'
 
-export function formatPhone (phone) {
+export function formatPhone(phone) {
   if (isPhone(phone)) {
-    console.log(phone.slice(0, 3) + ' ' + phone.slice(3, 7) + ' ' + phone.slice(7, 11))
-    return phone.slice(0, 3) + ' ' + phone.slice(3, 7) + ' ' + phone.slice(7, 11)
+    console.log(
+      phone.slice(0, 3) + ' ' + phone.slice(3, 7) + ' ' + phone.slice(7, 11)
+    )
+    return (
+      phone.slice(0, 3) + ' ' + phone.slice(3, 7) + ' ' + phone.slice(7, 11)
+    )
   } else {
     return phone
   }
 }
 
-export function ensureUrl (base, url) {
+export function ensureUrl(base, url) {
   base = base.replace(/\/$/, '')
   if (url.indexOf('/') !== 0) {
     url = '/' + url
@@ -18,15 +22,20 @@ export function ensureUrl (base, url) {
   return base + url
 }
 
-export function http (url, params = {}, method = 'get') {
+export function http(url, params = {}, method = 'get') {
   url = ensureUrl(baseUrl, url)
+  Object.keys(params).forEach(key => {
+    if (typeof params[key] === 'object') {
+      params[key] = JSON.stringify(params[key])
+    }
+  })
   return new Promise((resolve, reject) => {
     wx.request({
       url,
       method,
       header: {
         'content-type': 'application/x-www-form-urlencoded',
-        'Cookie': 'JSESSIONID=' + wx.getStorageSync('sessionid')
+        Cookie: 'JSESSIONID=' + wx.getStorageSync('sessionid')
       },
       data: params,
       success: res => {

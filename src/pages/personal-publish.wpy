@@ -14,7 +14,7 @@
 <script>
 import wepy from 'wepy'
 import job from '../components/job'
-import { getAllOrderPersonaly } from '../api'
+import { getJobListPersonally } from '../api'
 import toast from 'wepy-com-toast'
 
 export default class Application extends wepy.page {
@@ -37,7 +37,7 @@ export default class Application extends wepy.page {
     showstatus: false
   }
   onLoad() {
-    getAllOrderPersonaly().then(res => {
+    getJobListPersonally().then(res => {
       Array.isArray(res.data) && res.data.forEach(_row => {
         const row = _row.introrderDO
         row.date = (row.updatetime || row.updateat || row.createat || row.creationtime).substr(5, 5)

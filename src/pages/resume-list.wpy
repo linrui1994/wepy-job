@@ -1,0 +1,76 @@
+<template>
+  <view>
+    <view class='index-container'>
+      <repeat for='{{resumeList}}' item='resume' key='index'>
+        <view class="jobs">
+          <resume :resume.sync="resume" :index.sync="index"></resume>
+        </view>
+      </repeat>
+    </view>
+    <toast />
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import resume from '../components/resume-item'
+import { getAllRecruit } from '../api'
+import toast from 'wepy-com-toast'
+
+export default class Application extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的发布'
+  }
+  components = {
+    resume,
+    toast
+  }
+  data = {
+    resumeList: []
+    // resumeList: [{
+    //   "id": 1,
+    //   "userid": 2,
+    //   "username": "隆江",
+    //   "email": "5418!@Gmeil",
+    //   "birthday": "1999/10/9",
+    //   "sex": "男",
+    //   "education": "本科",
+    //   "school": "深圳大学",
+    //   "workday": "1,2,3",
+    //   "job": "长期，短期",
+    //   "tel": "17814444444",
+    //   "imgArray": ["http://img0.imgtn.bdimg.com/it/u=12867320,655225767&fm=214&gp=0.jpg"],
+    //   "status": "0",
+    //   "skill": "专业，",
+    //   "information": "面向学习型的开源框架，简洁高效，减少过渡封装，展现技术本质",
+    //   "specialty": "计算机与科学",
+    //   "creationtime": "2018-01-19 18:03:04",
+    //   "updatetime": "2018-01-19 18:03:06"
+    // }],
+  }
+  onLoad() {
+    getAllRecruit().then(res => {
+      this.resumeList = (res.data || []).map(row => {
+        return row.resumeDO
+      })
+      if (res.code === 500) {
+        this.$invoke('toast', 'show', {
+          title: res.msg,
+          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+        })
+      }
+      this.$apply()
+    })
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+}
+.index-container {
+  font-size: 24rpx;
+  position: relative;
+}
+</style>

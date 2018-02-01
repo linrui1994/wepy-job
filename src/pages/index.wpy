@@ -7,7 +7,7 @@
           <image src='../assets/index/logo.png' class='logo'></image>
         </view>
         <view class='search-wrapper'>
-          <input type="text" placeholder="搜索职位" class='input-inner' />
+          <input type="text" placeholder="搜索职位" class='input-inner' @change="change(post, params)"/>
           <image class='search-icon' src='../assets/index/search.png'></image>
         </view>
       </view>
@@ -15,8 +15,10 @@
     <view class='index-container'>
       <view class='action'>
         <view class='action-item'>
-          <text>快速兼职</text>
-          <image src='../assets/index/arrow-down.png'></image>
+          <picker @change="change('type', 'types')" class='weui-input' range="{{types}}">
+            <text>{{params.type}}</text>
+            <image src='../assets/index/arrow-down.png'></image>
+          </picker>
         </view>
         <view class='action-item'>
           <text>薪酬优先</text>
@@ -60,9 +62,24 @@ export default class Index extends wepy.page {
       post: '职位',
       tel: '联系电话'
     },
-    height: 1000
+    height: 1000,
+    params: {
+      limit: 10,
+      offset: 0,
+      post: '',
+      type: '快速兼职'
+    },
+    types: ['快速兼职', '普通兼职', '长期兼职']
   }
   methods = {
+    change(key, target, e) {
+      if (target === 'params') {
+        this.params[key] = e.detail.value
+      } else {
+        this.params[key] = this[target][e.detail.value]
+      }
+      this.getJobs(true)
+    },
     loadmore(e) {
       if (this.jobs && this.jobs.length >= this.total) {
         return
@@ -80,9 +97,8 @@ export default class Index extends wepy.page {
     if (refresh) {
       this.jobs = []
     }
-    getJobList({
-      offset: this.jobs.length
-    }).then(data => {
+    this.params.offset = this.jobs.length
+    getJobList(this.params).then(data => {
       if (!data.rows) {
         this.$parent.globalData.userInfo = null
         wx.removeStorageSync('userInfo')
@@ -99,9 +115,11 @@ export default class Index extends wepy.page {
     })
   }
   getUserInfo() {
+    console.log('getUserInfo')
     this.$parent.getUserInfo().then(userInfo => {
       this.userInfo = userInfo
-      this.getJobs()
+      console.log('???')
+      this.getJobs(true)
       return Promise.resolve()
     }).catch(() => {
       this.$parent.globalData.userInfo = null

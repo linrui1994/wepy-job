@@ -1,0 +1,91 @@
+<template>
+  <view class="job-item" @tap="go">
+    <view class="job-detail no-border">
+      <view class="avatar-wrapper">
+        <image src='{{resume.imgArray && resume.imgArray[0]}}' class='avatar'></image>
+      </view>
+      <view class="detail-wrapper">
+        <text class='block grey'>{{resume.school}}</text>
+        <!-- <view class='date grey'>
+          <text>{{resume.date}}</text>
+        </view> -->
+        <text class="title block">{{resume.username}}</text>
+        <text class="intro block grey">{{resume.specialty + '专业'}}</text>
+        <view class="salary">
+          <text>{{resume.tel}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Job extends wepy.component {
+  props = {
+    resume: {
+      type: Object
+    },
+    index: {
+      type: Number
+    }
+  }
+
+  methods = {
+    go() {
+      // 坑爹 不能用JSON.stringify传递 有长度限制
+      wx.navigateTo({
+        url: `resume?index=${this.index}`
+        // url: `resume?resume=${JSON.stringify(this.resume)}`
+      })
+    }
+  }
+}
+</script>
+
+<style lang='scss'>
+.job-item {
+  padding: 12rpx 22rpx;
+  margin-top: 16rpx;
+  background: #fff;
+  .grey {
+    color: #aaa;
+    font-size: 20rpx;
+  }
+  .job-detail {
+    &.no-border {
+      border-bottom: none;
+    }
+    display: flex;
+    border-bottom: 1rpx solid rgba(0,0,0, .1);
+    .intro {
+      font-size: 28rpx;
+    }
+    .title {
+      font-size: 32rpx;
+    }
+    .detail-wrapper {
+      margin-left: 20rpx;
+      position: relative;
+      flex: 1;
+    }
+    .date {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    .salary, .status {
+      position: absolute;
+      right: 0;
+      bottom: 4rpx;
+      font-size: 28rpx;
+      color: #e065ee;
+    }
+  }
+  .avatar {
+    width: 110rpx;
+    height: 110rpx;
+  }
+}
+</style>

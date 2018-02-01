@@ -127,6 +127,7 @@
             <view class='star-wrapper'>
               <text class='star' wx:for='{{item.value}}' wx:key='{{index}}'>⭐</text>
             </view>
+            <view class='star-wrapper' wx:if="{{!item.value}}">请选择</view>
           </picker>
         </view>
       </view>
@@ -147,11 +148,9 @@
             <view class='star-wrapper'>
               <text class='star' wx:for='{{item.value}}' wx:key='{{index}}'>⭐</text>
             </view>
+            <view class='star-wrapper' wx:if="{{!item.value}}">请选择</view>
           </picker>
         </view>
-      </view>
-      <view class="weui-cell weui-cell_link">
-        <view class="weui-cell__bd" @tap='addSkill'>添加更多</view>
       </view>
     </view>
     <view class="placeholder"></view>
@@ -299,11 +298,11 @@ export default class EditResume extends wepy.page {
               res.data = JSON.parse(res.data)
             }
             _this.$invoke('toast', 'show', {
-              title: res.msg,
+              title: res.data.msg,
               img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
             })
             if (res.data && res.data.fileName) {
-              _this.info.imgArray = [res.data.fileName]
+              _this.info.imgArray = res.data.fileName
             }
             _this.$apply()
           })
@@ -318,7 +317,6 @@ export default class EditResume extends wepy.page {
     },
     save() {
       updateResume(this.info).then(res => {
-        console.log(res)
         this.$invoke('toast', 'show', {
           title: res.msg,
           img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
@@ -329,6 +327,7 @@ export default class EditResume extends wepy.page {
   onLoad() {
     getResume().then(res => {
       if (res.code === 500 || !res.data) {
+        console.log(res, 'res')
         this.$invoke('toast', 'show', {
           title: res.msg,
           img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'

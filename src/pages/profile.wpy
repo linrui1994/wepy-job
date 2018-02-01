@@ -51,7 +51,8 @@ export default class Profile extends wepy.page {
       url: 'application'
     }, {
       src: '../assets/profile/add.png',
-      label: '我的招募'
+      label: '我的招聘',
+      url: 'resume-list'
     }, {
       src: '../assets/profile/wallet.png',
       label: '我的钱包'
@@ -66,6 +67,7 @@ export default class Profile extends wepy.page {
 
   methods = {
     go(item) {
+      console.log(item, 'item')
       if (item.url) {
         wx.navigateTo({
           url: item.url

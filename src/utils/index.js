@@ -23,9 +23,12 @@ export function ensureUrl(base, url) {
 }
 
 export function http(url, params = {}, method = 'get') {
+  params = JSON.parse(JSON.stringify(params))
   url = ensureUrl(baseUrl, url)
   Object.keys(params).forEach(key => {
-    if (typeof params[key] === 'object') {
+    if (params[key] === null) {
+      params[key] = ''
+    } else if (typeof params[key] === 'object') {
       params[key] = JSON.stringify(params[key])
     }
   })
@@ -39,15 +42,7 @@ export function http(url, params = {}, method = 'get') {
       },
       data: params,
       success: res => {
-        if (res.statusCode < 400) {
-          if (res.data.code === 500) {
-            reject(res)
-          } else {
-            resolve(res.data)
-          }
-        } else {
-          reject(res)
-        }
+        resolve(res.data)
       },
       fail: reject
     })

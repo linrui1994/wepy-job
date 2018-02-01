@@ -39,8 +39,8 @@
       <view class="text-wrapper">
         <text class="block gray">能力评价</text>
       </view>
-      <view class='flex' style='margin-left: 40rpx; position: relative'>
-        <canvas canvas-id="firstCanvas" style="width: 200px; height: 200px; transform: rotate(-17deg)"></canvas>
+      <view class='flex flex-center' style='padding-top: 60rpx; padding-bottom: 60rpx; position: relative'>
+        <canvas canvas-id="firstCanvas" style="width: 320rpx; height: 320rpx; transform: rotate(-17deg)"></canvas>
         <repeat for={{labels}} key='index'>
           <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
         </repeat>
@@ -74,39 +74,44 @@
     <view class="footer-wrapper">
       <button type='primary' class='primary' @tap='edit'>编辑简历</button>
     </view>
+    <toast />
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
-import { getResume } from '../api'
+import { getResume, getAllRecruit } from '../api'
+import toast from 'wepy-com-toast'
 
 export default class Resume extends wepy.page {
   config = {
     navigationBarTitleText: '简历'
   }
+  components = {
+    toast
+  }
   data = {
     info: {},
     days: [],
     labels: [{
-      label: '工作效率',
-      left: '188rpx',
+      label: '诚信守时',
+      left: '228rpx',
       top: '15rpx'
     }, {
-      label: '诚信守时',
-      left: '392rpx',
+      label: '工作效率',
+      left: '442rpx',
       top: '140rpx'
     }, {
-      label: '工作态度',
-      left: '264rpx',
-      top: '332rpx'
+      label: '沟通能力',
+      left: '314rpx',
+      top: '362rpx'
     }, {
       label: '专业技能',
-      left: '72rpx',
-      top: '332rpx'
+      left: '122rpx',
+      top: '362rpx'
     }, {
-      label: '沟通能力',
-      left: '-24rpx',
+      label: '工作态度',
+      left: '14rpx',
       top: '140rpx'
     }],
     skills: [{
@@ -130,14 +135,16 @@ export default class Resume extends wepy.page {
       })
     }
   }
-  draw() {
-    let values = [0.8, 0.6, 1, 0.82, 0.75]
-    function _draw (side, part, values) {
+  draw(values) {
+    console.log(values)
+    _draw(5, 5, values, this.labels)
+    function _draw (side, part, values, labels) {
       let context = wx.createCanvasContext('firstCanvas')
-      let [width, height] = [200, 200]
+      const {screenWidth} = wx.getSystemInfoSync()
+      let [width, height] = [screenWidth / 750 * 320, screenWidth / 750 * 320]
       let xCenter = width * 0.5
       let yCenter = height * 0.5
-      let radius = width * 0.35
+      let radius = width * 0.5
       let space = radius / part
       let theta = Math.PI * 2 / side
 
@@ -177,28 +184,70 @@ export default class Resume extends wepy.page {
       }
       context.draw()
     }
-    _draw(5, 5, values)
   }
-  onLoad() {
-    this.draw()
-    getResume().then(res => {
-      if (res.code === 500) {
-        this.$invoke('toast', 'show', {
-          title: res.msg,
-          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+  onLoad({index}) {
+    if (index) {
+      getAllRecruit().then(res => {
+        const resumeList = (res.data || []).map(row => {
+          return row.resumeDO
         })
-      }
-      res.data.hope = (res.data.workday || '').split(',')
-      console.log(res.data.hope)
-      for (let i = 1; i <= 7; i++) {
-        this.days.push({
-          day: i,
-          highlight: res.data.hope.indexOf(i.toString()) !== -1
-        })
-      }
-      this.info = res.data || {}
-      this.$apply()
-    })
+        // const resumeList = [{
+        //   "id": 1,
+        //   "userid": 2,
+        //   "username": "隆江",
+        //   "email": "5418!@Gmeil",
+        //   "birthday": "1999/10/9",
+        //   "sex": "男",
+        //   "education": "本科",
+        //   "school": "深圳大学",
+        //   "workday": "1,2,3",
+        //   "job": "长期，短期",
+        //   "tel": "17814444444",
+        //   "imgArray": ["http://img0.imgtn.bdimg.com/it/u=12867320,655225767&fm=214&gp=0.jpg"],
+        //   "status": "0",
+        //   "skill": "专业，",
+        //   "information": "面向学习型的开源框架，简洁高效，减少过渡封装，展现技术本质",
+        //   "specialty": "计算机与科学",
+        //   "creationtime": "2018-01-19 18:03:04",
+        //   "updatetime": "2018-01-19 18:03:06"
+        // }]
+        if (res.code === 500) {
+          this.$invoke('toast', 'show', {
+            title: res.msg,
+            img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+          })
+        }
+        this.handleResume(resumeList[Number(index)])
+      })
+    } else {
+      getResume().then(res => {
+        if (res.code === 500) {
+          this.$invoke('toast', 'show', {
+            title: res.msg,
+            img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+          })
+        }
+        this.handleResume(res.data || {})
+      })
+    }
+  }
+  handleResume(data) {
+    data.hope = (data.workday || '').split(',')
+    for (let i = 1; i <= 7; i++) {
+      this.days.push({
+        day: i,
+        highlight: data.hope.indexOf(i.toString()) !== -1
+      })
+    }
+    const info = this.info = data || {}
+    const values = []
+    values.push((info.efficiency || 0) / 5)
+    values.push((info.honest || 0) / 5)
+    values.push((info.workstatus || 0) / 5)
+    values.push((info.major || 0) / 5)
+    values.push((info.communication || 0) / 5)
+    this.draw(values)
+    this.$apply()
   }
 }
 </script>

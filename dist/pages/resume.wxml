@@ -1,0 +1,92 @@
+
+  <view class="container">
+    <view class="avatar-wrapper">
+      <image class="avatar" src="{{info.imgArray && info.imgArray[0]}}"/>
+    </view>
+    <view class="info-wrapper">
+      <text class="block">{{info.username}}</text>
+      <view class="flex">
+        <text class="sex">{{info.sex}}</text>
+        <text class="birth">{{info.birthday}}</text>
+        <text class="education">{{info.education}}</text>
+        <text class="major">{{info.specialty}}专业</text>
+      </view>
+      <view class="flex">
+        <text class="school">{{info.school}}</text>
+      </view>
+      <view class="flex">
+        <text class="tel">{{info.tel}}</text>
+        <text class="email">{{info.email}}</text>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block hope gray">期待工作日</text>
+      </view>
+      <view class="day-wrapper">
+        <block wx:for="{{days}}" wx:for-index="index" wx:for-item="item" wx:key="item">
+          <text  class="{{item.highlight ? 'highlight' : ''}}">{{item.day}}</text>
+        </block>
+      </view>
+      <view class="text-wrapper">
+        <text class="block hope gray" style="margin-top: 16rpx">兼职类型</text>
+      </view>
+      <view style="text-align: center; margin-top: 16rpx;">
+        <text>{{info.job}}</text>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block gray">能力评价</text>
+      </view>
+      <view class="flex flex-center" style="padding-top: 60rpx; padding-bottom: 60rpx; position: relative">
+        <canvas canvas-id="firstCanvas" style="width: 320rpx; height: 320rpx; transform: rotate(-17deg)"/>
+        <block wx:for="{{labels}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
+        </block>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block hope gray">个人技能</text>
+      </view>
+      <view class="skill-wrapper">
+        <block wx:for="{{skills}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+          <view class="skill">
+            <view>{{item.label}}</view>
+            <view class="star-wrapper">
+              <block wx:for="{{item.value}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+                <text class="star">⭐</text>
+              </block>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block hope gray">自我评价</text>
+      </view>
+      <view style="text-indent: 2em;padding: 16rpx 0">
+        <text>{{info.information}}</text>
+      </view>
+    </view>
+    <view class="footer-wrapper">
+      <button type="primary" class="primary" bindtap="edit">编辑简历</button>
+    </view>
+    
+    <view class="wetoast {{$toast$reveal ? 'wetoast_show' : ''}}">
+        <view class="wetoast__mask"/>
+        <view class="wetoast__bd" animation="{{$toast$animationData}}">
+            <block  wx:if="{{$toast$img}}">
+                <view class="wetoast__bd__img {{$toast$imgClassName || ''}}">
+                    <image class="wetoast__bd__img_desc" src="{{$toast$img}}" mode="{{$toast$imgMode || 'scaleToFill'}}"/>
+                </view>
+            </block>
+            <block  wx:if="{{$toast$title}}">
+                <view class="wetoast__bd__title {{$toast$titleClassName || ''}}">{{$toast$title}}</view>
+            </block>
+        </view>
+    </view>
+
+  </view>

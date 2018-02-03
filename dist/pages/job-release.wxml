@@ -1,0 +1,210 @@
+
+  <view class="container">
+    <view class="weui-cells__title">* 职位图片:</view>
+    <view class="weui-cells weui-cells_after-title avatar-wrapper" bindtap="chooseImg">
+      <image class="avatar" src="{{info.img}}"  wx:if="{{info.img}}"/>
+      <view class="avatar"  wx:else>上传图片</view>
+    </view>
+    <view class="placeholder"/>
+    <view class="weui-cells__title">学历要求:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group bindchange="change" data-wpychange-a="education">
+        <label class="weui-cell weui-check__label" wx:for="{{educations}}" wx:key="{{item.value}}">
+          <radio class="weui-check" value="{{item.value}}" checked="{{item.value === info.education}}"/>
+          <view class="weui-cell__bd">{{item.name}}</view>
+          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.value === info.education}}">
+            <icon class="weui-icon-radio" type="success_no_circle" size="16"/>
+          </view>
+        </label>
+      </radio-group>
+    </view>
+
+    <view class="placeholder"/>
+    <view class="weui-cells__title">其他信息:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 行业</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" bindchange="change" placeholder="请输入行业" value="{{info.industry}}" data-wpychange-a="industry"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 职位名称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" bindchange="change" placeholder="请输入职位名称" value="{{info.title}}" data-wpychange-a="title"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 公司名称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入公司名称" value="{{info.intro}}" bindchange="change" data-wpychange-a="intro"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 月薪</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="multiSelector" class="weui-input" range="{{salarys}}" bindchange="changeSalary">
+            <view>{{info.salary || '请选择薪水'}}</view>
+          </picker>
+        </view>
+        <view class="extra {{info.salary === '面议' ? 'highlight' : ''}}" bindtap="extraSalary">
+          <button bindtap="extraSalary" style="height: 60rpx;line-height:60rpx;font-size:24rpx;">面议</button>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 工作类型</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" class="weui-input" range="{{job}}" bindchange="changePicker" data-wpychangepicker-a="job">
+            <view>{{info.job || '请选择'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 工作经验</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入公司名称" value="{{info.workingTime}}" bindchange="change" data-wpychange-a="workingTime"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 每日工作时间</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" class="weui-input" range="{{workTimeDay}}" bindchange="changePicker" data-wpychangepicker-a="workTimeDay">
+            <view>{{info.workTimeDay || '请选择'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 每周工作时间</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" class="weui-input" range="{{workTimeWeek}}" bindchange="changePicker" data-wpychangepicker-a="workTimeWeek">
+            <view>{{info.workTimeWeek || '请选择'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">工资保障</view>
+        </view>
+        <view class="weui-cell__bd">
+          <switch checked="{{info._wageProtection}}" class="weui-input" color="#4fa0bd" bindchange="change" data-wpychange-a="_wageProtection"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">是否置顶</view>
+        </view>
+        <view class="weui-cell__bd">
+          <switch checked="{{info._stick}}" class="weui-input" color="#4fa0bd" bindchange="change" data-wpychange-a="_stick"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 招聘人数</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入招聘人数" value="{{info.targetdegree}}" bindchange="change" data-wpychange-a="targetdegree"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 工作城市</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入工作城市" value="{{info.city}}" bindchange="change" data-wpychange-a="city"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 详细地址</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入详细地址" value="{{info.site}}" bindchange="change" data-wpychange-a="site"/>
+        </view>
+      </view>
+    </view>
+
+    <view class="placeholder"/>
+    <view class="weui-cells__title">职位发布者信息:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 称呼</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" bindchange="change" placeholder="请输入称呼" value="{{info.contact}}" data-wpychange-a="contact"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">职称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" bindchange="change" placeholder="请输入职称" value="{{info.post}}" data-wpychange-a="post"/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 联系方式</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" bindchange="change" placeholder="请输入联系方式" value="{{info.tel}}" data-wpychange-a="tel"/>
+        </view>
+      </view>
+    </view>
+    <view class="placeholder"/>
+    <view class="weui-cells__title">* 职位描述:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入职位描述" value="{{info.responsibility}}" style="height: 6.6em" maxlength="2000" bindinput="change" data-wpychange-a="responsibility"/>
+          <view class="weui-textarea-counter">{{info.responsibility.length}}/2000</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="placeholder"/>
+    <view class="weui-cells__title">* 公司简介:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入公司简介" value="{{info.company}}" style="height: 6.6em" maxlength="2000" bindinput="change" data-wpychange-a="company"/>
+          <view class="weui-textarea-counter">{{info.company.length}}/2000</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-wrapper">
+      <button type="primary" class="primary" bindtap="save">发布</button>
+    </view>
+    
+    <view class="wetoast {{$toast$reveal ? 'wetoast_show' : ''}}">
+        <view class="wetoast__mask"/>
+        <view class="wetoast__bd" animation="{{$toast$animationData}}">
+            <block  wx:if="{{$toast$img}}">
+                <view class="wetoast__bd__img {{$toast$imgClassName || ''}}">
+                    <image class="wetoast__bd__img_desc" src="{{$toast$img}}" mode="{{$toast$imgMode || 'scaleToFill'}}"/>
+                </view>
+            </block>
+            <block  wx:if="{{$toast$title}}">
+                <view class="wetoast__bd__title {{$toast$titleClassName || ''}}">{{$toast$title}}</view>
+            </block>
+        </view>
+    </view>
+
+  </view>

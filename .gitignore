@@ -8,4 +8,3 @@ lerna-debug.log.*
 .npmrc
 report
 coverage
-dist

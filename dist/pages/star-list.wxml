@@ -1,0 +1,64 @@
+
+  <view>
+    <view class="index-container">
+      <block wx:for="{{jobs}}" wx:for-index="index" wx:for-item="job" wx:key="index">
+        <view class="jobs">
+          
+  <view class="job-item" bindtap="$job$go" data-com-index="{{index}}">
+    <view class="job-detail no-border">
+      <view class="avatar-wrapper">
+        <image src="{{job.avatar}}" class="avatar"/>
+      </view>
+      <view class="detail-wrapper">
+        <text class="block grey">{{labels.industry}}: {{job.industry}}</text>
+        <view class="date grey">
+          <text>{{job.date}}</text>
+        </view>
+        <text class="title block">{{job.title}}</text>
+        <text class="intro block grey">{{job.intro}}</text>
+        <view class="salary"  wx:if="{{!$job$simple}}">
+          <text>{{job.salary}}</text>
+        </view>
+        <view class="status">
+          <text>{{job.statusText}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="job-action-list"  wx:if="{{!$job$simple}}">
+      <view class="job-action-item">
+        <text class="block grey">{{labels.contact}}</text>
+        <text class="block dark">{{job.contact}}</text>
+      </view>
+      <view class="job-action-item">
+        <text class="block grey">{{labels.post}}</text>
+        <text class="block dark">{{job.post}}</text>
+      </view>
+      <view class="job-action-item">
+        <text class="block grey">{{labels.tel}}</text>
+        <text class="block dark">{{job.tel}}</text>
+      </view>
+      <view class="job-action-item">
+        <image src="../assets/index/phone.png" class="phone"/>
+      </view>
+    </view>
+  </view>
+
+        </view>
+      </block>
+    </view>
+    
+    <view class="wetoast {{$toast$reveal ? 'wetoast_show' : ''}}">
+        <view class="wetoast__mask"/>
+        <view class="wetoast__bd" animation="{{$toast$animationData}}">
+            <block  wx:if="{{$toast$img}}">
+                <view class="wetoast__bd__img {{$toast$imgClassName || ''}}">
+                    <image class="wetoast__bd__img_desc" src="{{$toast$img}}" mode="{{$toast$imgMode || 'scaleToFill'}}"/>
+                </view>
+            </block>
+            <block  wx:if="{{$toast$title}}">
+                <view class="wetoast__bd__title {{$toast$titleClassName || ''}}">{{$toast$title}}</view>
+            </block>
+        </view>
+    </view>
+
+  </view>

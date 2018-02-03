@@ -1,0 +1,35 @@
+
+  <view class="container">
+    <view class="avatar-wrapper">
+      <image class="avatar" src="{{info.imgArray && info.imgArray[0]}}"/>
+    </view>
+    <view class="info-wrapper">
+      <text class="block">{{info.username}}</text>
+      <text class="block major">{{info.specialty}}</text>
+    </view>
+    <view class="action-wrapper">
+      <block wx:for="{{actions}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+        <view class="action-item {{index === 0 ? 'first-item' : ''}} {{index === actions.length - 1 ? 'last-item' : ''}} {{index === actions.length - 2 ? 'next-item' : ''}}"  bindtap="go" data-wpygo-a="{{item}}">
+          <view class="action">
+            <image class="action-icon" src="{{item.src}}"/>
+            <text class="action-label">{{item.label}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+    <view class="wetoast {{$toast$reveal ? 'wetoast_show' : ''}}">
+        <view class="wetoast__mask"/>
+        <view class="wetoast__bd" animation="{{$toast$animationData}}">
+            <block  wx:if="{{$toast$img}}">
+                <view class="wetoast__bd__img {{$toast$imgClassName || ''}}">
+                    <image class="wetoast__bd__img_desc" src="{{$toast$img}}" mode="{{$toast$imgMode || 'scaleToFill'}}"/>
+                </view>
+            </block>
+            <block  wx:if="{{$toast$title}}">
+                <view class="wetoast__bd__title {{$toast$titleClassName || ''}}">{{$toast$title}}</view>
+            </block>
+        </view>
+    </view>
+
+  </view>

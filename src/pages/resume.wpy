@@ -313,11 +313,11 @@ page {
       height: 32rpx;
       line-height: 32rpx;
       &.highlight {
-        border: 1rpx solid #e065ee;
+        border: 1rpx solid #37A9ED;
         border-radius: 50%;
         text-align: center;
         line-height: 32rpx;
-        color: #e065ee;
+        color: #37A9ED;
       }
     }
   }
@@ -353,7 +353,7 @@ page {
     height: 64rpx;
     font-size: 24rpx;
     line-height: 64rpx;
-    color: #e065ee;
+    color: #37A9ED;
   }
   .primary {
     color: #fff;

@@ -425,7 +425,7 @@ page {
     height: 64rpx;
     font-size: 24rpx;
     line-height: 64rpx;
-    color: #e065ee;
+    color: #37A9ED;
   }
   .primary {
     color: #fff;

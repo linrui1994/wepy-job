@@ -69,7 +69,7 @@ page {
       &::after {
         border: none;
       }
-      color: #e065ee;
+      color: #37A9ED;
     }
   }
 }

@@ -91,6 +91,10 @@ export default class extends wepy.app {
 
 <style lang="scss">
 @import 'node_modules/weui-wxss/dist/style/weui.wxss';
+page {
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
 .float-right {
   float: right;
 }
@@ -101,7 +105,7 @@ export default class extends wepy.app {
   color: #aaa;
 }
 button.primary {
-  background: #4fa0bd;
+  background: #4fa0bd
 }
 .button-hover[type="primary"] {
   background: #387A96;

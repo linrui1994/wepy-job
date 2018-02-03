@@ -117,7 +117,7 @@ export default class Job extends wepy.component {
       right: 0;
       bottom: 4rpx;
       font-size: 28rpx;
-      color: #e065ee;
+      color: #37A9ED;
     }
   }
   .job-action-list {

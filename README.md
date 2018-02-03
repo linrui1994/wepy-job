@@ -3,5 +3,11 @@
 > start
 
 ```shell
-npm run dev
+npm install && npm run dev
+```
+
+> build
+
+```shell
+npm run build
 ```

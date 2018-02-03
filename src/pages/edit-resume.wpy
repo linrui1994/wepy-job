@@ -209,11 +209,14 @@ export default class EditResume extends wepy.page {
       value: '博士'
     }],
     types: [{
-      name: '长期',
-      value: '长期'
+      name: '快速兼职',
+      value: '快速兼职'
     }, {
-      name: '短期',
-      value: '短期'
+      name: '普通兼职',
+      value: '普通兼职'
+    }, {
+      name: '长期兼职',
+      value: '长期兼职'
     }],
     stars: [1, 2, 3, 4, 5]
   }
@@ -249,18 +252,13 @@ export default class EditResume extends wepy.page {
     typeChange(e) {
       const val = e.detail.value
       this.info.job = val.join(',')
-      this.types = [{
-        name: '长期',
-        value: '长期'
-      }, {
-        name: '短期',
-        value: '短期'
-      }]
       val.forEach(type => {
-        if (type === '长期') {
+        if (type === '快速兼职') {
           this.types[0].checked = true
-        } else if (type === '短期') {
+        } else if (type === '普通兼职') {
           this.types[1].checked = true
+        } else if (type === '长期兼职') {
+          this.types[2].checked = true
         }
       })
       this.$apply()
@@ -299,7 +297,7 @@ export default class EditResume extends wepy.page {
             }
             _this.$invoke('toast', 'show', {
               title: res.data.msg,
-              img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
+              img: res.data.code === 500 ? '../assets/error.png' : '../assets/profile/check.png'
             })
             if (res.data && res.data.fileName) {
               _this.info.imgArray = res.data.fileName

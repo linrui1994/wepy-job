@@ -69,7 +69,7 @@ export default class Job extends wepy.component {
       // 坑爹传递的是string 'false' -> true 所以false转为空字符串吧
       if (this.simple) {
         wx.navigateTo({
-          url: 'order-detail?id=' + this.job.id + '&showstatus=' +( this.showstatus ? true : '')
+          url: 'order-detail?id=' + this.job.id + '&showstatus=' + (this.showstatus ? true : '')
         })
       } else {
         wx.navigateTo({

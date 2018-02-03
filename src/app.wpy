@@ -11,16 +11,18 @@ export default class extends wepy.app {
 
   config = {
     pages: [
-      'pages/resume-list',
       'pages/index',
-      'pages/resume',
       'pages/profile',
+      'pages/job-release',
+      'pages/personal-publish',
+      'pages/resume-list',
+      'pages/resume',
       'pages/edit-resume',
       'pages/application',
       'pages/publish',
       'pages/job-detail',
       'pages/order-detail',
-      'pages/personal-publish',
+      'pages/star-list'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -111,5 +113,11 @@ button.primary {
   display: flex;
   justify-content: center !important;
   align-items: center !important;
+}
+.weui-cells {
+  font-size: 28rpx;
+}
+text {
+  word-wrap: break-word;
 }
 </style>

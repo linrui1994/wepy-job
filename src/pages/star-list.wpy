@@ -1,6 +1,5 @@
 <template>
   <view>
-    <button type='primary' class='release primary' @tap='go()'>发布兼职</button>
     <view class='index-container'>
       <repeat for='{{jobs}}' item='job' key='index'>
         <view class="jobs">
@@ -15,7 +14,7 @@
 <script>
 import wepy from 'wepy'
 import job from '../components/job'
-import { getJobListPersonally } from '../api'
+import { getStarList } from '../api'
 import toast from 'wepy-com-toast'
 
 export default class Application extends wepy.page {
@@ -37,20 +36,16 @@ export default class Application extends wepy.page {
     },
     showstatus: false
   }
-  methods = {
-    go() {
-      wx.navigateTo({
-        url: 'job-release'
-      })
-    }
-  }
   onLoad() {
-    getJobListPersonally().then(res => {
-      Array.isArray(res.data) && res.data.forEach(row => {
+    getStarList().then(res => {
+      Array.isArray(res.data) && res.data.forEach(_row => {
+        const row = _row.introrderDO
         row.date = (row.updatetime || row.updateat || row.createat || row.creationtime).substr(5, 5)
         row.avatar = row.img
       })
-      this.jobs = res.data
+      this.jobs = res.data.map(row => {
+        return row.introrderDO
+      })
       if (res.code === 500) {
         this.$invoke('toast', 'show', {
           title: res.msg,
@@ -70,15 +65,5 @@ page {
 .index-container {
   font-size: 24rpx;
   position: relative;
-}
-.release {
-  margin-top: 20rpx;
-  margin-bottom: 20rpx;
-  text-align: center;
-  height: 80rpx;
-  background: #fff;
-  line-height: 80rpx;
-  font-size: 28rpx;
-  border-radius: 0;
 }
 </style>

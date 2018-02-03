@@ -1,0 +1,453 @@
+<template>
+  <view class="container">
+    <view class="weui-cells__title">* 职位图片:</view>
+    <view class="weui-cells weui-cells_after-title avatar-wrapper" @tap="chooseImg">
+      <image class="avatar" src="{{info.img}}" wx:if="{{info.img}}"></image>
+      <view class="avatar" wx:else>上传图片</view>
+    </view>
+    <view class="placeholder"></view>
+    <view class="weui-cells__title">学历要求:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <radio-group @change="change('education')">
+        <label class="weui-cell weui-check__label" wx:for="{{educations}}" wx:key="{{item.value}}">
+          <radio class="weui-check" value="{{item.value}}" checked="{{item.value === info.education}}"/>
+          <view class="weui-cell__bd">{{item.name}}</view>
+          <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.value === info.education}}">
+            <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+          </view>
+        </label>
+      </radio-group>
+    </view>
+
+    <view class="placeholder"></view>
+    <view class="weui-cells__title">其他信息:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 行业</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" @change="change('industry')" placeholder="请输入行业" value='{{info.industry}}'/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 职位名称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" @change="change('title')" placeholder="请输入职位名称" value='{{info.title}}'/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 公司名称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入公司名称" value='{{info.intro}}' @change="change('intro')" />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 月薪</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="multiSelector" class='weui-input' range="{{salarys}}" @change="changeSalary">
+            <view>{{info.salary || '请选择薪水'}}</view>
+          </picker>
+        </view>
+        <view class="extra {{info.salary === '面议' ? 'highlight' : ''}}" @tap="extraSalary">
+          <button @tap="extraSalary" style='height: 60rpx;line-height:60rpx;font-size:24rpx;'>面议</button>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 工作类型</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" class='weui-input' range="{{job}}" @change="changePicker(job)">
+            <view>{{info.job || '请选择'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 工作经验</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入公司名称" value='{{info.workingTime}}' @change="change('workingTime')" />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 每日工作时间</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" class='weui-input' range="{{workTimeDay}}" @change="changePicker(workTimeDay)">
+            <view>{{info.workTimeDay || '请选择'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 每周工作时间</view>
+        </view>
+        <view class="weui-cell__bd">
+          <picker mode="selector" class='weui-input' range="{{workTimeWeek}}" @change="changePicker(workTimeWeek)">
+            <view>{{info.workTimeWeek || '请选择'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">工资保障</view>
+        </view>
+        <view class="weui-cell__bd">
+          <switch checked="{{info._wageProtection}}" class="weui-input" color="#4fa0bd" @change="change(_wageProtection)"></switch>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">是否置顶</view>
+        </view>
+        <view class="weui-cell__bd">
+          <switch checked="{{info._stick}}" class="weui-input" color="#4fa0bd" @change="change(_stick)"></switch>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 招聘人数</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入招聘人数" value='{{info.targetdegree}}' @change="change('targetdegree')" />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 工作城市</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入工作城市" value='{{info.city}}' @change="change('city')" />
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 详细地址</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" placeholder="请输入详细地址" value='{{info.site}}' @change="change('site')" />
+        </view>
+      </view>
+    </view>
+
+    <view class="placeholder"></view>
+    <view class="weui-cells__title">职位发布者信息:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 称呼</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" @change="change('contact')" placeholder="请输入称呼" value='{{info.contact}}'/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">职称</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" @change="change('post')" placeholder="请输入职称" value='{{info.post}}'/>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">* 联系方式</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input class="weui-input" @change="change('tel')" placeholder="请输入联系方式" value='{{info.tel}}'/>
+        </view>
+      </view>
+    </view>
+    <view class="placeholder"></view>
+    <view class="weui-cells__title">* 职位描述:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入职位描述" value="{{info.responsibility}}" style="height: 6.6em" maxlength='2000'  @input="change(responsibility)" />
+          <view class="weui-textarea-counter">{{info.responsibility.length}}/2000</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="placeholder"></view>
+    <view class="weui-cells__title">* 公司简介:</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__bd">
+          <textarea class="weui-textarea" placeholder="请输入公司简介" value="{{info.company}}" style="height: 6.6em" maxlength='2000'  @input="change(company)" />
+          <view class="weui-textarea-counter">{{info.company.length}}/2000</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-wrapper">
+      <button type='primary' class='primary' @tap='save'>发布</button>
+    </view>
+    <toast />
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { publishJob, upload } from '../api'
+import toast from 'wepy-com-toast'
+import { isEmail, isMobile } from 'lv-util'
+
+export default class EditResume extends wepy.page {
+  config = {
+    navigationBarTitleText: '发布职位'
+  }
+  components = {
+    toast
+  }
+  data = {
+    info: {
+      'img': '',
+      'industry': '',
+      'title': '',
+      'intro': '',
+      'rowSalary': [],
+      'contact': '',
+      'post': '',
+      'tel': '',
+      'stick': 0,
+      '_stick': false,
+      'job': '',
+      'workingTime': '',
+      'workTimeDay': '',
+      'workTimeWeek': '',
+      'salary': '',
+      'wageProtection': 0,
+      '_wageProtection': false,
+      'city': '',
+      'education': '',
+      'targetdegree': '',
+      'site': '',
+      'responsibility': '',
+      'company': '',
+      'companyname': ''
+    },
+    salarys: [],
+    educations: [{
+      name: '大专',
+      value: '大专'
+    }, {
+      name: '本科',
+      value: '本科'
+    }, {
+      name: '硕士',
+      value: '硕士'
+    }, {
+      name: '博士',
+      value: '博士'
+    }],
+    days: [],
+    job: ['快速兼职', '普通兼职', '长期兼职'],
+    workTimeDay: [],
+    workTimeWeek: [],
+    stars: [1, 2, 3, 4, 5]
+  }
+  methods = {
+    change(key, e) {
+      if (key === 'email') {
+        if (!isEmail(e.detail.value)) {
+          this.$invoke('toast', 'show', {
+            title: '邮箱格式错误',
+            img: '../assets/error.png'
+          })
+        }
+      }
+      if (key === 'tel') {
+        if (!isMobile(e.detail.value)) {
+          this.$invoke('toast', 'show', {
+            title: '手机号码格式错误',
+            img: '../assets/error.png'
+          })
+        }
+      }
+      this.info[key] = e.detail.value
+      if (key === '_wageProtection') {
+        this.info.wageProtection = e.detail.value ? 1 : 0
+      } if (key === '_stick') {
+        this.info.stick = e.detail.value ? 1 : 0
+      }
+    },
+    checkboxChange(e) {
+      const days = (e.detail.value || []).map(Number)
+      this.days.forEach(day => {
+        day.highlight = days.indexOf(day.day) !== -1
+      })
+      this.info.workday = days.join(',')
+      this.$apply()
+    },
+    chooseImg() {
+      const _this = this
+      wx.chooseImage({
+        count: 1,
+        success(res) {
+          const filePath = res.tempFilePaths[0]
+          console.log(filePath)
+          upload(filePath).then(res => {
+            console.log(res)
+            if (res && typeof res.data === 'string') {
+              res.data = JSON.parse(res.data)
+            }
+            _this.$invoke('toast', 'show', {
+              title: res.data.msg,
+              img: res.data.code === 500 ? '../assets/error.png' : '../assets/profile/check.png'
+            })
+            if (res.data && res.data.fileName) {
+              if (typeof res.data.fileName === 'string') {
+                res.data.fileName = [res.data.fileName]
+              }
+              _this.info.img = res.data.fileName[0]
+            }
+            _this.$apply()
+          })
+        },
+        fail() {
+          this.$invoke('toast', 'show', {
+            title: '选择图片失败',
+            img: '../assets/error.png'
+          })
+        }
+      })
+    },
+    save() {
+      // check info
+      const info = this.info
+      if (!info.img || !info.industry || !info.title || !info.intro || !info.salary || !info.contact || !info.tel || !info.job || !info.workingTime || !info.workTimeDay || !info.workTimeWeek || !info.city || !info.education || !info.targetdegree || !info.site) {
+        this.$invoke('toast', 'show', {
+          title: '请补全信息，带星号为必填',
+          img: '../assets/error'
+        })
+        return
+      }
+      if (info.responsibility.length < 20 || info.company.length < 20) {
+        this.$invoke('toast', 'show', {
+          title: '职位描述和公司简介不可少于20字',
+          img: '../assets/error'
+        })
+        return
+      }
+      publishJob(info).then(res => {
+        this.$invoke('toast', 'show', {
+          title: res.msg,
+          img: res.code === 500 ? '../assets/error.png' : '../assets/profile/check.png'
+        })
+        console.log(res)
+      })
+    },
+    changePicker(key, e) {
+      if (key === 'workTimeDay') {
+        this.info[key] = this[key][e.detail.value] + '小时'
+      } else if (key === 'workTimeWeek') {
+        this.info[key] = this[key][e.detail.value] + '天'
+      } else {
+        this.info[key] = this[key][e.detail.value]
+      }
+    },
+    changeSalary(e) {
+      const { value } = e.detail
+      if (value[0] > value[1]) {
+        let k = value[0]
+        value[0] = value[1]
+        value[1] = k
+      }
+      let _value = [this.salarys[0][value[0]], this.salarys[1][value[1]]]
+      this.info.rowSalary = _value
+      this.info.salary = _value.join('-') + '元/月'
+    },
+    extraSalary() {
+      this.info.salary = '面议'
+      this.info.rowSalary = []
+      this.$apply()
+    }
+  }
+  onLoad() {
+    this.handleInfo(this.info)
+    let arr = []
+    for (let i = 1; i < 50; i++) {
+      arr.push(i * 1000)
+    }
+    this.salarys = [arr, arr]
+  }
+  handleInfo(info) {
+    info.hope = (info.workday || '').split(',')
+    for (let i = 1; i <= 7; i++) {
+      this.days.push({
+        day: i,
+        highlight: info.hope.indexOf(i.toString()) !== -1
+      })
+      this.workTimeWeek.push(i)
+    }
+    for (let i = 1; i <= 24; i++) {
+      this.workTimeDay.push(i)
+    }
+    this.$apply()
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  padding-bottom: 108rpx;
+}
+.avatar-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 360rpx;
+}
+.avatar {
+  display: block;
+  line-height: 240rpx;
+  text-align: center;
+  width: 170rpx;
+  height: 240rpx;
+  background: #f0f0f0;
+}
+.placeholder {
+  height: 16rpx;
+  background: #f0f0f0;
+}
+.skill-hd .weui-label {
+  width: 350rpx;
+}
+.star-wrapper {
+  text-align: right;
+}
+.footer-wrapper {
+  position: fixed;
+  left: 0;
+  background: #fff;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 750rpx;
+  height: 100rpx;
+  display: flex;
+  padding: 0 40rpx;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  button {
+    height: 64rpx;
+    font-size: 24rpx;
+    line-height: 64rpx;
+    color: #e065ee;
+  }
+  .primary {
+    color: #fff;
+    flex: 1;
+  }
+}
+</style>

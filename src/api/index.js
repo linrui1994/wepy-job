@@ -69,8 +69,8 @@ export function getAllRecruit() {
   return http('/lh/userbyuser/selMyRecruit')
 }
 
-export function starJob(id) {
-  return http('/lh/order/start', { id })
+export function starJob(oid) {
+  return http('/lh/order/collectOrder', { oid }, 'post')
 }
 
 export function upload(filePath) {
@@ -88,10 +88,6 @@ export function upload(filePath) {
   })
 }
 
-export function starOrder(oid) {
-  return http('/lh/order/collectOrder', { oid })
-}
-
 export function getJobListPersonally() {
   return http('/lh/introrder/web/list')
 }
@@ -101,7 +97,7 @@ export function publishJob(data) {
 }
 
 export function updateResume(data) {
-  return http('/lh/resume/web/save', data, 'post')
+  return http('/lh/resume/web/update', data, 'post')
 }
 
 export function getStarList() {

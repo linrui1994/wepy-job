@@ -4,12 +4,11 @@
       <image src='../assets/post.png'></image>
     </view>
     <view class="action-wrapper">
-      <view class="action-item">
-        <button>找兼职</button>
-      </view>
-      <view class="action-item">
-        <button>招兼职</button>
-      </view>
+      <repeat for="{{items}}" key="index">
+        <view class="action-item">
+          <button @tap='go({{item}})'>{{item.label}}</button>
+        </view>
+      </repeat>
     </view>
   </view>
 </template>
@@ -19,6 +18,24 @@ import wepy from 'wepy'
 export default class Publish extends wepy.page {
   config = {
     navigationBarTitleText: '发布'
+  }
+  data = {
+    items: [{
+      label: '找兼职',
+      url: 'index'
+    }, {
+      label: '招兼职',
+      url: 'job-release'
+    }]
+  }
+  methods = {
+    go(item) {
+      if (item.url) {
+        wx.navigateTo({
+          url: item.url
+        })
+      }
+    }
   }
 }
 </script>

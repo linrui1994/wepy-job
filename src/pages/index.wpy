@@ -12,7 +12,7 @@
         </view>
       </view>
     </view>
-    <view class='index-container'>
+    <view class='index-container' wx:show="mode === 'job'">
       <view class='action'>
         <view class='action-item'>
           <picker @change="change('type', 'types')" class='weui-input' range="{{types}}">
@@ -39,6 +39,7 @@
         </view>
       </repeat>
     </view>
+    <view class="index-container" wx:show="mode === 'resume'"></view>
   </scroll-view>
 </template>
 
@@ -69,7 +70,8 @@ export default class Index extends wepy.page {
       post: '',
       type: '快速兼职'
     },
-    types: ['快速兼职', '普通兼职', '长期兼职']
+    types: ['快速兼职', '普通兼职', '长期兼职'],
+    mode: 'job'
   }
   methods = {
     change(key, target, e) {

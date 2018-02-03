@@ -22,7 +22,7 @@ export default class Publish extends wepy.page {
   data = {
     items: [{
       label: '找兼职',
-      url: 'index'
+      url: 'edit-resume'
     }, {
       label: '招兼职',
       url: 'job-release'

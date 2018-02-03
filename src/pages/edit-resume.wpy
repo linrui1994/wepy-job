@@ -136,7 +136,7 @@
       </view>
     </view>
 
-    <view class="placeholder"></view>
+<!--     <view class="placeholder"></view>
     <view class="weui-cells__title">能力评价:</view>
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input" wx:for='{{info.currency}}' wx:key='{{index}}' >
@@ -152,7 +152,7 @@
           </picker>
         </view>
       </view>
-    </view>
+    </view> -->
     <view class="placeholder"></view>
     <view class="weui-cells__title">自我评价:</view>
     <view class="weui-cells weui-cells_after-title">
@@ -252,6 +252,16 @@ export default class EditResume extends wepy.page {
     typeChange(e) {
       const val = e.detail.value
       this.info.job = val.join(',')
+      this.types = [{
+        name: '快速兼职',
+        value: '快速兼职'
+      }, {
+        name: '普通兼职',
+        value: '普通兼职'
+      }, {
+        name: '长期兼职',
+        value: '长期兼职'
+      }]
       val.forEach(type => {
         if (type === '快速兼职') {
           this.types[0].checked = true
@@ -264,12 +274,11 @@ export default class EditResume extends wepy.page {
       this.$apply()
     },
     changeSkill(target, index, e) {
-      console.log(e.detail.value)
       if (target === 'value') {
         this.info.ability[index][target] = this.stars[e.detail.value]
         return
       }
-      this.info.ability[index][target] = Number(e.detail.value)
+      this.info.ability[index][target] = e.detail.value
     },
     addSkill() {
       this.info.ability.push({
@@ -339,11 +348,13 @@ export default class EditResume extends wepy.page {
           highlight: res.data.hope.indexOf(i.toString()) !== -1
         })
       }
-      (this.info.job || '').split(',').forEach(type => {
-        if (type === '长期') {
+      (res.data.job || '').split(',').forEach(type => {
+        if (type === '快速兼职') {
           this.types[0].checked = true
-        } else if (type === '短期') {
+        } else if (type === '普通兼职') {
           this.types[1].checked = true
+        } else if (type === '长期兼职') {
+          this.types[2].checked = true
         }
       })
       res.data.ability = res.data.ability || []

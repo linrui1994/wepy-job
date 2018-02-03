@@ -32,7 +32,7 @@ export default class extends wepy.app {
     },
     tabBar: {
       color: '#333',
-      selectedColor: '#e065ee',
+      selectedColor: '#37A9ED',
       list: [{
         pagePath: 'pages/index',
         iconPath: './assets/footer/index.png',

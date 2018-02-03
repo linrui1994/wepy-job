@@ -1,3 +1,0 @@
-@import "./../npm/wepy-com-toast/toast.wxss";
-@import "./../components/job-detail-com.wxss";
-page{background:#f0f0f0;font-size:24rpx;padding-bottom:108rpx}.footer-wrapper{position:fixed;background:#fff;bottom:0;box-sizing:border-box;width:750rpx;height:100rpx;display:flex;padding:0 40rpx;align-items:center;justify-content:center}.footer-wrapper button{height:64rpx;font-size:24rpx;line-height:64rpx;color:#e065ee}.footer-wrapper .default{width:200rpx;margin-right:16rpx}.footer-wrapper .primary{color:#fff;flex:1}

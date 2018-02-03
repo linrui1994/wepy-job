@@ -128,7 +128,7 @@ export default class Index extends wepy.page {
     })
   }
   onReady () {
-    const height = wx.getSystemInfoSync().screenHeight
+    const height = wx.getSystemInfoSync().windowHeight
     this.height = height
     this.$apply()
     this.getUserInfo()
@@ -139,6 +139,7 @@ export default class Index extends wepy.page {
 <style lang="scss">
 page {
   background: #f0f0f0;
+  overflow: hidden;
 }
 .index-container {
   font-size: 24rpx;

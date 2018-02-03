@@ -20,6 +20,17 @@
       </view>
     </view>
     <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block gray">能力评价</text>
+      </view>
+      <view class='flex flex-center' style='padding-top: 60rpx; padding-bottom: 60rpx; position: relative'>
+        <canvas canvas-id="firstCanvas" style="width: 320rpx; height: 320rpx;"></canvas>
+        <repeat for={{labels}} key='index'>
+          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
+        </repeat>
+      </view>
+    </view>
+    <view class="info-wrapper block-wrapper">
       <view class='text-wrapper'>
         <text class="block hope gray">期待工作日</text>
       </view>
@@ -35,17 +46,7 @@
         <text>{{info.job}}</text>
       </view>
     </view>
-    <view class="info-wrapper block-wrapper">
-      <view class="text-wrapper">
-        <text class="block gray">能力评价</text>
-      </view>
-      <view class='flex flex-center' style='padding-top: 60rpx; padding-bottom: 60rpx; position: relative'>
-        <canvas canvas-id="firstCanvas" style="width: 320rpx; height: 320rpx; transform: rotate(-17deg)"></canvas>
-        <repeat for={{labels}} key='index'>
-          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
-        </repeat>
-      </view>
-    </view>
+
     <view class="info-wrapper block-wrapper">
       <view class='text-wrapper'>
         <text class="block hope gray">个人技能</text>
@@ -148,6 +149,9 @@ export default class Resume extends wepy.page {
       let space = radius / part
       let theta = Math.PI * 2 / side
 
+      context.translate(-20 * screenWidth / 375, 28 * screenWidth / 375)
+      context.rotate(-17 * Math.PI / 180)
+
       // 绘制能力多边形
       context.beginPath()
       for (let i = 0; i <= side; i++) {
@@ -182,6 +186,7 @@ export default class Resume extends wepy.page {
           }
         }
       }
+      // context.rotate(17 * Math.PI / 180)
       context.draw()
     }
   }
@@ -348,7 +353,7 @@ page {
   padding: 0 40rpx;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10000;
   button {
     height: 64rpx;
     font-size: 24rpx;

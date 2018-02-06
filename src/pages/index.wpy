@@ -196,7 +196,7 @@ page {
   }
   .action {
     background: #fff;
-    height: 56rpx;
+    height: 72rpx;
     display: flex;
     flex-direction: row;
     width: 100%;

@@ -15,7 +15,7 @@
 import wepy from 'wepy'
 import resume from '../components/resume-item'
 import { getAllRecruit } from '../api'
-import toast from 'wepy-com-toast'
+import toast from 'toast'
 
 export default class Application extends wepy.page {
   config = {

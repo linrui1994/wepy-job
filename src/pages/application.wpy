@@ -31,7 +31,7 @@
 import wepy from 'wepy'
 import job from '../components/job'
 import { getAllOrderPersonaly } from '../api'
-import toast from 'wepy-com-toast'
+import toast from 'toast'
 
 export default class Application extends wepy.page {
   config = {
@@ -99,7 +99,7 @@ page {
 }
 .action {
   background: #fff;
-  height: 56rpx;
+  height: 72rpx;
   display: flex;
   flex-direction: row;
   width: 100%;

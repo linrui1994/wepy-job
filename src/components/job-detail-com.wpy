@@ -121,7 +121,7 @@ page {
 }
 .bq {
   padding: 0 16rpx;
-  border-left: 8rpx solid #e065ee;
+  border-left: 8rpx solid #37A9ED;
 }
 .status-wrapper {
   display: flex;

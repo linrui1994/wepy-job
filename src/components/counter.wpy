@@ -1,10 +1,10 @@
 <style lang="less">
   .counter {
     text-align: left;
-    font-size: 12px;
+    font-size: 28rpx;
   }
   .count {
-    font-size: 18px;
+    font-size: 36rpx;
     font-weight: bold;
     &.red {
       color: red;

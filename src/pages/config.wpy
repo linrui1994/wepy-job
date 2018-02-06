@@ -1,0 +1,69 @@
+<template>
+  <view class='container'>
+    <view class="action-wrapper">
+      <repeat for={{actions}} item='item' key='index' index='index'>
+        <view class="action-item"  :class="{'first-item': index === 0, 'last-item': index === actions.length - 1, 'next-item': index === actions.length - 2}">
+          <view class="action">
+            <text class="action-label">{{item.label}}</text>
+            <switch checked={{item.checked}} color='#3a8ef0'></switch>
+          </view>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Config extends wepy.page {
+  data = {
+    actions: [{
+      src: '../assets/profile/user.png',
+      label: '公开您的简历',
+      checked: false
+    }, {
+      src: '../assets/profile/poster.png',
+      label: '接收我们的短信',
+      checked: false
+    }]
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+  font-size: 28rpx;
+  color: #000;
+  padding: 0 32rpx;
+}
+
+.action-wrapper {
+  .action-item {
+    padding: 0 16rpx;
+    background: #fff;
+    width: 750rpx - 64rpx;
+    box-sizing: border-box;
+    .action {
+      border-bottom: 1rpx solid #ddd;
+      display: flex;
+      height: 80rpx;
+      align-items: center;
+      .action-label {
+        flex: 1;
+      }
+    }
+    &.first-item, &.last-item {
+      .action {
+        border-bottom: none;
+      }
+      margin-top: 32rpx;
+      margin-bottom: 32rpx;
+    }
+    &.next-item .action{
+      border-bottom: none;
+    }
+  }
+}
+
+</style>

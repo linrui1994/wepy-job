@@ -199,7 +199,7 @@
 <script>
 import wepy from 'wepy'
 import { publishJob, upload } from '../api'
-import toast from 'wepy-com-toast'
+import toast from 'toast'
 import { isEmail, isMobile } from 'lv-util'
 
 export default class EditResume extends wepy.page {

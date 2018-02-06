@@ -24,7 +24,7 @@
 <script>
 import wepy from 'wepy'
 import { getResume } from '../api'
-import toast from 'wepy-com-toast'
+import toast from 'toast'
 
 export default class Profile extends wepy.page {
   config = {
@@ -54,14 +54,12 @@ export default class Profile extends wepy.page {
       label: '我的招聘',
       url: 'resume-list'
     }, {
-      src: '../assets/profile/wallet.png',
-      label: '我的钱包'
-    }, {
       src: '../assets/profile/check.png',
       label: '我的认证'
     }, {
       src: '../assets/profile/config.png',
-      label: '设置'
+      label: '设置',
+      url: 'config'
     }]
   }
 

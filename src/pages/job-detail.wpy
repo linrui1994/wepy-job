@@ -13,7 +13,7 @@
 import wepy from 'wepy'
 import jobDetailCom from '../components/job-detail-com'
 import { getJob, applyOrder, starJob } from '../api'
-import Toast from 'wepy-com-toast'
+import Toast from 'toast'
 
 export default class JobDetail extends wepy.page {
   config = {

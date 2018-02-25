@@ -5,7 +5,7 @@
         <view class="action-item"  :class="{'first-item': index === 0, 'last-item': index === actions.length - 1, 'next-item': index === actions.length - 2}">
           <view class="action">
             <text class="action-label">{{item.label}}</text>
-            <switch checked={{item.checked}} color='#3a8ef0'></switch>
+            <switch checked={{item.checked}} color='#3a8ef0' @change="update({{index}})"></switch>
           </view>
         </view>
       </repeat>
@@ -15,6 +15,8 @@
 
 <script>
 import wepy from 'wepy'
+import {getResume, updateResume} from '../api/index.js'
+
 export default class Config extends wepy.page {
   data = {
     actions: [{
@@ -25,7 +27,43 @@ export default class Config extends wepy.page {
       src: '../assets/profile/poster.png',
       label: '接收我们的短信',
       checked: false
-    }]
+    }],
+    info: {}
+  }
+  onLoad() {
+    getResume().then(res => {
+      this.info = res.data || {}
+      this.actions[0].checked = this.info.status === '1' || this.info.status === 1
+      this.$apply()
+    })
+  }
+  methods = {
+    update(index, e) {
+      const value = e.detail.value
+      this.actions[index].checked = value
+      if (index === 0) {
+        // update status
+        this.info.status = Number(value).toString()
+        updateResume(this.info).then(res => {
+          if (res.code === 0) {
+            wx.showToast({
+              icon: 'success',
+              title: res.msg
+            })
+          } else {
+            this.actions[index].checked = !value
+            this.info.status = Number(!value).toString()
+            wx.showToast({
+              image: '../assets/error.png',
+              title: res.msg
+            })
+          }
+        })
+      } else {
+        // update sms
+        // TODO
+      }
+    }
   }
 }
 </script>

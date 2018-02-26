@@ -5,7 +5,7 @@
         <input type="text" placeholder="按人名搜索" @confirm="search">
       </view>
       <repeat for='{{resumeList}}' item='resume' key='index'>
-        <view class="jobs">
+        <view class="jobs" @tap='comment({{index}})'>
           <resume :resume.sync="resume" :index.sync="index"></resume>
         </view>
       </repeat>
@@ -45,6 +45,11 @@ export default class Application extends wepy.page {
           return row.resumeDO
         })
         this.$apply()
+      })
+    },
+    comment(index) {
+      wx.navigateTo({
+        url: `comment?index=${index}`
       })
     }
   }

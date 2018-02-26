@@ -24,7 +24,7 @@
           <text>薪酬优先</text>
         </view>
         <view class='action-item'>
-          <text>区域选择</text>
+          <text>时间优先</text>
         </view>
         <view class="action-item">
           <text>筛选</text>
@@ -90,8 +90,10 @@ export default class Index extends wepy.page {
         return
       }
       this.fetching = true
+      wx.showLoading()
       this.getJobs().then(() => {
         this.fetching = false
+        wx.hideLoading()
       })
     }
   }
@@ -100,20 +102,22 @@ export default class Index extends wepy.page {
       this.jobs = []
     }
     this.params.offset = this.jobs.length
-    getJobList(this.params).then(data => {
-      if (!data.rows) {
-        this.$parent.globalData.userInfo = null
-        wx.removeStorageSync('userInfo')
-        this.getUserInfo().then(this.getJobs(true))
-      }
-      this.total = data.total
-      data.rows.forEach(item => {
-        item.date = (item.updatetime || item.creationtime || '').substr(5, 5)
-        item.avatar = item.img
+    return new Promise(resolve => {
+      getJobList(this.params).then(data => {
+        if (!data.rows) {
+          this.$parent.globalData.userInfo = null
+          wx.removeStorageSync('userInfo')
+          this.getUserInfo().then(this.getJobs(true))
+        }
+        this.total = data.total
+        data.rows.forEach(item => {
+          item.date = (item.updatetime || item.creationtime || '').substr(5, 5)
+          item.avatar = item.img
+        })
+        this.jobs = this.jobs.concat(data.rows)
+        this.$apply()
+        resolve()
       })
-      this.jobs = this.jobs.concat(data.rows)
-      this.$apply()
-      return Promise.resolve()
     })
   }
   getUserInfo() {

@@ -72,8 +72,11 @@
         <text>{{info.information}}</text>
       </view>
     </view>
-    <view class="footer-wrapper">
+    <view class="footer-wrapper" wx:if={{!hire}}>
       <button type='primary' class='primary' @tap='edit'>编辑简历</button>
+    </view>
+    <view class="footer-wrapper" wx:else>
+      <button type='primary' class='primary' @tap='hire'>招募</button>
     </view>
     <!-- <toast /> -->
   </view>
@@ -124,7 +127,8 @@ export default class Resume extends wepy.page {
     }, {
       label: '英汉翻译能力',
       value: 5
-    }]
+    }],
+    hire: undefined
   }
   methods = {
     edit() {
@@ -187,7 +191,7 @@ export default class Resume extends wepy.page {
       context.draw()
     }
   }
-  onLoad({index}) {
+  onLoad({index, hire}) {
     if (index) {
       getAllRecruit().then(res => {
         const resumeList = (res.data || []).map(row => {
@@ -211,6 +215,10 @@ export default class Resume extends wepy.page {
         // }
         this.handleResume(res.data || {})
       })
+    }
+    if (hire) {
+      this.hire = true
+      this.$apply()
     }
   }
   handleResume(data) {

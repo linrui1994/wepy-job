@@ -11,8 +11,8 @@ export default class extends wepy.app {
 
   config = {
     pages: [
-      'pages/profile',
       'pages/index',
+      'pages/profile',
       'pages/authentication',
       'pages/resume',
       'pages/job-release',

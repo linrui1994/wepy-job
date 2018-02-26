@@ -77,7 +77,7 @@ export default class Authentication extends wepy.page {
       if (res.status) {
         if (res.status === 2 || res.status === '2') {
           this.result = '学生'
-        } else if (res.status === 3 || res.status === '3'){
+        } else if (res.status === 3 || res.status === '3') {
           this.result = '企业'
         }
       }

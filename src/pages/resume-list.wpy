@@ -1,6 +1,9 @@
 <template>
   <view>
     <view class='index-container'>
+      <view class='input-wrapper'>
+        <input type="text" placeholder="按人名搜索" @confirm="search">
+      </view>
       <repeat for='{{resumeList}}' item='resume' key='index'>
         <view class="jobs">
           <resume :resume.sync="resume" :index.sync="index"></resume>
@@ -29,18 +32,21 @@ export default class Application extends wepy.page {
     resumeList: []
   }
   onLoad() {
-    getAllRecruit().then(res => {
-      this.resumeList = (res.data || []).map(row => {
-        return row.resumeDO
+    this.methods.search.call(this)
+  }
+  methods = {
+    search(e) {
+      const params = {}
+      if (e) {
+        params.username = e.detail.value
+      }
+      getAllRecruit(params).then(res => {
+        this.resumeList = (res.data || []).map(row => {
+          return row.resumeDO
+        })
+        this.$apply()
       })
-      // if (res.code === 500) {
-      //   this.$invoke('toast', 'show', {
-      //     title: res.msg,
-      //     img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-      //   })
-      // }
-      this.$apply()
-    })
+    }
   }
 }
 </script>
@@ -52,5 +58,21 @@ page {
 .index-container {
   font-size: 24rpx;
   position: relative;
+}
+.input-wrapper {
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  input {
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 32rpx;
+    width: 700rpx;
+    border-radius: 10rpx;
+    padding-left: 80rpx;
+    background: #fff;
+    color: #333;
+  }
 }
 </style>

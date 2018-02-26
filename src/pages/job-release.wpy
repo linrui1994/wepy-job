@@ -199,16 +199,12 @@
 <script>
 import wepy from 'wepy'
 import { publishJob, upload } from '../api'
-// import toast from 'toast'
 import { isEmail, isMobile } from 'lv-util'
 
 export default class EditResume extends wepy.page {
   config = {
     navigationBarTitleText: '发布职位'
   }
-  // components = {
-  //   toast
-  // }
   data = {
     info: {
       'img': '',
@@ -315,12 +311,6 @@ export default class EditResume extends wepy.page {
               _this.info.img = res.data.fileName[0]
             }
             _this.$apply()
-          })
-        },
-        fail() {
-          wx.showToast({
-            title: '选择图片失败',
-            image: '../assets/error.png'
           })
         }
       })

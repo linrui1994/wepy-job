@@ -173,16 +173,12 @@
 <script>
 import wepy from 'wepy'
 import { getResume, upload, updateResume } from '../api'
-// import toast from 'toast'
 import { isEmail, isMobile } from 'lv-util'
 
 export default class EditResume extends wepy.page {
   config = {
     navigationBarTitleText: '编辑简历'
   }
-  // components = {
-  //   toast
-  // }
   data = {
     info: {},
     radioItems: [{
@@ -319,16 +315,6 @@ export default class EditResume extends wepy.page {
             }
             _this.$apply()
           })
-        },
-        fail() {
-          wx.showToast({
-            title: '选择图片失败',
-            image: '../assets/error.png'
-          })
-          // this.$invoke('toast', 'show', {
-          //   title: '选择图片失败',
-          //   img: '../assets/error.png'
-          // })
         }
       })
     },

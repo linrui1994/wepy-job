@@ -1,0 +1,130 @@
+<template>
+  <view class='authen'>
+    <view class='img-box' @tap="chooseImg">
+      <image class='img' src="{{img}}" wx:if="{{img}}" mode='aspectFit'></image>
+      <text class='plus' wx:else>+</text>
+    </view>
+    <view class='tip'>
+      <text style='margin-top: 32rpx;'>学生请上传学生证正面照片</text>
+      <text>企业请上传营业执照照片</text>
+    </view>
+    <button type='primary' class='primary' style='margin-top: 32rpx;' @tap="authen">认证</button>
+    <view class="tip footer" wx:if="{{result !== undefined && result !== null}}">
+      <text>您已认证的身份为：{{result}}</text>
+      <text>重新上传并认证可以修改您的身份</text>
+    </view>
+    <view class='tip footer' wx:else>
+      已提交认证信息，请耐心等待
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { upload, authentication, getSms } from '../api/index.js'
+
+export default class Authentication extends wepy.page {
+  config = {
+    navigationBarTitleText: '认证身份'
+  }
+
+  data = {
+    result: undefined,
+    img: ''
+  }
+
+  methods = {
+    chooseImg() {
+      const _this = this
+      wx.chooseImage({
+        count: 1,
+        success(res) {
+          const filePath = res.tempFilePaths[0]
+          console.log(filePath)
+          upload(filePath).then(res => {
+            console.log(res)
+            const toast = {
+              title: res.data.msg
+            }
+            if (res.data.code === 500) {
+              toast.image = '../assets/error.png'
+            }
+            wx.showToast(toast)
+            if (res && typeof res.data === 'string') {
+              res.data = JSON.parse(res.data)
+            }
+            if (res.data && res.data.fileName) {
+              if (Array.isArray) {
+                _this.img = res.data.fileName[0]
+              } else {
+                _this.img = res.data.fileName
+              }
+            }
+            _this.$apply()
+          })
+        }
+      })
+    },
+    authen() {
+      authentication({
+        photo: this.img
+      }).then(wx.navigateBack)
+    }
+  }
+  onLoad() {
+    getSms().then(res => {
+      this.img = res.photo
+      if (res.status) {
+        if (res.status === 2 || res.status === '2') {
+          this.result = '学生'
+        } else if (res.status === 3 || res.status === '3'){
+          this.result = '企业'
+        }
+      }
+      this.$apply()
+    })
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+  font-size: 24rpx;
+  color: #333;
+}
+.authen {
+  padding: 40rpx 40rpx;
+  .img-box {
+    width: 670rpx;
+    margin: 0 auto;
+    height: 600rpx;
+    display: flex;
+    background: #fff;
+    justify-content: center;
+    align-items: center;
+    font-size: 32rpx;
+    text {
+      font-size: 80rpx;
+    }
+  }
+  button {
+    height: 80rpx;
+    font-size: 32rpx;
+    line-height: 80rpx;
+  }
+  .tip {
+    text-align: center;
+    font-size: 32rpx;
+    text {
+      line-height: 1.5;
+      display: block;
+    }
+  }
+  .footer {
+    width: 670rpx;
+    position: absolute;
+    bottom: 80rpx;
+  }
+}
+</style>

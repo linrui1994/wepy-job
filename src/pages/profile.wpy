@@ -24,16 +24,11 @@
 <script>
 import wepy from 'wepy'
 import { getResume } from '../api'
-// import toast from 'toast'
 
 export default class Profile extends wepy.page {
   config = {
     navigationBarTitleText: '个人中心'
   }
-
-  // components = {
-  //   toast
-  // }
 
   data = {
     info: {},
@@ -47,7 +42,7 @@ export default class Profile extends wepy.page {
       label: '我的记录',
       url: 'record',
       validate: () => {
-        if (this.authentication === undefined) {
+        if (this.authentication === undefined || this.authentication === null) {
           wx.showToast({
             title: '请先认证身份',
             image: '../assets/error.png'

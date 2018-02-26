@@ -82,15 +82,12 @@
 <script>
 import wepy from 'wepy'
 import { getResume, getAllRecruit } from '../api'
-// import toast from 'toast'
 
 export default class Resume extends wepy.page {
   config = {
     navigationBarTitleText: '简历'
   }
-  // components = {
-  //   toast
-  // }
+
   data = {
     info: {},
     days: [],

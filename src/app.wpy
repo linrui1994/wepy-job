@@ -11,6 +11,7 @@ export default class extends wepy.app {
 
   config = {
     pages: [
+      'pages/comment',
       'pages/index',
       'pages/profile',
       'pages/authentication',
@@ -108,10 +109,13 @@ page {
   color: #aaa;
 }
 button.primary {
-  background: #4fa0bd
+  background: #3a8ef0
+}
+button[disabled][type=primary] {
+  background: #E0F3FF;
 }
 .button-hover[type="primary"] {
-  background: #387A96;
+  background: #266DC9;
 }
 .weui-cells__title {
   margin-bottom: .77em;

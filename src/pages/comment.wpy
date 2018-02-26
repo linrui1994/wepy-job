@@ -1,0 +1,108 @@
+<template>
+  <view class="container comment">
+    <view class="weui-cells weui-cells_after-title">
+      <repeat for={{labels}} item='item' key='index' index='index'>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">{{item.label}}</view>
+          </view>
+          <view class="weui-cell__bd">
+            <slider min=0 max=5 block-size=20 value={{params[item.key]}} @changing="handleChange({{item}})" selected-color='#3a8ef0'></slider>
+            <text>{{params[item.key]}}</text>
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <view>
+      <button class="primary" type='primary' disabled="{{params.touid === undefined || params.touid === null}}" @tap='comment'>提交评价</button>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import { estimate } from '../api'
+export default class Comment extends wepy.page {
+  config = {
+    navigationBarTitleText: '评价个人'
+  }
+
+  data = {
+    labels: [{
+      label: '诚信守时',
+      key: 'honest'
+    }, {
+      label: '工作效率',
+      key: 'efficiency'
+    }, {
+      label: '沟通能力',
+      key: 'communication'
+    }, {
+      label: '专业技能',
+      key: 'major'
+    }, {
+      label: '工作态度',
+      key: 'workstatus'
+    }],
+    params: {
+      touid: undefined,
+      efficiency: 5,
+      communication: 5,
+      major: 5,
+      workstatus: 5,
+      honest: 5
+    }
+  }
+
+  onLoad({userid}) {
+    if (!userid) {
+      wx.showToast({
+        title: '找不到用户ID',
+        icon: 'none'
+      })
+      return
+    }
+    this.params.touid = userid
+    this.$apply()
+  }
+
+  methods = {
+    handleChange(item, e) {
+      this.params[item.key] = e.detail.value
+      this.$apply()
+    },
+    comment() {
+      estimate(this.params).then(res => {
+        if (res.code === 0) {
+          wx.navigateBack()
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+}
+.comment {
+  .weui-label {
+    width: 120rpx;
+  }
+  .weui-cell__bd {
+    display: flex;
+    align-items: center;
+    slider {
+      flex: 1;
+    }
+  }
+  button {
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 32rpx;
+    width: 700rpx;
+    margin: 40rpx auto 0;
+  }
+}
+</style>

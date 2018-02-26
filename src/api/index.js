@@ -134,7 +134,7 @@ export function estimate(data) {
   return http('/system/estimate/addEstimate', data, 'post', true)
 }
 
-// 获取我的发布
+// 获取我的记录
 export function getPubList() {
   return http('/user/myPublist')
 }

@@ -37,14 +37,24 @@ export default class Profile extends wepy.page {
 
   data = {
     info: {},
+    authentication: undefined,
     actions: [{
       src: '../assets/profile/user.png',
       label: '个人信息',
       url: 'resume'
     }, {
       src: '../assets/profile/poster.png',
-      label: '我的发布',
-      url: 'personal-publish'
+      label: '我的记录',
+      url: 'record',
+      validate: () => {
+        if (this.authentication === undefined) {
+          wx.showToast({
+            title: '请先认证身份',
+            image: '../assets/error.png'
+          })
+        }
+        return this.authentication !== undefined
+      }
     }, {
       src: '../assets/profile/edit.png',
       label: '我的申请',
@@ -55,7 +65,8 @@ export default class Profile extends wepy.page {
       url: 'resume-list'
     }, {
       src: '../assets/profile/check.png',
-      label: '我的认证'
+      label: '我的认证',
+      url: 'authentication'
     }, {
       src: '../assets/profile/config.png',
       label: '设置',
@@ -65,7 +76,11 @@ export default class Profile extends wepy.page {
 
   methods = {
     go(item) {
-      console.log(item, 'item')
+      if (item.validate) {
+        if (!item.validate()) {
+          return
+        }
+      }
       if (item.url) {
         wx.navigateTo({
           url: item.url
@@ -76,12 +91,6 @@ export default class Profile extends wepy.page {
 
   onLoad() {
     getResume().then(res => {
-      // if (res.code === 500) {
-      //   this.$invoke('toast', 'show', {
-      //     title: res.msg,
-      //     img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-      //   })
-      // }
       this.info = res.data || {}
       this.$apply()
     })

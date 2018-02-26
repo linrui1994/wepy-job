@@ -1,0 +1,67 @@
+<template>
+  <view>
+    <view class='index-container'>
+      <repeat for='{{jobs}}' item='job' key='index'>
+        <view class="jobs">
+          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :slient="slient" :activeIndex.sync="activeIndex"></job>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import job from '../components/job'
+import { getPubList } from '../api'
+
+export default class Application extends wepy.page {
+  config = {
+    navigationBarTitleText: '我的记录'
+  }
+  components = {
+    job
+  }
+  data = {
+    slient: true,
+    jobs: [],
+    labels: {
+      industry: '行业',
+      contact: '联系人',
+      post: '职位',
+      tel: '联系电话'
+    },
+    showstatus: false
+  }
+  onLoad() {
+    getPubList().then(res => {
+      Array.isArray(res.data) && res.data.forEach(row => {
+        row.date = (row.updatetime || row.updateat || row.createat || row.creationtime || '').substr(5, 5)
+        row.avatar = row.img
+      })
+      this.jobs = res.data
+      this.$apply()
+    })
+  }
+}
+</script>
+
+<style lang='scss'>
+page {
+  background: #f0f0f0;
+}
+.index-container {
+  font-size: 24rpx;
+  position: relative;
+}
+.release {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+  height: 80rpx;
+  background: #fff;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  border-radius: 0;
+}
+</style>

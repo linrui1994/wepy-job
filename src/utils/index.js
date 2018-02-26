@@ -22,7 +22,7 @@ export function ensureUrl(base, url) {
   return base + url
 }
 
-export function http(url, params = {}, method = 'get') {
+export function http(url, params = {}, method = 'get', toast = false) {
   params = JSON.parse(JSON.stringify(params))
   url = ensureUrl(baseUrl, url)
   Object.keys(params).forEach(key => {
@@ -42,9 +42,31 @@ export function http(url, params = {}, method = 'get') {
       },
       data: params,
       success: res => {
-        resolve(res.data)
+        const data = res.data
+        if (toast && data.msg) {
+          if (data.code === 0) {
+            // success
+            wx.showToast({
+              icon: 'success',
+              title: data.msg
+            })
+          } else {
+            wx.showToast({
+              icon: 'none',
+              // image: '../assets/error.png',
+              title: data.msg
+            })
+          }
+        }
+        resolve(data)
       },
-      fail: reject
+      fail: res => {
+        wx.showToast({
+          image: '../assets/error.png',
+          title: '未知错误'
+        })
+        reject(res)
+      }
     })
   })
 }

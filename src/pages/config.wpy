@@ -15,7 +15,7 @@
 
 <script>
 import wepy from 'wepy'
-import {getResume, updateResume} from '../api/index.js'
+import {getResume, updateResume, updateSms, getSms} from '../api/index.js'
 
 export default class Config extends wepy.page {
   data = {
@@ -36,6 +36,9 @@ export default class Config extends wepy.page {
       this.actions[0].checked = this.info.status === '1' || this.info.status === 1
       this.$apply()
     })
+    getSms().then(res => {
+      this.actions[1].checked = res.data.issms === '1' || res.data.issms === 1
+    })
   }
   methods = {
     update(index, e) {
@@ -45,23 +48,20 @@ export default class Config extends wepy.page {
         // update status
         this.info.status = Number(value).toString()
         updateResume(this.info).then(res => {
-          if (res.code === 0) {
-            wx.showToast({
-              icon: 'success',
-              title: res.msg
-            })
-          } else {
+          if (res.code === 500) {
             this.actions[index].checked = !value
             this.info.status = Number(!value).toString()
-            wx.showToast({
-              image: '../assets/error.png',
-              title: res.msg
-            })
           }
         })
       } else {
         // update sms
-        // TODO
+        updateSms({
+          issms: Number(value).toString()
+        }).then(res => {
+          if (res.code === 500) {
+            this.actions[index].checked = !value
+          }
+        })
       }
     }
   }

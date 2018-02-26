@@ -5,7 +5,7 @@
       <button class='default' @tap='star'>收藏</button>
       <button type='primary' class='primary' @tap='applyOrder'>我要申请</button>
     </view>
-    <toast />
+    <!-- <toast /> -->
   </view>
 </template>
 
@@ -13,7 +13,7 @@
 import wepy from 'wepy'
 import jobDetailCom from '../components/job-detail-com'
 import { getJob, applyOrder, starJob } from '../api'
-import Toast from 'toast'
+// import Toast from 'toast'
 
 export default class JobDetail extends wepy.page {
   config = {
@@ -21,8 +21,8 @@ export default class JobDetail extends wepy.page {
   }
 
   components = {
-    jobDetailCom,
-    toast: Toast
+    jobDetailCom
+    // toast: Toast
   }
 
   data = {
@@ -33,20 +33,10 @@ export default class JobDetail extends wepy.page {
 
   methods = {
     applyOrder() {
-      applyOrder(this.detail.id).then(res => {
-        this.$invoke('toast', 'show', {
-          title: res.msg,
-          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-        })
-      })
+      applyOrder(this.detail.id)
     },
     star() {
-      starJob(this.detail.id).then(res => {
-        this.$invoke('toast', 'show', {
-          title: res.msg,
-          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-        })
-      })
+      starJob(this.detail.id)
     }
   }
 

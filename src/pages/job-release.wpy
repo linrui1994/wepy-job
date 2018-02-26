@@ -192,23 +192,23 @@
     <view class="footer-wrapper">
       <button type='primary' class='primary' @tap='save'>发布</button>
     </view>
-    <toast />
+    <!-- <toast /> -->
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
 import { publishJob, upload } from '../api'
-import toast from 'toast'
+// import toast from 'toast'
 import { isEmail, isMobile } from 'lv-util'
 
 export default class EditResume extends wepy.page {
   config = {
     navigationBarTitleText: '发布职位'
   }
-  components = {
-    toast
-  }
+  // components = {
+  //   toast
+  // }
   data = {
     info: {
       'img': '',
@@ -260,17 +260,17 @@ export default class EditResume extends wepy.page {
     change(key, e) {
       if (key === 'email') {
         if (!isEmail(e.detail.value)) {
-          this.$invoke('toast', 'show', {
+          wx.showToast({
             title: '邮箱格式错误',
-            img: '../assets/error.png'
+            image: '../assets/error.png'
           })
         }
       }
       if (key === 'tel') {
         if (!isMobile(e.detail.value)) {
-          this.$invoke('toast', 'show', {
+          wx.showToast({
             title: '手机号码格式错误',
-            img: '../assets/error.png'
+            image: '../assets/error.png'
           })
         }
       }
@@ -301,10 +301,13 @@ export default class EditResume extends wepy.page {
             if (res && typeof res.data === 'string') {
               res.data = JSON.parse(res.data)
             }
-            _this.$invoke('toast', 'show', {
-              title: res.data.msg,
-              img: res.data.code === 500 ? '../assets/error.png' : '../assets/profile/check.png'
-            })
+            const toast = {
+              title: res.data.msg
+            }
+            if (res.data.code === 500) {
+              toast.image = '../assets/error.png'
+            }
+            wx.showToast(toast)
             if (res.data && res.data.fileName) {
               if (typeof res.data.fileName === 'string') {
                 res.data.fileName = [res.data.fileName]
@@ -315,9 +318,9 @@ export default class EditResume extends wepy.page {
           })
         },
         fail() {
-          this.$invoke('toast', 'show', {
+          wx.showToast({
             title: '选择图片失败',
-            img: '../assets/error.png'
+            image: '../assets/error.png'
           })
         }
       })
@@ -326,26 +329,20 @@ export default class EditResume extends wepy.page {
       // check info
       const info = this.info
       if (!info.img || !info.industry || !info.title || !info.intro || !info.salary || !info.contact || !info.tel || !info.job || !info.workingTime || !info.workTimeDay || !info.workTimeWeek || !info.city || !info.education || !info.targetdegree || !info.site) {
-        this.$invoke('toast', 'show', {
+        wx.showToast({
           title: '请补全信息，带星号为必填',
-          img: '../assets/error'
+          icon: 'none'
         })
         return
       }
       if (info.responsibility.length < 20 || info.company.length < 20) {
-        this.$invoke('toast', 'show', {
+        wx.showToast({
           title: '职位描述和公司简介不可少于20字',
-          img: '../assets/error'
+          icon: 'none'
         })
         return
       }
-      publishJob(info).then(res => {
-        this.$invoke('toast', 'show', {
-          title: res.msg,
-          img: res.code === 500 ? '../assets/error.png' : '../assets/profile/check.png'
-        })
-        console.log(res)
-      })
+      publishJob(info)
     },
     changePicker(key, e) {
       if (key === 'workTimeDay') {

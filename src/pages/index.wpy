@@ -108,7 +108,7 @@ export default class Index extends wepy.page {
       }
       this.total = data.total
       data.rows.forEach(item => {
-        item.date = (item.updatetime || item.creationtime).substr(5, 5)
+        item.date = (item.updatetime || item.creationtime || '').substr(5, 5)
         item.avatar = item.img
       })
       this.jobs = this.jobs.concat(data.rows)

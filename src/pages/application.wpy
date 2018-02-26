@@ -23,7 +23,7 @@
         </view>
       </repeat>
     </view>
-    <toast />
+    <!-- <toast /> -->
   </view>
 </template>
 
@@ -31,15 +31,15 @@
 import wepy from 'wepy'
 import job from '../components/job'
 import { getAllOrderPersonaly } from '../api'
-import toast from 'toast'
+// import toast from 'toast'
 
 export default class Application extends wepy.page {
   config = {
     navigationBarTitleText: '我的申请'
   }
   components = {
-    job,
-    toast
+    job
+    // toast
   }
   data = {
     jobs: [],
@@ -77,12 +77,6 @@ export default class Application extends wepy.page {
       this.jobs = res.data.map(row => {
         return row.introrderDO
       })
-      if (res.code === 500) {
-        this.$invoke('toast', 'show', {
-          title: res.msg,
-          img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-        })
-      }
       this.$apply()
     })
   }

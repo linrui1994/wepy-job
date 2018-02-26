@@ -64,7 +64,7 @@ export function getResume() {
 
 // 申请职位
 export function applyOrder(oid) {
-  return http('/lh/order/applyOrder', { oid }, 'post')
+  return http('/lh/order/applyOrder', { oid }, 'post', true)
 }
 
 // 获取申请列表
@@ -72,14 +72,14 @@ export function getAllOrderPersonaly() {
   return http('/lh/introrder/userByOrder')
 }
 
-// 获取招募的用户列表，可根据人民搜索
+// 获取招募的用户列表，可根据人名搜索
 export function getAllRecruit(params = {}) {
   return http('/lh/userbyuser/selMyRecruit', params)
 }
 
 // 收藏职位
 export function starJob(oid) {
-  return http('/lh/order/collectOrder', { oid }, 'post')
+  return http('/lh/order/collectOrder', { oid }, 'post', true)
 }
 
 // 上传文件
@@ -105,12 +105,12 @@ export function getJobListPersonally() {
 
 // 发布职位
 export function publishJob(data) {
-  return http('/lh/introrder/web/save', data, 'post')
+  return http('/lh/introrder/web/save', data, 'post', true)
 }
 
 // 更新简历
 export function updateResume(data) {
-  return http('/lh/resume/web/update', data, 'post')
+  return http('/lh/resume/web/update', data, 'post', true)
 }
 
 // 获取收藏列表
@@ -120,7 +120,7 @@ export function getStarList() {
 
 // 认证身份
 export function authentication(data) {
-  return http('/user/authentication', data)
+  return http('/user/authentication', data, 'get', true)
 }
 
 // 搜索简历 获取简历列表
@@ -131,10 +131,20 @@ export function getResumeList(params) {
 
 // 评价
 export function estimate(data) {
-  return http('/system/estimate/addEstimate', data, 'post')
+  return http('/system/estimate/addEstimate', data, 'post', true)
 }
 
 // 获取我的发布
 export function getPubList() {
   return http('/user/myPublist')
+}
+
+// 接受短信通知
+export function updateSms(data) {
+  return http('/user/isSms', data, 'get', true)
+}
+
+// 是否接受短信通知
+export function getSms() {
+  return http('/user/getUserToSms')
 }

@@ -2,7 +2,7 @@
   <view class="container">
     <jobDetailCom :detail.sync="detail" :showstatus.sync="showstatus"></jobDetailCom>
     <view class="footer-wrapper" wx:if="{{!slient}}">
-      <button class='default' @tap='star'>收藏</button>
+      <!-- <button class='default' @tap='star'>收藏</button> -->
       <button type='primary' class='primary' @tap='applyOrder'>我要申请</button>
     </view>
     <!-- <toast /> -->

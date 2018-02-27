@@ -36,8 +36,8 @@ export default class Config extends wepy.page {
       this.actions[0].checked = this.info.status === '1' || this.info.status === 1
       this.$apply()
     })
-    getSms().then(res => {
-      this.actions[1].checked = res.data.issms === '1' || res.data.issms === 1
+    getSms().then(data => {
+      this.actions[1].checked = data.issms === '1' || data.issms === 1
     })
   }
   methods = {

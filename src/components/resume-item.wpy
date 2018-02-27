@@ -27,16 +27,33 @@ export default class Job extends wepy.component {
     resume: {
       type: Object
     },
-    index: {
-      type: Number
+    end: {
+      type: Boolean
+    },
+    hire: {
+      type: Boolean
     }
   }
 
   methods = {
     go() {
+      if (this.end) {
+        return
+      }
       // 坑爹 不能用JSON.stringify传递 有长度限制
+      let url = 'resume'
+      if (this.resume && this.resume.userid) {
+        url += `?userid=${this.resume.userid}`
+      }
+      if (this.hire) {
+        if (/\?/.test(url)) {
+          url += '&hire=1'
+        } else {
+          url += '?hire=1'
+        }
+      }
       wx.navigateTo({
-        url: `resume?index=${this.index}`
+        url
         // url: `resume?resume=${JSON.stringify(this.resume)}`
       })
     }

@@ -7,62 +7,96 @@
           <image src='../assets/index/logo.png' class='logo'></image>
         </view>
         <view class='search-wrapper'>
-          <input type="text" placeholder="搜索职位" class='input-inner' @change="change(post, params)"/>
+          <input type="text" placeholder="搜索职位" class='input-inner' @change="change('post', 'params', 'params')"/>
           <image class='search-icon' src='../assets/index/search.png'></image>
         </view>
       </view>
     </view>
-    <view class='index-container' wx:show="mode === 'job'">
+    <view class='mode-wrapper'>
+      <view class="mode-item" :class="{'active-mode': mode === 'job'}" @tap="setMode('job')">查看岗位</view>
+      <view class="mode-item" :class="{'active-mode': mode === 'resume'}" @tap="setMode('resume')">浏览简历</view>
+    </view>
+    <view class='index-container' hidden="{{mode !== 'job'}}">
       <view class='action'>
         <view class='action-item'>
-          <picker @change="change('type', 'types')" class='weui-input' range="{{types}}">
+          <picker @change="change('type', 'types', 'params')" class='weui-input' range="{{types}}">
             <text>{{params.type}}</text>
             <image src='../assets/index/arrow-down.png'></image>
           </picker>
         </view>
-        <view class='action-item'>
+        <view class='action-item gray'>
           <text>薪酬优先</text>
         </view>
-        <view class='action-item'>
+        <view class='action-item gray'>
           <text>时间优先</text>
         </view>
-        <view class="action-item">
+        <view class="action-item gray">
           <text>筛选</text>
           <image src='../assets/index/arrow-down.png'></image>
         </view>
       </view>
     </view>
-    <view class='index-container'>
+    <view class='index-container' hidden="{{mode !== 'job'}}">
       <repeat for={{jobs}} item='job' key='index'>
         <view class="jobs">
           <job :job="job" :labels="labels"></job>
         </view>
       </repeat>
     </view>
-    <view class="index-container" wx:show="mode === 'resume'"></view>
+    <view class="index-container" hidden="{{mode !== 'resume'}}">
+      <view class='action'>
+        <view class='action-item'>
+          <picker @change="change('type', 'types', 'resumeParams')" class='weui-input' range="{{types}}">
+            <text>{{resumeParams.type}}</text>
+            <image src='../assets/index/arrow-down.png'></image>
+          </picker>
+        </view>
+        <view class='action-item gray'>
+          <text>工资</text>
+        </view>
+        <view class='action-item gray'>
+          <text>学历</text>
+        </view>
+        <view class="action-item gray">
+          <text>筛选</text>
+          <image src='../assets/index/arrow-down.png'></image>
+        </view>
+      </view>
+    </view>
+    <view class="index-container" hidden="{{mode !== 'resume'}}">
+      <repeat for="{{resumes}}" item='resume' key='index' index='index'>
+        <view class="jobs">
+          <resume :resume.sync="resume" :hire="hire"></resume>
+        </view>
+      </repeat>
+    </view>
   </scroll-view>
 </template>
 
 <script>
 import wepy from 'wepy'
 import job from '../components/job'
-import { getJobList } from '../api'
+import resume from '../components/resume-item'
+import { getJobList, getResumeList } from '../api'
 
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '求职'
   }
   components = {
-    job
+    job,
+    resume
   }
   data = {
     jobs: [],
+    hire: true,
     labels: {
       industry: '行业',
       contact: '联系人',
       post: '职位',
       tel: '联系电话'
     },
+    resumes: [],
     height: 1000,
     params: {
       limit: 10,
@@ -70,17 +104,30 @@ export default class Index extends wepy.page {
       post: '',
       type: '快速兼职'
     },
+    resumeParams: {
+      limit: 10,
+      offset: 0,
+      type: '快速兼职'
+    },
     types: ['快速兼职', '普通兼职', '长期兼职'],
     mode: 'job'
   }
   methods = {
-    change(key, target, e) {
+    change(key, target, param, e) {
       if (target === 'params') {
-        this.params[key] = e.detail.value
+        this[param][key] = e.detail.value
       } else {
-        this.params[key] = this[target][e.detail.value]
+        this[param][key] = this[target][e.detail.value]
       }
-      this.getJobs(true)
+      if (param === 'resumeParams') {
+        this.getResumes(true)
+      } else {
+        this.getJobs(true)
+      }
+      if (key === 'post') {
+        this.mode = 'job'
+        this.$apply()
+      }
     },
     loadmore(e) {
       if (this.jobs && this.jobs.length >= this.total) {
@@ -90,17 +137,36 @@ export default class Index extends wepy.page {
         return
       }
       this.fetching = true
-      wx.showLoading()
       this.getJobs().then(() => {
         this.fetching = false
-        wx.hideLoading()
       })
+    },
+    setMode(mode) {
+      this.mode = mode
+      if (mode === 'resume' && (!this.resumes || !this.resumes.length)) {
+        this.getResumes(true)
+      }
+      this.$apply()
     }
+  }
+  getResumes(refresh = false) {
+    if (refresh) {
+      this.resumes = []
+    }
+    wx.showLoading()
+    this.resumeParams.offset = this.resumes.length
+    getResumeList(this.resumeParams).then(data => {
+      this.resumes = data.rows || []
+      this.resumeTotal = data.total
+      wx.hideLoading()
+      this.$apply()
+    })
   }
   getJobs(refresh = false) {
     if (refresh) {
       this.jobs = []
     }
+    wx.showLoading()
     this.params.offset = this.jobs.length
     return new Promise(resolve => {
       getJobList(this.params).then(data => {
@@ -115,6 +181,7 @@ export default class Index extends wepy.page {
           item.avatar = item.img
         })
         this.jobs = this.jobs.concat(data.rows)
+        wx.hideLoading()
         this.$apply()
         resolve()
       })
@@ -144,7 +211,7 @@ export default class Index extends wepy.page {
 
 <style lang="scss">
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
   overflow: hidden;
 }
 .index-container {
@@ -220,5 +287,25 @@ page {
   .jobs {
     width: 100%;
   }
+}
+.mode-wrapper {
+  display: flex;
+  .mode-item {
+    width: 50%;
+    height: 100rpx;
+    line-height: 100rpx;
+    font-size: 36rpx;
+    color: #9b9b9b;
+    background: #f4f4f5;
+    text-align: center;
+    transition: all 0.3s;
+    &.active-mode {
+      background: #fff;
+      color: #3a8ef0;
+    }
+  }
+}
+.gray {
+  color: #c7c7cd;
 }
 </style>

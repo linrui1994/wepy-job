@@ -319,7 +319,11 @@ export default class EditResume extends wepy.page {
       })
     },
     save() {
-      updateResume(this.info)
+      updateResume(this.info).then(res => {
+        if (res.code === 0) {
+          wx.navigateBack()
+        }
+      })
     }
   }
   onLoad() {

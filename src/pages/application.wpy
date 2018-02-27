@@ -25,8 +25,8 @@
     </view>
     <view class="index-container" wx:if="{{result === '企业'}}">
       <repeat for='{{resumeList}}' item='resume' key='index'>
-        <view class="jobs" @tap='goResume({{index}})'>
-          <resume :resume.sync="resume" :index.sync="index"></resume>
+        <view class="jobs">
+          <resume :resume.sync="resume" :userid.sync="resume.userid"></resume>
         </view>
       </repeat>
     </view>
@@ -59,18 +59,13 @@ export default class Application extends wepy.page {
     simple: true,
     activeIndex: -1,
     status: undefined,
-    result: undefined,
+    result: '学生',
     resumeList: []
   }
   methods = {
     activeIn(index) {
       this.activeIndex = parseInt(index)
       this.$apply()
-    },
-    goResume(index) {
-      wx.navigateTo({
-        url: `resume?index=${index}&hire=1`
-      })
     }
   }
   onLoad() {
@@ -116,7 +111,7 @@ export default class Application extends wepy.page {
 
 <style lang='scss'>
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
 }
 .index-container {
   font-size: 24rpx;

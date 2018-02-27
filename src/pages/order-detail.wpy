@@ -48,7 +48,7 @@ export default class JobDetail extends wepy.page {
 
 <style lang='scss'>
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
   font-size: 24rpx;
 }
 .footer-wrapper {

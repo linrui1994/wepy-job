@@ -58,8 +58,12 @@ export function getOpenid(code) {
 }
 
 // 获取简历
-export function getResume() {
-  return http('/lh/resume/selResumeByUser')
+export function getResume(uid) {
+  if (uid) {
+    return http('/lh/resume/selResumeByUser', {uid})
+  } else {
+    return http('/lh/resume/selResumeByUser')
+  }
 }
 
 // 申请职位
@@ -147,4 +151,8 @@ export function updateSms(data) {
 // 是否接受短信通知
 export function getSms() {
   return http('/user/getUserToSms')
+}
+
+export function addRecruit(uid) {
+  return http('/lh/userbyuser/addRecruit', {uid}, true)
 }

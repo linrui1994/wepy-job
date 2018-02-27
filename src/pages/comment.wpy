@@ -13,6 +13,17 @@
         </view>
       </repeat>
     </view>
+    <view class="info-wrapper block-wrapper">
+      <view class="text-wrapper">
+        <text class="block gray">能力评价</text>
+      </view>
+      <view class='flex flex-center' style='padding-top: 60rpx; padding-bottom: 60rpx; position: relative'>
+        <canvas canvas-id="firstCanvas" style="width: 320rpx; height: 320rpx;"></canvas>
+        <repeat for={{labels}} key='index'>
+          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
+        </repeat>
+      </view>
+    </view>
     <view>
       <button class="primary" type='primary' disabled="{{params.touid === undefined || params.touid === null}}" @tap='comment'>提交评价</button>
     </view>
@@ -30,19 +41,29 @@ export default class Comment extends wepy.page {
   data = {
     labels: [{
       label: '诚信守时',
-      key: 'honest'
+      key: 'honest',
+      left: '228rpx',
+      top: '15rpx'
     }, {
       label: '工作效率',
-      key: 'efficiency'
+      key: 'efficiency',
+      left: '442rpx',
+      top: '140rpx'
     }, {
       label: '沟通能力',
-      key: 'communication'
+      key: 'communication',
+      left: '314rpx',
+      top: '362rpx'
     }, {
       label: '专业技能',
-      key: 'major'
+      key: 'major',
+      left: '122rpx',
+      top: '362rpx'
     }, {
       label: '工作态度',
-      key: 'workstatus'
+      key: 'workstatus',
+      left: '14rpx',
+      top: '140rpx'
     }],
     params: {
       touid: undefined,
@@ -55,6 +76,7 @@ export default class Comment extends wepy.page {
   }
 
   onLoad({userid}) {
+    this.draw([1, 1, 1, 1, 1])
     if (!userid) {
       wx.showToast({
         title: '找不到用户ID',
@@ -66,9 +88,73 @@ export default class Comment extends wepy.page {
     this.$apply()
   }
 
+  draw(values) {
+    console.log(values)
+    _draw(5, 5, values, this.labels)
+    function _draw (side, part, values, labels) {
+      let context = wx.createCanvasContext('firstCanvas')
+      const {screenWidth} = wx.getSystemInfoSync()
+      let [width, height] = [screenWidth / 750 * 320, screenWidth / 750 * 320]
+      let xCenter = width * 0.5
+      let yCenter = height * 0.5
+      let radius = width * 0.5
+      let space = radius / part
+      let theta = Math.PI * 2 / side
+
+      context.translate(-20 * screenWidth / 375, 28 * screenWidth / 375)
+      context.rotate(-17 * Math.PI / 180)
+
+      // 绘制能力多边形
+      context.beginPath()
+      for (let i = 0; i <= side; i++) {
+        let x = Math.cos(i * theta) * radius * values[i % side] + xCenter
+        let y = -Math.sin(i * theta) * radius * values[i % side] + yCenter
+        context.lineTo(x, y)
+      }
+      context.setFillStyle('#badff5')
+      context.fill()
+      context.closePath()
+
+      // 绘制渐变多边形底层
+      for (let j = part; j >= 1; j--) {
+        context.beginPath()
+        for (let i = 0; i <= side; i++) {
+          context.lineTo(Math.cos(i * theta) * space * j + xCenter, -Math.sin(i * theta) * space * j + yCenter)
+        }
+        context.setLineWidth(0.3)
+        context.setFillStyle('#cccccc')
+        context.stroke()
+        context.closePath()
+      }
+
+      for (let j = part; j > 1; j--) {
+        for (let i = 0; i < side; i++) {
+          if (j === part) {
+            context.beginPath()
+            context.moveTo(xCenter, yCenter)
+            context.lineTo(Math.cos(i * theta) * space * j + xCenter, -Math.sin(i * theta) * space * j + yCenter)
+            context.stroke()
+            context.closePath()
+          }
+        }
+      }
+      // context.rotate(17 * Math.PI / 180)
+      context.draw()
+    }
+  }
+
   methods = {
     handleChange(item, e) {
       this.params[item.key] = e.detail.value
+      const values = []
+      const info = this.params
+      values.push((info.efficiency || 0) / 5)
+      values.push((info.honest || 0) / 5)
+      values.push((info.workstatus || 0) / 5)
+      values.push((info.major || 0) / 5)
+      values.push((info.communication || 0) / 5)
+      console.log(values)
+      this.draw(values)
       this.$apply()
     },
     comment() {
@@ -84,7 +170,10 @@ export default class Comment extends wepy.page {
 
 <style lang='scss'>
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
+  // font-size: 28rpx;
+  // color: #000;
+  // padding: 0 32rpx;
 }
 .comment {
   .weui-label {
@@ -103,6 +192,62 @@ page {
     font-size: 32rpx;
     width: 700rpx;
     margin: 40rpx auto 0;
+  }
+  .info-wrapper {
+    font-size: 28rpx;
+    margin: 0 auto;
+    padding-bottom: 16rpx;
+    padding-top: 90rpx;
+    box-sizing: border-box;
+    width: 750rpx - 64rpx;
+    background: #fff;
+    border-radius: 8rpx;
+    .block {
+      text-align: center;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      padding: 6rpx 40rpx;
+    }
+    .text-wrapper {
+      margin: 0 auto;
+      width: 280rpx;
+      border-bottom: 1rpx solid #f0f0f0;
+      padding-bottom: 12rpx;
+      text-align: center;
+    }
+    .hope {
+      font-size: 28rpx;
+    }
+    .day-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20rpx 90rpx;
+      border-bottom: 1px solid #f0f0f0;
+      text {
+        font-size: 32rpx;
+        width: 32rpx;
+        height: 32rpx;
+        line-height: 32rpx;
+        &.highlight {
+          border: 1rpx solid #37A9ED;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 32rpx;
+          color: #37A9ED;
+        }
+      }
+    }
+  }
+  .block-wrapper {
+    margin-top: 26rpx;
+    padding: 20rpx 60rpx;
+  }
+  .absolute {
+    color: #888;
+    position: absolute;
   }
 }
 </style>

@@ -84,7 +84,7 @@
 
 <script>
 import wepy from 'wepy'
-import { getResume, getAllRecruit } from '../api'
+import { getResume, addRecruit } from '../api'
 
 export default class Resume extends wepy.page {
   config = {
@@ -128,13 +128,17 @@ export default class Resume extends wepy.page {
       label: '英汉翻译能力',
       value: 5
     }],
-    hire: undefined
+    hire: undefined,
+    userid: undefined
   }
   methods = {
     edit() {
       wx.navigateTo({
         url: 'edit-resume'
       })
+    },
+    hire() {
+      addRecruit(this.userid)
     }
   }
   draw(values) {
@@ -191,31 +195,12 @@ export default class Resume extends wepy.page {
       context.draw()
     }
   }
-  onLoad({index, hire}) {
-    if (index) {
-      getAllRecruit().then(res => {
-        const resumeList = (res.data || []).map(row => {
-          return row.resumeDO
-        })
-        // if (res.code === 500) {
-        //   this.$invoke('toast', 'show', {
-        //     title: res.msg,
-        //     img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-        //   })
-        // }
-        this.handleResume(resumeList[Number(index)])
-      })
-    } else {
-      getResume().then(res => {
-        // if (res.code === 500) {
-        //   this.$invoke('toast', 'show', {
-        //     title: res.msg,
-        //     img: res.code === 0 ? '../assets/profile/check.png' : '../assets/error.png'
-        //   })
-        // }
-        this.handleResume(res.data || {})
-      })
-    }
+  onLoad({hire, userid}) {
+    this.userid = userid
+    console.log(hire, userid, 'onload')
+    getResume(userid).then(res => {
+      this.handleResume(res.data || {})
+    })
     if (hire) {
       this.hire = true
       this.$apply()
@@ -244,7 +229,7 @@ export default class Resume extends wepy.page {
 
 <style lang='scss'>
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
   font-size: 28rpx;
   color: #000;
   padding: 0 32rpx;

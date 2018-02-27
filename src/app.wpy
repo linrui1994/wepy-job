@@ -11,8 +11,8 @@ export default class extends wepy.app {
 
   config = {
     pages: [
-      'pages/comment',
       'pages/index',
+      'pages/comment',
       'pages/profile',
       'pages/authentication',
       'pages/resume',
@@ -36,7 +36,7 @@ export default class extends wepy.app {
     },
     tabBar: {
       color: '#333',
-      selectedColor: '#37A9ED',
+      selectedColor: '#3a8ef0',
       list: [{
         pagePath: 'pages/index',
         iconPath: './assets/footer/index.png',

@@ -3,7 +3,7 @@
     <view class='index-container'>
       <repeat for='{{jobs}}' item='job' key='index'>
         <view class="jobs">
-          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :slient="slient" :activeIndex.sync="activeIndex"></job>
+          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :slient="slient" :activeIndex.sync="activeIndex" :end="end"></job>
         </view>
       </repeat>
     </view>
@@ -24,6 +24,7 @@ export default class Application extends wepy.page {
   }
   data = {
     slient: true,
+    end: true,
     jobs: [],
     labels: {
       industry: '行业',
@@ -35,11 +36,27 @@ export default class Application extends wepy.page {
   }
   onLoad() {
     getPubList().then(res => {
-      Array.isArray(res.data) && res.data.forEach(row => {
-        row.date = (row.updatetime || row.updateat || row.createat || row.creationtime || '').substr(5, 5)
-        row.avatar = row.img
-      })
-      this.jobs = res.data
+      if (res.msg === '暂无认证') {
+        wx.showToast({
+          title: '暂无认证',
+          icon: 'none'
+        })
+      }
+      if (!res.data || !res.data.length) {
+        this._jobs = []
+      } else {
+        if (res.data[0].introrderDO) {
+          // map it
+          res.data = (res.data || []).map(row => {
+            return row.introrderDO
+          })
+        }
+        res.data.forEach(row => {
+          row.date = (row.updatetime || row.updateat || row.createat || row.creationtime || '').substr(5, 5)
+          row.avatar = row.img
+        })
+        this.jobs = res.data
+      }
       this.$apply()
     })
   }
@@ -48,7 +65,7 @@ export default class Application extends wepy.page {
 
 <style lang='scss'>
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
 }
 .index-container {
   font-size: 24rpx;

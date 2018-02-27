@@ -332,7 +332,11 @@ export default class EditResume extends wepy.page {
         })
         return
       }
-      publishJob(info)
+      publishJob(info).then(res => {
+        if (res.code === 0) {
+          wx.navigateBack()
+        }
+      })
     },
     changePicker(key, e) {
       if (key === 'workTimeDay') {

@@ -17,7 +17,6 @@
         </view>
       </repeat>
     </view>
-    <!-- <toast /> -->
   </view>
 </template>
 
@@ -40,23 +39,14 @@ export default class Profile extends wepy.page {
     }, {
       src: '../assets/profile/poster.png',
       label: '我的记录',
-      url: 'record',
-      validate: () => {
-        if (this.authentication === undefined || this.authentication === null) {
-          wx.showToast({
-            title: '请先认证身份',
-            image: '../assets/error.png'
-          })
-        }
-        return this.authentication !== undefined
-      }
+      url: 'record'
     }, {
       src: '../assets/profile/edit.png',
       label: '我的申请',
       url: 'application'
     }, {
       src: '../assets/profile/add.png',
-      label: '我的招聘',
+      label: '我的招募',
       url: 'resume-list'
     }, {
       src: '../assets/profile/check.png',
@@ -95,7 +85,7 @@ export default class Profile extends wepy.page {
 
 <style lang='scss'>
 page {
-  background: #f0f0f0;
+  background: #f5f5f4;
   font-size: 28rpx;
   color: #000;
   padding: 0 32rpx;

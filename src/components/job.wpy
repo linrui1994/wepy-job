@@ -61,11 +61,17 @@ export default class Job extends wepy.component {
     },
     slient: {
       type: Boolean
+    },
+    end: {
+      type: Boolean
     }
   }
 
   methods = {
     go() {
+      if (this.end) {
+        return
+      }
       // 坑爹传递的是string 'false' -> true 所以false转为空字符串吧
       if (this.simple) {
         wx.navigateTo({

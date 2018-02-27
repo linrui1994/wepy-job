@@ -32,6 +32,9 @@ export function http(url, params = {}, method = 'get', toast = false) {
       params[key] = JSON.stringify(params[key])
     }
   })
+  if (method === 'post') {
+    wx.showLoading()
+  }
   return new Promise((resolve, reject) => {
     wx.request({
       url,
@@ -44,6 +47,7 @@ export function http(url, params = {}, method = 'get', toast = false) {
       success: res => {
         const data = res.data
         if (toast && data.msg) {
+          wx.hideLoading()
           if (data.code === 0) {
             // success
             wx.showToast({
@@ -61,6 +65,7 @@ export function http(url, params = {}, method = 'get', toast = false) {
         resolve(data)
       },
       fail: res => {
+        wx.hideLoading()
         wx.showToast({
           image: '../assets/error.png',
           title: '未知错误'

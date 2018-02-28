@@ -37,7 +37,7 @@
       </view>
     </view>
     <view class='index-container' hidden="{{mode !== 'job'}}">
-      <repeat for={{jobs}} item='job' key='index'>
+      <repeat for="{{jobs}}" item='job' key='index'>
         <view class="jobs">
           <job :job="job" :labels="labels"></job>
         </view>
@@ -54,8 +54,11 @@
         <view class='action-item gray'>
           <text>工资</text>
         </view>
-        <view class='action-item gray'>
-          <text>学历</text>
+        <view class='action-item'>
+          <picker @change="change('education', 'educations', 'resumeParams')" class='weui-input' range="{{educations}}">
+            <text>{{resumeParams.education || '学历'}}</text>
+            <image src='../assets/index/arrow-down.png'></image>
+          </picker>
         </view>
         <view class="action-item gray">
           <text>筛选</text>
@@ -96,6 +99,7 @@ export default class Index extends wepy.page {
       post: '职位',
       tel: '联系电话'
     },
+    educations: ['大专', '本科', '硕士', '博士', '不限'],
     resumes: [],
     height: 1000,
     params: {
@@ -107,7 +111,8 @@ export default class Index extends wepy.page {
     resumeParams: {
       limit: 10,
       offset: 0,
-      type: '快速兼职'
+      type: '快速兼职',
+      education: undefined
     },
     types: ['快速兼职', '普通兼职', '长期兼职'],
     mode: 'job'

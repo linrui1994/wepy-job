@@ -178,7 +178,7 @@ export default class Index extends wepy.page {
         if (!data.rows) {
           this.$parent.globalData.userInfo = null
           wx.removeStorageSync('userInfo')
-          this.getUserInfo().then(this.getJobs(true))
+          this.getUserInfo()
         }
         this.total = data.total
         data.rows.forEach(item => {
@@ -193,12 +193,9 @@ export default class Index extends wepy.page {
     })
   }
   getUserInfo() {
-    console.log('getUserInfo')
     this.$parent.getUserInfo().then(userInfo => {
       this.userInfo = userInfo
-      console.log('???')
       this.getJobs(true)
-      return Promise.resolve()
     }).catch(() => {
       this.$parent.globalData.userInfo = null
       wx.removeStorageSync('userInfo')

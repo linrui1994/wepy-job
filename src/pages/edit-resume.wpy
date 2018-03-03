@@ -32,7 +32,7 @@
       </radio-group>
     </view>
     <view class="placeholder"></view>
-    <view class="weui-cells__title">工作时间:</view>
+    <view class="weui-cells__title">工作时长:</view>
     <view class="weui-cells weui-cells_after-title">
       <checkbox-group @change="checkboxChange">
         <label class="weui-cell weui-check__label" wx:for="{{days}}" wx:key="{{item.day}}">
@@ -203,10 +203,13 @@ export default class EditResume extends wepy.page {
     }, {
       name: '博士',
       value: '博士'
+    }, {
+      name: '无',
+      value: '无'
     }],
     types: [{
-      name: '快速兼职',
-      value: '快速兼职'
+      name: '校园兼职',
+      value: '校园兼职'
     }, {
       name: '普通兼职',
       value: '普通兼职'
@@ -252,8 +255,8 @@ export default class EditResume extends wepy.page {
       const val = e.detail.value
       this.info.job = val.join(',')
       this.types = [{
-        name: '快速兼职',
-        value: '快速兼职'
+        name: '校园兼职',
+        value: '校园兼职'
       }, {
         name: '普通兼职',
         value: '普通兼职'
@@ -262,7 +265,7 @@ export default class EditResume extends wepy.page {
         value: '长期兼职'
       }]
       val.forEach(type => {
-        if (type === '快速兼职') {
+        if (type === '校园兼职') {
           this.types[0].checked = true
         } else if (type === '普通兼职') {
           this.types[1].checked = true
@@ -339,7 +342,7 @@ export default class EditResume extends wepy.page {
         })
       }
       (res.data.job || '').split(',').forEach(type => {
-        if (type === '快速兼职') {
+        if (type === '校园兼职') {
           this.types[0].checked = true
         } else if (type === '普通兼职') {
           this.types[1].checked = true

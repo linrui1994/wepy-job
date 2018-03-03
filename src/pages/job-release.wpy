@@ -30,7 +30,7 @@
           <input class="weui-input" @change="change('industry')" placeholder="请输入行业" value='{{info.industry}}'/>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input">
+      <view class="weui-cell weui-cell_input" wx:show="info.job !== '校园招聘'">
         <view class="weui-cell__hd">
           <view class="weui-label">* 职位名称</view>
         </view>
@@ -38,7 +38,7 @@
           <input class="weui-input" @change="change('title')" placeholder="请输入职位名称" value='{{info.title}}'/>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input">
+      <view class="weui-cell weui-cell_input" wx:show="info.job !== '校园招聘'">
         <view class="weui-cell__hd">
           <view class="weui-label">* 公司名称</view>
         </view>
@@ -69,7 +69,7 @@
           </picker>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input">
+      <view class="weui-cell weui-cell_input" wx:show="info.job !== '校园招聘'">
         <view class="weui-cell__hd">
           <view class="weui-label">* 工作经验</view>
         </view>
@@ -79,7 +79,7 @@
       </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-          <view class="weui-label">* 每日工作时间</view>
+          <view class="weui-label">* 每日工作时长</view>
         </view>
         <view class="weui-cell__bd">
           <picker mode="selector" class='weui-input' range="{{workTimeDay}}" @change="changePicker(workTimeDay)">
@@ -89,7 +89,7 @@
       </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-          <view class="weui-label">* 每周工作时间</view>
+          <view class="weui-label">* 每周工作时长</view>
         </view>
         <view class="weui-cell__bd">
           <picker mode="selector" class='weui-input' range="{{workTimeWeek}}" @change="changePicker(workTimeWeek)">
@@ -97,20 +97,20 @@
           </picker>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input">
+<!--       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <view class="weui-label">工资保障</view>
         </view>
         <view class="weui-cell__bd">
-          <switch checked="{{info._wageProtection}}" class="weui-input" color="#4fa0bd" @change="change(_wageProtection)"></switch>
+          <switch checked="{{info._wageProtection}}" class="weui-input" color="#3a8ef0" @change="change(_wageProtection)"></switch>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input">
+ -->      <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <view class="weui-label">是否置顶</view>
         </view>
         <view class="weui-cell__bd">
-          <switch checked="{{info._stick}}" class="weui-input" color="#4fa0bd" @change="change(_stick)"></switch>
+          <switch checked="{{info._stick}}" class="weui-input" color="#3a8ef0" @change="change(_stick)"></switch>
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -178,8 +178,8 @@
       </view>
     </view>
 
-    <view class="placeholder"></view>
-    <view class="weui-cells__title">* 公司简介:</view>
+    <view class="placeholder" wx:show="info.job !== '校园招聘'"></view>
+    <view class="weui-cells__title" wx:show="info.job !== '校园招聘'">* 公司简介:</view>
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__bd">
@@ -222,8 +222,8 @@ export default class EditResume extends wepy.page {
       'workTimeDay': '',
       'workTimeWeek': '',
       'salary': '',
-      'wageProtection': 0,
-      '_wageProtection': false,
+      // 'wageProtection': 0,
+      // '_wageProtection': false,
       'city': '',
       'education': '',
       'targetdegree': '',
@@ -245,9 +245,15 @@ export default class EditResume extends wepy.page {
     }, {
       name: '博士',
       value: '博士'
+    }, {
+      name: '无',
+      value: '无'
+    }, {
+      name: '不限',
+      value: '不限'
     }],
     days: [],
-    job: ['快速兼职', '普通兼职', '长期兼职'],
+    job: ['校园兼职', '普通兼职', '长期兼职'],
     workTimeDay: [],
     workTimeWeek: [],
     stars: [1, 2, 3, 4, 5]

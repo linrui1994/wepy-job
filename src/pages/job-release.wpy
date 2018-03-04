@@ -30,7 +30,7 @@
           <input class="weui-input" @change="change('industry')" placeholder="请输入行业" value='{{info.industry}}'/>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input" wx:show="info.job !== '校园招聘'">
+      <view class="weui-cell weui-cell_input" hidden="{{info.job === '校园兼职'}}">
         <view class="weui-cell__hd">
           <view class="weui-label">* 职位名称</view>
         </view>
@@ -38,7 +38,7 @@
           <input class="weui-input" @change="change('title')" placeholder="请输入职位名称" value='{{info.title}}'/>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input" wx:show="info.job !== '校园招聘'">
+      <view class="weui-cell weui-cell_input" hidden="{{info.job === '校园兼职'}}">
         <view class="weui-cell__hd">
           <view class="weui-label">* 公司名称</view>
         </view>
@@ -48,13 +48,16 @@
       </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-          <view class="weui-label">* 月薪</view>
+          <view class="weui-label">* 月薪(元/月)</view>
         </view>
         <view class="weui-cell__bd">
-          <picker mode="multiSelector" class='weui-input' range="{{salarys}}" @change="changeSalary">
+          <input class="weui-input salary-input" type='number' placeholder="最低月薪" value="{{startSalary}}" @input="changeSalary(startSalary)" />
+          -
+          <input class="weui-input salary-input" type='number' placeholder="最高月薪" value="{{endSalary}}" @input="changeSalary(endSalary)" />
+          <!-- <picker mode="multiSelector" class='weui-input' range="{{salarys}}" @change="changeSalary">
             <view>{{info.salary || '请选择薪水'}}</view>
           </picker>
-        </view>
+ -->        </view>
         <view class="extra {{info.salary === '面议' ? 'highlight' : ''}}" @tap="extraSalary">
           <button @tap="extraSalary" style='height: 60rpx;line-height:60rpx;font-size:24rpx;'>面议</button>
         </view>
@@ -69,12 +72,12 @@
           </picker>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input" wx:show="info.job !== '校园招聘'">
+      <view class="weui-cell weui-cell_input" hidden="info.job === 校园兼职">
         <view class="weui-cell__hd">
-          <view class="weui-label">* 工作经验</view>
+          <view class="weui-label">* 工作经验要求</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入公司名称" value='{{info.workingTime}}' @change="change('workingTime')" />
+          <input class="weui-input" placeholder="请输入工作经验要求" value='{{info.workingTime}}' @change="change('workingTime')" />
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -110,7 +113,7 @@
           <view class="weui-label">是否置顶</view>
         </view>
         <view class="weui-cell__bd">
-          <switch checked="{{info._stick}}" class="weui-input" color="#3a8ef0" @change="change(_stick)"></switch>
+          <switch checked="{{info._stick}}" color="#3a8ef0" @change="change(_stick)"></switch>
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -178,9 +181,9 @@
       </view>
     </view>
 
-    <view class="placeholder" wx:show="info.job !== '校园招聘'"></view>
-    <view class="weui-cells__title" wx:show="info.job !== '校园招聘'">* 公司简介:</view>
-    <view class="weui-cells weui-cells_after-title">
+    <view class="placeholder" hidden="{{info.job === '校园兼职'}}"></view>
+    <view class="weui-cells__title" hidden="{{info.job === '校园兼职'}}">* 公司简介:</view>
+    <view class="weui-cells weui-cells_after-title" hidden="{{info.job === '校园兼职'}}">
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__bd">
           <textarea class="weui-textarea" placeholder="请输入公司简介" value="{{info.company}}" style="height: 6.6em" maxlength='2000'  @input="change(company)" />
@@ -198,7 +201,7 @@
 
 <script>
 import wepy from 'wepy'
-import { publishJob, upload } from '../api'
+import { publishJob, upload, getSms } from '../api'
 import { isEmail, isMobile } from 'lv-util'
 
 export default class EditResume extends wepy.page {
@@ -206,6 +209,9 @@ export default class EditResume extends wepy.page {
     navigationBarTitleText: '发布职位'
   }
   data = {
+    status: 0,
+    startSalary: '',
+    endSalary: '',
     info: {
       'img': '',
       'industry': '',
@@ -217,7 +223,7 @@ export default class EditResume extends wepy.page {
       'tel': '',
       'stick': 0,
       '_stick': false,
-      'job': '',
+      'job': '校园兼职',
       'workingTime': '',
       'workTimeDay': '',
       'workTimeWeek': '',
@@ -324,6 +330,20 @@ export default class EditResume extends wepy.page {
     save() {
       // check info
       const info = this.info
+      if (info.job === '校园兼职' && this.status !== 2) {
+        wx.showToast({
+          icon: 'none',
+          title: '只有认证为学生的用户可以发布校园兼职'
+        })
+        return
+      }
+      if (info.job !== '校园兼职' && this.status !== 3) {
+        wx.showToast({
+          icon: 'none',
+          title: '只有认证为企业的用户可以发布普通兼职或长期兼职'
+        })
+        return
+      }
       if (!info.img || !info.industry || !info.title || !info.intro || !info.salary || !info.contact || !info.tel || !info.job || !info.workingTime || !info.workTimeDay || !info.workTimeWeek || !info.city || !info.education || !info.targetdegree || !info.site) {
         wx.showToast({
           title: '请补全信息，带星号为必填',
@@ -352,17 +372,30 @@ export default class EditResume extends wepy.page {
       } else {
         this.info[key] = this[key][e.detail.value]
       }
+      this.$apply()
     },
-    changeSalary(e) {
-      const { value } = e.detail
-      if (value[0] > value[1]) {
-        let k = value[0]
-        value[0] = value[1]
-        value[1] = k
+    changeSalary(e, key) {
+      const v = Number(e.detail.value)
+      if (isNaN(v)) {
+        v = 0
       }
-      let _value = [this.salarys[0][value[0]], this.salarys[1][value[1]]]
-      this.info.rowSalary = _value
-      this.info.salary = _value.join('-') + '元/月'
+      this.[key] = v
+      if (this.startSalary < this.endSalary) {
+        let k = this.startSalary
+        this.startSalary = this.endSalary
+        this.endSalary = k
+      }
+      this.info.rowSalary = [this.startSalary, this.endSalary]
+      this.info.salary = this.info.rowSalary.join(-) + '元/月'
+      // const { value } = e.detail
+      // if (value[0] > value[1]) {
+      //   let k = value[0]
+      //   value[0] = value[1]
+      //   value[1] = k
+      // }
+      // let _value = [this.salarys[0][value[0]], this.salarys[1][value[1]]]
+      // this.info.rowSalary = _value
+      // this.info.salary = _value.join('-') + '元/月'
     },
     extraSalary() {
       this.info.salary = '面议'
@@ -371,6 +404,9 @@ export default class EditResume extends wepy.page {
     }
   }
   onLoad() {
+    getSms().then(data => {
+      this.status = Number(data.status)
+    })
     this.handleInfo(this.info)
     let arr = []
     for (let i = 1; i < 50; i++) {
@@ -446,5 +482,10 @@ page {
     color: #fff;
     flex: 1;
   }
+}
+.salary-input {
+  width: 140rpx;
+  vertical-align: middle;
+  display: inline-block;
 }
 </style>

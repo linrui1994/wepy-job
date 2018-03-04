@@ -15,6 +15,8 @@
 
 <script>
 import wepy from 'wepy'
+import { getSms } from '../api/index.js'
+
 export default class Publish extends wepy.page {
   config = {
     navigationBarTitleText: '发布'
@@ -25,24 +27,40 @@ export default class Publish extends wepy.page {
       url: 'edit-resume'
     }, {
       label: '招兼职',
-      url: 'job-release'
-    }]
+      url: 'job-release',
+      before: 1
+    }],
+    status: 0
   }
   methods = {
     go(item) {
       if (item.url) {
+        if (item.before) {
+          if (this.status !== 3 && this.status !== 2) {
+            wx.showToast({
+              icon: 'none',
+              title: '只有认证为用户才能发布职位'
+            })
+            return;
+          }
+        }
         wx.navigateTo({
           url: item.url
         })
       }
     }
   }
+  onLoad() {
+    getSms().then(data => {
+      this.status = Number(data.status)
+    })
+  }
 }
 </script>
 
 <style lang='scss'>
 page {
-  background: #f5f5f4;
+  background: #f0f0f0;
 }
 .logo-wrapper {
   display: flex;

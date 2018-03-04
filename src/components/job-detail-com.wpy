@@ -15,9 +15,9 @@
       </view>
       <view>
         <image class="icon" src='../assets/application/time.png'></image>
-        <text>工作时间：{{detail.workingTime}}</text>
+        <text>工作经验要求：{{detail.workingTime}}</text>
         <image class="icon mr-left" src='../assets/application/time.png'></image>
-        <text>每周工作：{{detail.workTimeWeek}}</text>
+        <text>每周工作：{{detail.workTimeWeek}} | 每天{{detail.workTimeDay}}</text>
       </view>
       <view>
         <image class="icon" src='../assets/application/address.png'></image>

@@ -1,12 +1,20 @@
 <template>
   <view class='authen'>
+    <view class="tip">
+      <text style='margin-bottom: 32rpx'>请上传身份证正面照片</text>
+    </view>
+    <view class='img-box img-box2' @tap="chooseImg">
+      <image class='img' src="{{img}}" wx:if="{{img}}" mode='aspectFit'></image>
+      <text class='plus' wx:else>+</text>
+      <text class=''></text>
+    </view>
+    <view class='tip'>
+      <text style='margin-top: 32rpx'>学生请上传学生证正面照片</text>
+      <text style="margin-bottom: 32rpx">企业请上传营业执照照片</text>
+    </view>
     <view class='img-box' @tap="chooseImg">
       <image class='img' src="{{img}}" wx:if="{{img}}" mode='aspectFit'></image>
       <text class='plus' wx:else>+</text>
-    </view>
-    <view class='tip'>
-      <text style='margin-top: 32rpx;'>学生请上传学生证正面照片</text>
-      <text>企业请上传营业执照照片</text>
     </view>
     <button type='primary' class='primary' style='margin-top: 32rpx;' @tap="authen">认证</button>
     <view class="tip footer" wx:if="{{result !== undefined && result !== null}}">
@@ -123,8 +131,7 @@ page {
   }
   .footer {
     width: 670rpx;
-    position: absolute;
-    bottom: 80rpx;
+    margin-top: 32rpx;
   }
 }
 </style>

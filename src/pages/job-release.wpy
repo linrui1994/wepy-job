@@ -375,18 +375,18 @@ export default class EditResume extends wepy.page {
       this.$apply()
     },
     changeSalary(e, key) {
-      const v = Number(e.detail.value)
+      let v = Number(e.detail.value)
       if (isNaN(v)) {
         v = 0
       }
-      this.[key] = v
+      this[key] = v
       if (this.startSalary < this.endSalary) {
         let k = this.startSalary
         this.startSalary = this.endSalary
         this.endSalary = k
       }
       this.info.rowSalary = [this.startSalary, this.endSalary]
-      this.info.salary = this.info.rowSalary.join(-) + '元/月'
+      this.info.salary = this.info.rowSalary.join('-') + '元/月'
       // const { value } = e.detail
       // if (value[0] > value[1]) {
       //   let k = value[0]

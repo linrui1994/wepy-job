@@ -156,3 +156,13 @@ export function getSms() {
 export function addRecruit(uid) {
   return http('/lh/userbyuser/addRecruit', {uid}, true)
 }
+
+// 下架
+export function pulled (id) {
+  return http('/lh/introrder/pulled', {id}, 'post', true)
+}
+
+// 获取验证码
+export function getCode () {
+  return http('/user/getCode', {}, 'post', true)
+}

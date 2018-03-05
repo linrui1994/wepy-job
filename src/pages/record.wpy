@@ -3,7 +3,7 @@
     <view class='index-container'>
       <repeat for='{{jobs}}' item='job' key='index'>
         <view class="jobs">
-          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :slient="slient" :activeIndex.sync="activeIndex" :end="end"></job>
+          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :slient="slient" :activeIndex.sync="activeIndex" :end="end" :pulled="pulled" @refresh.user="refresh"></job>
         </view>
       </repeat>
     </view>
@@ -25,6 +25,7 @@ export default class Application extends wepy.page {
   data = {
     slient: true,
     end: true,
+    pulled: true,
     jobs: [],
     labels: {
       industry: '行业',
@@ -35,6 +36,14 @@ export default class Application extends wepy.page {
     showstatus: false
   }
   onLoad() {
+    this.getPubList()
+  }
+  methods = {
+    refresh() {
+      this.getPubList()
+    }
+  }
+  getPubList() {
     getPubList().then(res => {
       if (res.msg === '暂无认证') {
         wx.showToast({

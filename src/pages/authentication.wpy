@@ -3,7 +3,7 @@
     <view class="tip">
       <text style='margin-bottom: 32rpx'>请上传身份证正面照片</text>
     </view>
-    <view class='img-box img-box2' @tap="chooseImg">
+    <view class='img-box img-box2' @tap="chooseImg(img)">
       <image class='img' src="{{img}}" wx:if="{{img}}" mode='aspectFit'></image>
       <text class='plus' wx:else>+</text>
       <text class=''></text>
@@ -12,8 +12,8 @@
       <text style='margin-top: 32rpx'>学生请上传学生证正面照片</text>
       <text style="margin-bottom: 32rpx">企业请上传营业执照照片</text>
     </view>
-    <view class='img-box' @tap="chooseImg">
-      <image class='img' src="{{img}}" wx:if="{{img}}" mode='aspectFit'></image>
+    <view class='img-box' @tap="chooseImg(img2)">
+      <image class='img' src="{{img2}}" wx:if="{{img2}}" mode='aspectFit'></image>
       <text class='plus' wx:else>+</text>
     </view>
     <button type='primary' class='primary' style='margin-top: 32rpx;' @tap="authen">认证</button>
@@ -38,19 +38,18 @@ export default class Authentication extends wepy.page {
 
   data = {
     result: undefined,
-    img: ''
+    img: '',
+    img2: ''
   }
 
   methods = {
-    chooseImg() {
+    chooseImg(key) {
       const _this = this
       wx.chooseImage({
         count: 1,
         success(res) {
           const filePath = res.tempFilePaths[0]
-          console.log(filePath)
           upload(filePath).then(res => {
-            console.log(res)
             const toast = {
               title: res.data.msg
             }
@@ -63,9 +62,9 @@ export default class Authentication extends wepy.page {
             }
             if (res.data && res.data.fileName) {
               if (Array.isArray) {
-                _this.img = res.data.fileName[0]
+                _this[key] = res.data.fileName[0]
               } else {
-                _this.img = res.data.fileName
+                _this[key] = res.data.fileName
               }
             }
             _this.$apply()
@@ -74,14 +73,23 @@ export default class Authentication extends wepy.page {
       })
     },
     authen() {
+      if (!this.img || !this.img2) {
+        wx.showToast({
+          title: '请上传认证图片',
+          icon: 'none'
+        })
+        return
+      }
       authentication({
-        photo: this.img
+        photo: this.img,
+        photo: this.img2
       }).then(wx.navigateBack)
     }
   }
   onLoad() {
     getSms().then(res => {
       this.img = res.photo
+      this.img2 = res.photo2
       if (res.status) {
         if (res.status === 2 || res.status === '2') {
           this.result = '学生'

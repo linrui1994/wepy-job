@@ -36,11 +36,15 @@
         <image src='../assets/index/phone.png' class='phone' />
       </view>
     </view>
+    <view class="job-pulled" wx:if="{{pulled}}">
+      <button class='primary' type='primary' @tap="pulldown">下架</button>
+    </view>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
+import {pulled} from '../api/index.js'
 
 export default class Job extends wepy.component {
   props = {
@@ -64,6 +68,9 @@ export default class Job extends wepy.component {
     },
     end: {
       type: Boolean
+    },
+    pulled: {
+      type: Boolean
     }
   }
 
@@ -82,6 +89,21 @@ export default class Job extends wepy.component {
           url: 'job-detail?id=' + this.job.id + '&showstatus=' + (this.showstatus ? true : '') + '&slient=' + (this.slient ? true : '')
         })
       }
+    },
+    pulldown() {
+      wx.showModal({
+        title: '提示',
+        content: '确定要下架吗？',
+        success: res => {
+          if (res.confirm) {
+            pulled(this.job.id).then(data => {
+              if (data.code === 0) {
+                this.$emit('refresh')
+              }
+            })
+          }
+        }
+      })
     }
   }
 }
@@ -145,6 +167,18 @@ export default class Job extends wepy.component {
   .avatar {
     width: 110rpx;
     height: 110rpx;
+  }
+
+  .job-pulled {
+    margin-top: 16rpx;
+    width: 100%;
+    height: 80rpx;
+    padding: 8rpx 0;
+    button {
+      height: 64rpx;
+      font-size: 24rpx;
+      line-height: 64rpx;
+    }
   }
 }
 </style>

@@ -9,13 +9,30 @@
           </view>
         </view>
       </repeat>
+      <view class="action-item phone-item" wx:if="{{!phoneChecked}}">
+        <text class='block'>绑定手机:</text>
+        <view class='flex'>
+          <input placeholder="请输入手机号码" @input="change(phone)" />
+          <button type='primary' class='primary' disabled="{{disabled}}" @tap="getCode">{{disabled ? countDown + 's' : '获取验证码'}}</button>
+        </view>
+        <view style='margin-top: 16rpx;'>
+          <input placeholder="请输入验证码" value="{{userCode}}" />
+        </view>
+        <view style="margin-top: 16rpx;">
+          <button class='primary' type="primary" @tap="authenPhone">认证</button>
+        </view>
+      </view>
+      <view class="action-item" style='height: 80rpx; line-height: 80rpx;' wx:if="{{phoneChecked}}">
+        <text class='action-label'>手机已认证</text>
+      </view>
     </view>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
-import {getResume, updateResume, updateSms, getSms} from '../api/index.js'
+import {getResume, updateResume, updateSms, getSms, getCode} from '../api/index.js'
+import {isMobile} from 'lv-util'
 
 export default class Config extends wepy.page {
   data = {
@@ -23,12 +40,13 @@ export default class Config extends wepy.page {
       src: '../assets/profile/user.png',
       label: '公开您的简历',
       checked: false
-    }, {
-      src: '../assets/profile/poster.png',
-      label: '接收我们的短信',
-      checked: false
     }],
-    info: {}
+    phoneChecked: false,
+    info: {},
+    countDown: 0,
+    phone: '',
+    userCode: '',
+    disabled: false
   }
   onLoad() {
     getResume().then(res => {
@@ -37,10 +55,57 @@ export default class Config extends wepy.page {
       this.$apply()
     })
     getSms().then(data => {
-      this.actions[1].checked = data.issms === '1' || data.issms === 1
+      this.phoneChecked = data.issms === '1' || data.issms === 1
     })
   }
   methods = {
+    change(key, e) {
+      this[key] = e.detail.value
+    },
+    getCode() {
+      if (!isMobile(this.phone)) {
+        wx.showToast({
+          title: '请正确输入手机号码',
+          icon: 'none'
+        })
+        return
+      }
+      getCode(this.phone).then(data => {
+        if (data.msg === '操作成功') {
+          this.userCode = data.code
+          this.countDown = 60
+          this.disabled = true
+          this.$apply()
+          const timer = setInterval(() => {
+            --this.countDown
+            this.$apply()
+            if (this.countDown <= 0) {
+              this.disabled = false
+              clearInterval(timer)
+              this.$apply()
+            }
+          }, 1000)
+        }
+      })
+    },
+    authenPhone() {
+      if (!isMobile(this.phone) || !this.userCode) {
+        wx.showToast({
+          title: '请正确输入手机号码和验证码',
+          icon: 'none'
+        })
+        return
+      }
+      updateSms({
+        mobile: this.phone,
+        userCode: this.userCode
+      }).then(res => {
+        if (res.code === 0) {
+          this.phoneChecked = true
+          this.$apply()
+        }
+      })
+    },
     update(index, e) {
       const value = e.detail.value
       this.actions[index].checked = value
@@ -101,6 +166,31 @@ page {
     &.next-item .action{
       border-bottom: none;
     }
+    &.phone-item {
+      padding-top: 24rpx;
+      padding-bottom: 24rpx;
+    }
+  }
+  input {
+    flex: 1;
+    border: 1rpx solid #3a8ef0;
+    outline: none;
+    border-radius: 10rpx;
+    font-size: 28rpx;
+    height: 64rpx;
+    line-height: 64rpx;
+    padding-left: 16rpx;
+    margin-right: 16rpx;
+  }
+  .flex {
+    margin-top: 16rpx;
+    display: flex;
+    align-item: center;
+  }
+  button {
+    height: 64rpx;
+    line-height: 64rpx;
+    font-size: 28rpx;
   }
 }
 

@@ -163,6 +163,6 @@ export function pulled (id) {
 }
 
 // 获取验证码
-export function getCode () {
-  return http('/user/getCode', {}, 'post', true)
+export function getCode (phone) {
+  return http('/user/getCode')
 }

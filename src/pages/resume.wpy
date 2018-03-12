@@ -84,7 +84,7 @@
 
 <script>
 import wepy from 'wepy'
-import { getResume, addRecruit } from '../api'
+import { getResume, addRecruit, hire } from '../api'
 
 export default class Resume extends wepy.page {
   config = {
@@ -138,6 +138,9 @@ export default class Resume extends wepy.page {
       })
     },
     hire() {
+      // hire({
+
+      // })
       addRecruit(this.userid)
     }
   }

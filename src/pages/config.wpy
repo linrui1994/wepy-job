@@ -9,7 +9,7 @@
           </view>
         </view>
       </repeat>
-      <view class="action-item phone-item" wx:if="{{!phoneChecked}}">
+      <view class="action-item phone-item">
         <text class='block'>绑定手机:</text>
         <view class='flex'>
           <input placeholder="请输入手机号码" @input="change(phone)" />

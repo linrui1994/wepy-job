@@ -60,7 +60,7 @@ export function getOpenid(code) {
 // 获取简历
 export function getResume(uid) {
   if (uid) {
-    return http('/lh/resume/selResumeByUser', {uid})
+    return http('/lh/resume/selResumeByUser', { uid })
   } else {
     return http('/lh/resume/selResumeByUser')
   }
@@ -154,15 +154,25 @@ export function getSms() {
 }
 
 export function addRecruit(uid) {
-  return http('/lh/userbyuser/addRecruit', {uid}, true)
+  return http('/lh/userbyuser/addRecruit', { uid }, true)
 }
 
 // 下架
-export function pulled (id) {
-  return http('/lh/introrder/pulled', {id}, 'post', true)
+export function pulled(id) {
+  return http('/lh/introrder/pulled', { id }, 'post', true)
 }
 
 // 获取验证码
-export function getCode (phone) {
+export function getCode(phone) {
   return http('/user/getCode')
+}
+
+// 个人用户获取邀请列表
+export function getInvitionList() {
+  return http('/lh/introrder/userByOrderToStatus')
+}
+
+// 招募
+export function hire(params) {
+  return http('/system/toOrder/updOrderToStatus', params, 'post', true)
 }

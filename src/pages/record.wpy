@@ -17,7 +17,7 @@ import { getPubList } from '../api'
 
 export default class Application extends wepy.page {
   config = {
-    navigationBarTitleText: '我的记录'
+    navigationBarTitleText: '我的发布'
   }
   components = {
     job

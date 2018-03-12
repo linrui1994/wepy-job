@@ -1,6 +1,6 @@
 <template>
   <view>
-    <view class='index-container'>
+    <view class='index-container' wx:if="{{status !== 2}}">
       <view class='input-wrapper'>
         <input type="text" placeholder="按人名搜索" @confirm="search">
       </view>
@@ -10,14 +10,22 @@
         </view>
       </repeat>
     </view>
-    <!-- <toast /> -->
+    <view class="index-container" wx:if="{{status === 2}}">
+      <repeat for="{{invitionList}}" item="invition" key="index">
+        <view class="invition">
+          <text class="block">{{invition.companyname}}</text>
+          <text class="block">{{invition.company}}</text>
+          <button class='primary' type='primary' @tap="agree({{invition}})">接受招募</button>
+        </view>
+      </repeat>
+    </view>
   </view>
 </template>
 
 <script>
 import wepy from 'wepy'
 import resume from '../components/resume-item'
-import { getAllRecruit } from '../api'
+import { getAllRecruit, getSms, getInvitionList, hire } from '../api'
 // import toast from 'toast'
 
 export default class Application extends wepy.page {
@@ -29,10 +37,21 @@ export default class Application extends wepy.page {
     // toast
   }
   data = {
-    resumeList: []
+    resumeList: [],
+    status: null,
+    invitionList: []
   }
   onLoad() {
     this.methods.search.call(this)
+    getSms().then(res => {
+      this.status = res.status
+      this.$apply()
+    })
+    getInvitionList().then(res => {
+      if (res.code === 0) {
+        invitionList = res.data || []
+      }
+    })
   }
   methods = {
     search(e) {
@@ -50,6 +69,13 @@ export default class Application extends wepy.page {
     comment(id) {
       wx.navigateTo({
         url: `comment?userid=${id}`
+      })
+    },
+    agree({uid, oid}) {
+      hire({
+        uid,
+        oid,
+        status: 2
       })
     }
   }

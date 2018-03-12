@@ -76,7 +76,9 @@
       <button type='primary' class='primary' @tap='edit'>编辑简历</button>
     </view>
     <view class="footer-wrapper" wx:else>
-      <button type='primary' class='primary' @tap='hire'>招募</button>
+      <picker range={{jobs}} range-key="title" @change="hire">
+        <button type='primary' class='primary' style="width: 680rpx">招募</button>
+      </picker>
     </view>
     <!-- <toast /> -->
   </view>
@@ -84,7 +86,7 @@
 
 <script>
 import wepy from 'wepy'
-import { getResume, addRecruit, hire } from '../api'
+import { getResume, addRecruit, hire, getJobListPersonally } from '../api'
 
 export default class Resume extends wepy.page {
   config = {
@@ -129,6 +131,7 @@ export default class Resume extends wepy.page {
       value: 5
     }],
     hire: undefined,
+    jobs: [],
     userid: undefined
   }
   methods = {
@@ -137,11 +140,19 @@ export default class Resume extends wepy.page {
         url: 'edit-resume'
       })
     },
-    hire() {
+    hire(e) {
+      const v = e.detail.value
+      const oid = this.jobs[v].id
+      const uid = this.info.userid
+      hire({
+        oid,
+        uid,
+        status: 1
+      })
       // hire({
 
       // })
-      addRecruit(this.userid)
+      // addRecruit(this.userid)
     }
   }
   draw(values) {
@@ -207,6 +218,14 @@ export default class Resume extends wepy.page {
     if (hire) {
       this.hire = true
       this.$apply()
+      getJobListPersonally().then(res => {
+        Array.isArray(res.data) && res.data.forEach(row => {
+          row.date = (row.updatetime || row.updateat || row.createat || row.creationtime).substr(5, 5)
+          row.avatar = row.img
+        })
+        this.jobs = res.data
+        this.$apply()
+      })
     }
   }
   handleResume(data) {

@@ -30,7 +30,7 @@ export default class extends wepy.app {
     ],
     window: {
       backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#333',
+      navigationBarBackgroundColor: '#3a8ef0',
       navigationBarTitleText: '求职',
       navigationBarTextStyle: 'white'
     },

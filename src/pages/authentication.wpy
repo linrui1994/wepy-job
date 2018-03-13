@@ -16,7 +16,8 @@
       <image class='img' src="{{img2}}" wx:if="{{img2}}" mode='aspectFit'></image>
       <text class='plus' wx:else>+</text>
     </view>
-    <button type='primary' class='primary' style='margin-top: 32rpx;' @tap="authen">认证</button>
+    <button type='primary' class='primary' style='margin-top: 32rpx;' @tap="authen">认证为学生用户</button>
+    <button type='primary' class='primary' style='margin-top: 32rpx;' @tap="authen">认证为企业用户</button>
     <view class="tip footer" wx:if="{{result !== undefined && result !== null}}">
       <text>您已认证的身份为：{{result}}</text>
       <text>重新上传并认证可以修改您的身份</text>

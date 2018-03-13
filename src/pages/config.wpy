@@ -177,8 +177,8 @@ page {
     outline: none;
     border-radius: 10rpx;
     font-size: 28rpx;
-    height: 64rpx;
-    line-height: 64rpx;
+    height: 74rpx;
+    line-height: 74rpx;
     padding-left: 16rpx;
     margin-right: 16rpx;
   }
@@ -188,8 +188,8 @@ page {
     align-item: center;
   }
   button {
-    height: 64rpx;
-    line-height: 64rpx;
+    height: 74rpx;
+    line-height: 74rpx;
     font-size: 28rpx;
   }
 }

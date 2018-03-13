@@ -43,7 +43,7 @@
           <view class="weui-label">* 公司名称</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入公司名称" value='{{info.intro}}' @change="change('intro')" />
+          <input class="weui-input" placeholder="公司名称,没有请填无" value='{{info.intro}}' @change="change('intro')" />
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -259,7 +259,7 @@ export default class EditResume extends wepy.page {
       value: '不限'
     }],
     days: [],
-    job: ['校园兼职', '普通兼职', '长期兼职'],
+    job: ['校园兼职', '兼职', '实习'],
     workTimeDay: [],
     workTimeWeek: [],
     stars: [1, 2, 3, 4, 5]
@@ -340,7 +340,7 @@ export default class EditResume extends wepy.page {
       if (info.job !== '校园兼职' && this.status !== 3) {
         wx.showToast({
           icon: 'none',
-          title: '只有认证为企业的用户可以发布普通兼职或长期兼职'
+          title: '只有认证为企业的用户可以发布兼职或实习'
         })
         return
       }
@@ -473,9 +473,9 @@ page {
   justify-content: center;
   z-index: 1000;
   button {
-    height: 64rpx;
+    height: 74rpx;
     font-size: 24rpx;
-    line-height: 64rpx;
+    line-height: 74rpx;
     color: #37A9ED;
   }
   .primary {

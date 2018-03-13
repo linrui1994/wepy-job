@@ -106,15 +106,14 @@ export default class Index extends wepy.page {
       limit: 10,
       offset: 0,
       post: '',
-      type: '校园兼职'
+      type: '兼职'
     },
     resumeParams: {
       limit: 10,
       offset: 0,
-      type: '校园兼职',
       education: undefined
     },
-    types: ['校园兼职', '普通兼职', '长期兼职'],
+    types: ['兼职', '实习'],
     mode: 'job'
   }
   methods = {
@@ -229,7 +228,7 @@ page {
     left: 34rpx;
     width: 676rpx;
     display: flex;
-    height: 64rpx;
+    height: 74rpx;
   }
   .logo-wrapper {
     display: flex;

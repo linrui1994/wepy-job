@@ -63,9 +63,9 @@ page {
   align-items: center;
   justify-content: center;
   button {
-    height: 64rpx;
+    height: 74rpx;
     font-size: 24rpx;
-    line-height: 64rpx;
+    line-height: 74rpx;
     color: #37A9ED;
   }
   .default {

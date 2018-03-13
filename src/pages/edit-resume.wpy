@@ -32,7 +32,7 @@
       </radio-group>
     </view>
     <view class="placeholder"></view>
-    <view class="weui-cells__title">工作时长:</view>
+    <view class="weui-cells__title">工作时长(周):</view>
     <view class="weui-cells weui-cells_after-title">
       <checkbox-group @change="checkboxChange">
         <label class="weui-cell weui-check__label" wx:for="{{days}}" wx:key="{{item.day}}">
@@ -208,14 +208,11 @@ export default class EditResume extends wepy.page {
       value: '无'
     }],
     types: [{
-      name: '校园兼职',
-      value: '校园兼职'
+      name: '兼职',
+      value: '兼职'
     }, {
-      name: '普通兼职',
-      value: '普通兼职'
-    }, {
-      name: '长期兼职',
-      value: '长期兼职'
+      name: '实习',
+      value: '实习'
     }],
     stars: [1, 2, 3, 4, 5]
   }
@@ -254,22 +251,19 @@ export default class EditResume extends wepy.page {
     typeChange(e) {
       const val = e.detail.value
       this.info.job = val.join(',')
-      this.types = [{
-        name: '校园兼职',
-        value: '校园兼职'
+      this.types = [ {
+        name: '兼职',
+        value: '兼职'
       }, {
-        name: '普通兼职',
-        value: '普通兼职'
-      }, {
-        name: '长期兼职',
-        value: '长期兼职'
+        name: '实习',
+        value: '实习'
       }]
       val.forEach(type => {
         if (type === '校园兼职') {
           this.types[0].checked = true
-        } else if (type === '普通兼职') {
+        } else if (type === '兼职') {
           this.types[1].checked = true
-        } else if (type === '长期兼职') {
+        } else if (type === '实习') {
           this.types[2].checked = true
         }
       })
@@ -344,9 +338,9 @@ export default class EditResume extends wepy.page {
       (res.data.job || '').split(',').forEach(type => {
         if (type === '校园兼职') {
           this.types[0].checked = true
-        } else if (type === '普通兼职') {
+        } else if (type === '兼职') {
           this.types[1].checked = true
-        } else if (type === '长期兼职') {
+        } else if (type === '实习') {
           this.types[2].checked = true
         }
       })
@@ -426,9 +420,9 @@ page {
   justify-content: center;
   z-index: 1000;
   button {
-    height: 64rpx;
+    height: 74rpx;
     font-size: 24rpx;
-    line-height: 64rpx;
+    line-height: 74rpx;
     color: #37A9ED;
   }
   .primary {

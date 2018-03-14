@@ -111,8 +111,8 @@ export default class Job extends wepy.component {
 
 <style lang='scss'>
 .job-item {
-  padding: 12rpx 22rpx;
-  margin-top: 16rpx;
+  padding: 12rpx 22rpx 0rpx 22rpx;
+  margin-top: 12rpx;
   background: #fff;
   .grey {
     color: #aaa;
@@ -122,13 +122,16 @@ export default class Job extends wepy.component {
     &.no-border {
       border-bottom: none;
     }
+
+    box-shadow: inset 0 -1px 0 0 #C8C7CC;
     display: flex;
     border-bottom: 1rpx solid rgba(0,0,0, .1);
+    padding-bottom: 6px;
     .intro {
       font-size: 28rpx;
     }
     .title {
-      font-size: 32rpx;
+      font-size: 36rpx;
     }
     .detail-wrapper {
       margin-left: 20rpx;
@@ -150,7 +153,7 @@ export default class Job extends wepy.component {
   }
   .job-action-list {
     display: flex;
-    padding: 16rpx 20rpx 4rpx 16rpx;
+    padding: 2rpx 16rpx 4rpx 16rpx;
     justify-content: space-between;
     align-items: center;
     .phone {
@@ -159,14 +162,20 @@ export default class Job extends wepy.component {
     }
   }
   .dark {
-    margin-top: 10rpx;
+    margin-top: 0rpx;
     color: #333;
-    font-size: 24rpx;
+    font-size: 28rpx;
   }
 
   .avatar {
-    width: 110rpx;
-    height: 110rpx;
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 4px;
+  }
+
+  .avatar-wrapper{
+    margin-top: 2px;
+    margin-left: 2px;
   }
 
   .job-pulled {

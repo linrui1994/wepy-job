@@ -153,7 +153,7 @@ export default class Job extends wepy.component {
   }
   .job-action-list {
     display: flex;
-    padding: 2rpx 16rpx 4rpx 16rpx;
+    padding: 4rpx 16rpx 4rpx 16rpx;
     justify-content: space-between;
     align-items: center;
     .phone {

@@ -1,7 +1,7 @@
 <template>
   <view class="constainer">
     <view class="logo-wrapper">
-      <image src='../assets/post2.png'></image>
+      <image src='../assets/post.png'></image>
     </view>
     <view class="action-wrapper">
       <repeat for="{{items}}" key="index">

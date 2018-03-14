@@ -32,7 +32,7 @@
     </view>
     <view class="info-wrapper block-wrapper">
       <view class='text-wrapper'>
-        <text class="block hope gray">期待工作日</text>
+        <text class="block hope gray">期待工作日（每周）</text>
       </view>
       <view class="day-wrapper">
         <repeat for={{days}} key="item">

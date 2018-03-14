@@ -268,7 +268,7 @@ page {
   }
   .action {
     background: #fff;
-    height: 72rpx;
+    /*height: 72rpx;*/
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -293,8 +293,8 @@ page {
   display: flex;
   .mode-item {
     width: 50%;
-    height: 100rpx;
-    line-height: 100rpx;
+    height: 88rpx;
+    line-height: 88rpx;
     font-size: 36rpx;
     color: #9b9b9b;
     background: #f4f4f5;

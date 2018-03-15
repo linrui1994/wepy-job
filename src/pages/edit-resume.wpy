@@ -173,7 +173,7 @@
 <script>
 import wepy from 'wepy'
 import { getResume, upload, updateResume } from '../api'
-import { isEmail, isMobile } from 'lv-util'
+import { isEmail, isMobile, eventEmitter } from 'lv-util'
 
 export default class EditResume extends wepy.page {
   config = {
@@ -224,10 +224,6 @@ export default class EditResume extends wepy.page {
             title: '邮箱格式错误',
             image: '../assets/error.png'
           })
-          // this.$invoke('toast', 'show', {
-          //   title: '邮箱格式错误',
-          //   img: '../assets/error.png'
-          // })
         }
       }
       if (key === 'tel') {
@@ -259,12 +255,10 @@ export default class EditResume extends wepy.page {
         value: '实习'
       }]
       val.forEach(type => {
-        if (type === '校园兼职') {
+        if (type === '兼职') {
           this.types[0].checked = true
-        } else if (type === '兼职') {
-          this.types[1].checked = true
         } else if (type === '实习') {
-          this.types[2].checked = true
+          this.types[1].checked = true
         }
       })
       this.$apply()
@@ -318,6 +312,9 @@ export default class EditResume extends wepy.page {
     save() {
       updateResume(this.info).then(res => {
         if (res.code === 0) {
+          setTimeout(() => {
+            eventEmitter.fire('update-resume')
+          }, 200)
           wx.navigateBack()
         }
       })
@@ -336,12 +333,10 @@ export default class EditResume extends wepy.page {
         })
       }
       (res.data.job || '').split(',').forEach(type => {
-        if (type === '校园兼职') {
+        if (type === '兼职') {
           this.types[0].checked = true
-        } else if (type === '兼职') {
-          this.types[1].checked = true
         } else if (type === '实习') {
-          this.types[2].checked = true
+          this.types[1].checked = true
         }
       })
       res.data.ability = res.data.ability || []

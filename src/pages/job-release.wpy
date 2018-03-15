@@ -30,7 +30,7 @@
           <input class="weui-input" @change="change('industry')" placeholder="请输入行业" value='{{info.industry}}'/>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input" hidden="{{info.job === '校园兼职'}}">
+      <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <view class="weui-label">* 职位名称</view>
         </view>
@@ -38,7 +38,7 @@
           <input class="weui-input" @change="change('title')" placeholder="请输入职位名称" value='{{info.title}}'/>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input" hidden="{{info.job === '校园兼职'}}">
+      <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <view class="weui-label">* 公司名称</view>
         </view>
@@ -181,9 +181,9 @@
       </view>
     </view>
 
-    <view class="placeholder" hidden="{{info.job === '校园兼职'}}"></view>
-    <view class="weui-cells__title" hidden="{{info.job === '校园兼职'}}">* 公司简介:</view>
-    <view class="weui-cells weui-cells_after-title" hidden="{{info.job === '校园兼职'}}">
+    <view class="placeholder"></view>
+    <view class="weui-cells__title">* 公司简介:</view>
+    <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__bd">
           <textarea class="weui-textarea" placeholder="请输入公司简介" value="{{info.company}}" style="height: 6.6em" maxlength='2000'  @input="change(company)" />
@@ -223,7 +223,7 @@ export default class EditResume extends wepy.page {
       'tel': '',
       'stick': 0,
       '_stick': false,
-      'job': '校园兼职',
+      'job': '兼职',
       'workingTime': '',
       'workTimeDay': '',
       'workTimeWeek': '',
@@ -259,7 +259,7 @@ export default class EditResume extends wepy.page {
       value: '不限'
     }],
     days: [],
-    job: ['校园兼职', '兼职', '实习'],
+    job: ['兼职', '实习'],
     workTimeDay: [],
     workTimeWeek: [],
     stars: [1, 2, 3, 4, 5]

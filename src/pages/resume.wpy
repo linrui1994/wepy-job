@@ -47,7 +47,7 @@
       </view>
     </view>
 
-    <view class="info-wrapper block-wrapper">
+    <view class="info-wrapper block-wrapper" hidden="{{!skills || !skills.length}}">
       <view class='text-wrapper'>
         <text class="block hope gray">个人技能</text>
       </view>
@@ -64,7 +64,7 @@
         </repeat>
       </view>
     </view>
-    <view class="info-wrapper block-wrapper">
+    <view class="info-wrapper block-wrapper" hidden="{{!info.information}}">
       <view class='text-wrapper'>
         <text class="block hope gray">自我评价</text>
       </view>
@@ -87,6 +87,7 @@
 <script>
 import wepy from 'wepy'
 import { getResume, addRecruit, hire, getJobListPersonally } from '../api'
+import { eventEmitter } from 'lv-util'
 
 export default class Resume extends wepy.page {
   config = {
@@ -117,19 +118,7 @@ export default class Resume extends wepy.page {
       left: '14rpx',
       top: '140rpx'
     }],
-    skills: [{
-      label: '中文能力',
-      value: 4
-    }, {
-      label: '英汉翻译能力',
-      value: 5
-    }, {
-      label: '中文能力',
-      value: 4
-    }, {
-      label: '英汉翻译能力',
-      value: 5
-    }],
+    skills: [],
     hire: undefined,
     jobs: [],
     userid: undefined
@@ -227,6 +216,11 @@ export default class Resume extends wepy.page {
         this.$apply()
       })
     }
+    eventEmitter.on('update-resume', () => {
+      getResume(userid).then(res => {
+        this.handleResume(res.data || {})
+      })
+    })
   }
   handleResume(data) {
     data.hope = (data.workday || '').split(',')
@@ -236,6 +230,7 @@ export default class Resume extends wepy.page {
         highlight: data.hope.indexOf(i.toString()) !== -1
       })
     }
+    this.skills = data.ability || []
     const info = this.info = data || {}
     const values = []
     values.push((info.efficiency || 0) / 5)

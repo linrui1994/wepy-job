@@ -362,34 +362,30 @@ export default class EditResume extends wepy.page {
       if (info.stick) {
         // 置顶
         const { code } = await wxLogin()
-        getPrepayId(code).then(data => {
-          if (data.prepay_id) {
-            getSign(data.prepay_id).then(data => {
-              if (data && data.paySign) {
-                wx.requestPayment({
-                  ...data,
-                  success() {
-                    publish(info).then(res => {
-                      if (res.code === 0) {
-                        wx.showToast({
-                          icon: 'none',
-                          title: '已成功置顶'
-                        })
-                        setTimeout(wx.navigateBack, 500)
-                      }
-                    })
-                  },
-                  fail() {
-                    wx.showToast({
-                      icon: 'none',
-                      title: '已取消支付'
-                    })
-                  }
-                })
-              }
-            })
-          }
-        })
+        const { prepay_id } = await getPrepayId(code)
+        const data = await getSign(prepay_id)
+        if (data && data.paySign) {
+          wx.requestPayment({
+            ...data,
+            success() {
+              publish(info).then(res => {
+                if (res.code === 0) {
+                  wx.showToast({
+                    icon: 'none',
+                    title: '已成功置顶'
+                  })
+                  setTimeout(wx.navigateBack, 500)
+                }
+              })
+            },
+            fail() {
+              wx.showToast({
+                icon: 'none',
+                title: '已取消支付'
+              })
+            }
+          })
+        }
       } else {
         publishJob(info).then(res => {
           if (res.code === 0) {

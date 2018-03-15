@@ -176,3 +176,13 @@ export function getInvitionList() {
 export function hire(params) {
   return http('/system/toOrder/updOrderToStatus', params, 'post', true)
 }
+
+// 获取prepay_id
+export function getPrepayId (code) {
+  return http('/weixinpay/Xiadan', { code }, 'post', true)
+}
+
+// 获取支付参数
+export function getSign (id) {
+  return http('/weixinpay/Sign', {repay_id: id}, 'post', true)
+}

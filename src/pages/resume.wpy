@@ -3,7 +3,7 @@
     <view class="avatar-wrapper">
       <image class="avatar" src="{{info.imgArray && info.imgArray[0]}}"></image>
     </view>
-    <view class="info-wrapper">
+   <!--  <view class="info-wrapper">
       <text class="block">{{info.username}}</text>
       <view class='flex'>
         <text class="sex">{{info.sex}}</text>
@@ -17,6 +17,39 @@
       <view class='flex'>
         <text class="tel">{{info.tel}}</text>
         <text class="email">{{info.email}}</text>
+      </view>
+    </view> -->
+    <view class="info-wrapper">
+      <text class="block">{{info.username}}</text>
+      <view class="flex c-flex">
+        <view class="flex-left">
+          <view class="text-item">
+            <image src="../assets/profile/peoplePen.png"></image>
+            <text>{{info.sex}}</text>
+          </view>
+          <view class="text-item">
+            <image src="../assets/profile/book.png"></image>
+            <text>{{info.specialty}}专业</text>
+          </view>
+          <view class="text-item">
+            <image src="../assets/profile/keypad.png"></image>
+            <text>{{info.tel}}</text>
+          </view>
+        </view>
+        <view class="flex-right">
+          <view class="text-item">
+            <image src="../assets/profile/swim.png"></image>
+            <text>{{info.education}}</text>
+          </view>
+          <view class="text-item">
+            <image src="../assets/profile/info.png"></image>
+            <text>{{info.school}}</text>
+          </view>
+          <view class="text-item">
+            <image src="../assets/profile/send.png"></image>
+            <text>{{info.email}}</text>
+          </view>
+        </view>
       </view>
     </view>
     <view class="info-wrapper block-wrapper">
@@ -269,7 +302,7 @@ page {
 }
 .info-wrapper {
   padding-bottom: 16rpx;
-  margin-top: 160rpx;
+  margin-top: 210rpx;
   padding-top: 90rpx;
   box-sizing: border-box;
   width: 750rpx - 64rpx;
@@ -282,6 +315,17 @@ page {
     display: flex;
     justify-content: space-between;
     padding: 6rpx 40rpx;
+    .flex-left, .flex-right {
+      width: 50%;
+    }
+    .text-item {
+      image {
+        width: 48rpx;
+        height: 48rpx;
+        vertical-align: middle;
+        margin-right: 12rpx;
+      }
+    }
   }
   .text-wrapper {
     margin: 0 auto;

@@ -10,7 +10,7 @@
           <text>{{job.date}}</text>
         </view>
         <text class="title block">{{job.title}}</text>
-        <text class="intro block grey">{{job.intro}}</text>
+        <text class="intro block grey">{{job.intro || job.intross}}</text>
         <view class="salary" wx:if="{{!simple}}">
           <text>{{job.salary}}</text>
         </view>
@@ -22,7 +22,7 @@
     <view class="job-action-list" wx:if="{{!simple}}">
       <view class="job-action-item">
         <text class="block grey">{{labels.contact}}</text>
-        <text class="block dark">{{job.contact}}</text>
+        <text class="block dark" style="min-width: 100rpx;">{{job.contact}}</text>
       </view>
       <view class="job-action-item">
         <text class="block grey">{{labels.post}}</text>
@@ -123,7 +123,6 @@ export default class Job extends wepy.component {
       border-bottom: none;
     }
 
-    box-shadow: inset 0 -1px 0 0 #C8C7CC;
     display: flex;
     border-bottom: 1rpx solid rgba(0,0,0, .1);
     padding-bottom: 6px;

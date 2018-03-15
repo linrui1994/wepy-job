@@ -43,7 +43,7 @@
           <view class="weui-label">* 公司名称</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="公司名称,没有请填无" value='{{info.intro}}' @change="change('intro')" />
+          <input class="weui-input" placeholder="公司名称,没有请填无" value='{{info.intross}}' @change="change('intross')" />
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -201,7 +201,7 @@
 
 <script>
 import wepy from 'wepy'
-import { publishJob, upload, getSms } from '../api'
+import { publishJob, upload, getSms, getPrepayId, getSign, wxLogin } from '../api'
 import { isEmail, isMobile } from 'lv-util'
 
 export default class EditResume extends wepy.page {
@@ -216,7 +216,7 @@ export default class EditResume extends wepy.page {
       'img': '',
       'industry': '',
       'title': '',
-      'intro': '',
+      'intross': '',
       'rowSalary': [],
       'contact': '',
       'post': '',
@@ -327,7 +327,7 @@ export default class EditResume extends wepy.page {
         }
       })
     },
-    save() {
+    async save() {
       // check info
       const info = this.info
       if (info.job === '校园兼职' && this.status !== 2) {
@@ -344,7 +344,7 @@ export default class EditResume extends wepy.page {
         })
         return
       }
-      if (!info.img || !info.industry || !info.title || !info.intro || !info.salary || !info.contact || !info.tel || !info.job || !info.workingTime || !info.workTimeDay || !info.workTimeWeek || !info.city || !info.education || !info.targetdegree || !info.site) {
+      if (!info.img || !info.industry || !info.title || !info.intross || !info.salary || !info.contact || !info.tel || !info.job || !info.workingTime || !info.workTimeDay || !info.workTimeWeek || !info.city || !info.education || !info.targetdegree || !info.site) {
         wx.showToast({
           title: '请补全信息，带星号为必填',
           icon: 'none'
@@ -358,11 +358,45 @@ export default class EditResume extends wepy.page {
         })
         return
       }
-      publishJob(info).then(res => {
-        if (res.code === 0) {
-          wx.navigateBack()
-        }
-      })
+
+      if (info.stick) {
+        // 置顶
+        const { code } = await wxLogin()
+        getPrepayId(code).then(data => {
+          if (data.prepay_id) {
+            getSign(data.prepay_id).then(data => {
+              if (data && data.paySign) {
+                wx.requestPayment({
+                  ...data,
+                  success() {
+                    publish(info).then(res => {
+                      if (res.code === 0) {
+                        wx.showToast({
+                          icon: 'none',
+                          title: '已成功置顶'
+                        })
+                        setTimeout(wx.navigateBack, 500)
+                      }
+                    })
+                  },
+                  fail() {
+                    wx.showToast({
+                      icon: 'none',
+                      title: '已取消支付'
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      } else {
+        publishJob(info).then(res => {
+          if (res.code === 0) {
+            wx.navigateBack()
+          }
+        })
+      }
     },
     changePicker(key, e) {
       if (key === 'workTimeDay') {

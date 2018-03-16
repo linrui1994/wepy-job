@@ -59,7 +59,7 @@
           </picker>
  -->        </view>
         <view class="extra {{info.salary === '面议' ? 'highlight' : ''}}" @tap="extraSalary">
-          <button @tap="extraSalary" style='height: 60rpx;line-height:60rpx;font-size:24rpx;'>面议</button>
+          <button style='height: 60rpx;line-height:60rpx;font-size:24rpx;'>面议</button>
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -72,7 +72,7 @@
           </picker>
         </view>
       </view>
-      <view class="weui-cell weui-cell_input" hidden="info.job === 校园兼职">
+      <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <view class="weui-label">* 工作经验要求</view>
         </view>
@@ -100,15 +100,7 @@
           </picker>
         </view>
       </view>
-<!--       <view class="weui-cell weui-cell_input">
-        <view class="weui-cell__hd">
-          <view class="weui-label">工资保障</view>
-        </view>
-        <view class="weui-cell__bd">
-          <switch checked="{{info._wageProtection}}" class="weui-input" color="#3a8ef0" @change="change(_wageProtection)"></switch>
-        </view>
-      </view>
- -->      <view class="weui-cell weui-cell_input">
+      <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
           <view class="weui-label">是否置顶</view>
         </view>
@@ -252,9 +244,6 @@ export default class EditResume extends wepy.page {
       name: '博士',
       value: '博士'
     }, {
-      name: '无',
-      value: '无'
-    }, {
       name: '不限',
       value: '不限'
     }],
@@ -389,7 +378,7 @@ export default class EditResume extends wepy.page {
       } else {
         publishJob(info).then(res => {
           if (res.code === 0) {
-            wx.navigateBack()
+            setTimeout(wx.navigateBack, 500)
           }
         })
       }
@@ -404,7 +393,7 @@ export default class EditResume extends wepy.page {
       }
       this.$apply()
     },
-    changeSalary(e, key) {
+    changeSalary(key, e) {
       let v = Number(e.detail.value)
       if (isNaN(v)) {
         v = 0
@@ -428,8 +417,14 @@ export default class EditResume extends wepy.page {
       // this.info.salary = _value.join('-') + '元/月'
     },
     extraSalary() {
+      debugger
+      if (this.info.salary === '面议') {
+        this.info.salary = ''
+        this.info.rowSalary = []
+        return;
+      }
       this.info.salary = '面议'
-      this.info.rowSalary = []
+      this.info.rowSalary = ['面议', '面议']
       this.$apply()
     }
   }
@@ -462,9 +457,6 @@ export default class EditResume extends wepy.page {
 </script>
 
 <style lang='scss'>
-page {
-  padding-bottom: 108rpx;
-}
 .avatar-wrapper {
   display: flex;
   justify-content: center;
@@ -490,10 +482,10 @@ page {
   text-align: right;
 }
 .footer-wrapper {
-  position: fixed;
-  left: 0;
+  // position: fixed;
+  // left: 0;
   background: #fff;
-  bottom: 0;
+  // bottom: 0;
   box-sizing: border-box;
   width: 750rpx;
   height: 100rpx;
@@ -501,7 +493,7 @@ page {
   padding: 0 40rpx;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 100000;
   button {
     height: 74rpx;
     font-size: 24rpx;
@@ -517,5 +509,13 @@ page {
   width: 140rpx;
   vertical-align: middle;
   display: inline-block;
+}
+.highlight button {
+  background: #37A9ED;
+  color: #fff;
+}
+.weui-textarea {
+  position: static;
+  z-index: 10;
 }
 </style>

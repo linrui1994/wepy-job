@@ -1,11 +1,14 @@
 <template>
   <view class="constainer">
     <view class="logo-wrapper">
-      <image src='../assets/post.png'></image>
+      <text class="block blue">选择自己的头衔</text>
+      <text class="block gery">获取更适合您的兼职身份</text>
+      <!-- <image src='../assets/post.png'></image> -->
     </view>
     <view class="action-wrapper">
       <repeat for="{{items}}" key="index">
         <view class="action-item">
+          <image src="{{item.src}}" @tap='go({{item}})'></image>
           <button @tap='go({{item}})'>{{item.label}}</button>
         </view>
       </repeat>
@@ -24,10 +27,12 @@ export default class Publish extends wepy.page {
   data = {
     items: [{
       label: '找兼职',
-      url: 'edit-resume'
+      url: 'edit-resume',
+      src: '../assets/123.png'
     }, {
       label: '招兼职',
       url: 'job-release',
+      src: '../assets/233.png',
       before: 1
     }],
     status: 0
@@ -36,13 +41,13 @@ export default class Publish extends wepy.page {
     go(item) {
       if (item.url) {
         if (item.before) {
-          if (this.status !== 3 && this.status !== 2) {
-            wx.showToast({
-              icon: 'none',
-              title: '只有认证用户才能发布职位'
-            })
-            return;
-          }
+          // if (this.status !== 3) {
+          //   wx.showToast({
+          //     icon: 'none',
+          //     title: '只有认证企业用户才能发布职位'
+          //   })
+          //   return;
+          // }
         }
         wx.navigateTo({
           url: item.url
@@ -63,22 +68,34 @@ page {
   background: #fff;
 }
 .logo-wrapper {
-  display: flex;
-  justify-content: center;
   margin-top: 78rpx;
-  image {
-    width: 594rpx;
-    height: 594rpx;
+  text-align: center;
+  .block {
+    display: block;
+  }
+  .blue {
+    color: #3a8ef0;
+    font-size: 72rpx;
+  }
+  .gery {
+    color: #aaa;
+    margin-top: 20rpx;
+    font-size: 38rpx;
+    margin-bottom: 260rpx;
   }
 }
 .action-wrapper {
   display: flex;
-  height: 96rpx;
   width: 686rpx;
   /*margin-top: 110rpx;*/
   margin-left: 32rpx;
   .action-item {
+    text-align: center;
     flex: 1;
+    image {
+      width: 200rpx;
+      height: 200rpx;
+    }
     &.action-item {
       margin-left: 16rpx;
     }

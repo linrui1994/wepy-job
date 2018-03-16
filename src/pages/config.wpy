@@ -72,7 +72,7 @@ export default class Config extends wepy.page {
       }
       getCode(this.phone).then(data => {
         if (data.msg === '操作成功') {
-          this.userCode = data.code
+          // this.userCode = data.code
           this.countDown = 60
           this.disabled = true
           this.$apply()
@@ -103,6 +103,7 @@ export default class Config extends wepy.page {
         if (res.code === 0) {
           this.phoneChecked = true
           this.$apply()
+          setTimeout(wx.navigateBack, 1000)
         }
       })
     },

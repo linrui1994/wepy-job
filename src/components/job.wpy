@@ -10,7 +10,7 @@
           <text>{{job.date}}</text>
         </view>
         <text class="title block">{{job.title}}</text>
-        <text class="intro block grey">{{job.intro || job.intross}}</text>
+        <text class="intro block grey">{{job.intross}}</text>
         <view class="salary" wx:if="{{!simple}}">
           <text>{{job.salary}}</text>
         </view>

@@ -164,7 +164,7 @@ export function pulled(id) {
 
 // 获取验证码
 export function getCode(phone) {
-  return http('/user/getCode')
+  return http('/user/getCode', { tel: phone })
 }
 
 // 个人用户获取邀请列表

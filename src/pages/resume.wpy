@@ -166,15 +166,23 @@ export default class Resume extends wepy.page {
       const v = e.detail.value
       const oid = this.jobs[v].id
       const uid = this.info.userid
-      hire({
-        oid,
-        uid,
-        status: 1
+      wx.showModal({
+        title: '提示',
+        content: '您确定招募该员工吗？',
+        success (res) {
+          if (res.confirm) {
+            hire({
+              oid,
+              uid,
+              status: 1
+            }).then(data => {
+              if (data.code === 0) {
+                setTimeout(wx.navigateBack, 1000)
+              }
+            })
+          }
+        }
       })
-      // hire({
-
-      // })
-      // addRecruit(this.userid)
     }
   }
   draw(values) {
@@ -315,8 +323,11 @@ page {
     display: flex;
     justify-content: space-between;
     padding: 6rpx 40rpx;
-    .flex-left, .flex-right {
-      width: 50%;
+    .flex-left {
+      width: 45%;
+    }
+    .flex-right {
+      width: 55%;
     }
     .text-item {
       image {

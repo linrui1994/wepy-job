@@ -10,6 +10,9 @@
         </view>
       </repeat>
     </view>
+    <view class="no-data" wx:if="{{status !== 2 && (!resumeList || !resumeList.length)}}">
+      <text>暂无数据</text>
+    </view>
     <view class="index-container" wx:if="{{status === 2}}">
       <repeat for="{{invitionList}}" item="invition" key="index">
         <view class="invition">
@@ -18,6 +21,9 @@
           <button class='primary' type='primary' @tap="agree({{invition}})">接受招募</button>
         </view>
       </repeat>
+    </view>
+    <view class="no-data" wx:if="{{status === 2 && (!invitionList || !invitionList.length)}}">
+      <text>暂无数据</text>
     </view>
   </view>
 </template>
@@ -72,10 +78,22 @@ export default class Application extends wepy.page {
       })
     },
     agree({uid, oid}) {
-      hire({
-        uid,
-        oid,
-        status: 2
+      wx.showModal({
+        title: '提示',
+        content: '接受招募即代表你入职企业，对方将有权对您的简历进行评价。请在确认入职后接受招募。',
+        success (res) {
+          if (res.confirm) {
+            hire({
+              uid,
+              oid,
+              status: 2
+            }).then(data => {
+              if (data.code === 0) {
+                setTimeout(wx.navigateBack, 1000)
+              }
+            })
+          }
+        }
       })
     }
   }
@@ -105,5 +123,10 @@ page {
     background: #fff;
     color: #333;
   }
+}
+.no-data {
+  margin-top: 400rpx;
+  text-align: center;
+  font-size: 40rpx;
 }
 </style>

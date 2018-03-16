@@ -18,6 +18,7 @@ class Http {
   post (url, data) {
 
   }
+  
 }
 
 function ensureUrl(base, url) {

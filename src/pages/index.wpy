@@ -24,16 +24,17 @@
             <image src='../assets/index/arrow-down.png'></image>
           </picker>
         </view>
-        <view class='action-item gray'>
+        <!-- <view class='action-item gray'>
           <text>薪酬优先</text>
-        </view>
+        </view> -->
         <!-- <view class='action-item gray'>
           <text>时间优先</text>
         </view>
- -->        <view class="action-item gray">
+ -->       
+        <!-- <view class="action-item gray">
           <text>筛选</text>
           <image src='../assets/index/arrow-down.png'></image>
-        </view>
+        </view> -->
       </view>
     </view>
     <view class='index-container' hidden="{{mode !== 'job'}}">

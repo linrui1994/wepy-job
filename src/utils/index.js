@@ -54,13 +54,13 @@ export function http(url, params = {}, method = 'get', toast = false) {
               icon: 'success',
               title: data.msg
             })
-          } else {
-            wx.showToast({
-              icon: 'none',
-              // image: '../assets/error.png',
-              title: data.msg
-            })
           }
+        }
+        if (!data || data.code === 500) {
+          wx.showToast({
+            icon: 'none',
+            title: data.msg || '服务器错误，请联系管理员'
+          })
         }
         console.log('???')
         resolve(data)
@@ -69,7 +69,7 @@ export function http(url, params = {}, method = 'get', toast = false) {
         wx.hideLoading()
         wx.showToast({
           image: '../assets/error.png',
-          title: '未知错误'
+          title: '网络异常'
         })
         reject(res)
       }

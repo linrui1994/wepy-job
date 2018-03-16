@@ -12,6 +12,7 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
+      'pages/publish',
       'pages/resume',
       'pages/config',
       'pages/record',
@@ -23,7 +24,6 @@ export default class extends wepy.app {
       'pages/resume-list',
       'pages/edit-resume',
       'pages/application',
-      'pages/publish',
       'pages/job-detail',
       'pages/order-detail',
       'pages/star-list',

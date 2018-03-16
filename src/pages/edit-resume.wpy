@@ -32,7 +32,7 @@
       </radio-group>
     </view>
     <view class="placeholder"></view>
-    <view class="weui-cells__title">工作时长(周):</view>
+    <view class="weui-cells__title">每周期待工作日:</view>
     <view class="weui-cells weui-cells_after-title">
       <checkbox-group @change="checkboxChange">
         <label class="weui-cell weui-check__label" wx:for="{{days}}" wx:key="{{item.day}}">
@@ -102,7 +102,7 @@
           <view class="weui-label">手机号码</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入学校" value='{{info.tel}}' @change="change('tel')" />
+          <input class="weui-input" placeholder="请输入手机号码" value='{{info.tel}}' @change="change('tel')" />
         </view>
       </view>
       <view class="weui-cell weui-cell_input">
@@ -110,7 +110,7 @@
           <view class="weui-label">邮箱</view>
         </view>
         <view class="weui-cell__bd">
-          <input class="weui-input" placeholder="请输入学校" value='{{info.email}}' @change="change('email')" />
+          <input class="weui-input" placeholder="请输入邮箱" value='{{info.email}}' @change="change('email')" />
         </view>
       </view>
     </view>

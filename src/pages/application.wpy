@@ -6,13 +6,13 @@
           <text>全部</text>
         </view>
         <view class='action-item' :class="{'active-action': activeIndex === 0}" @tap="activeIn(0)">
-          <text>进行中</text>
+          <text>在申请</text>
         </view>
         <view class='action-item' :class="{'active-action': activeIndex === 1}" @tap="activeIn(1)">
-          <text>审核中</text>
+          <text>入职中</text>
         </view>
         <view class="action-item" :class="{'active-action': activeIndex === 2}" @tap="activeIn(2)">
-          <text>已结束</text>
+          <text>结束</text>
         </view>
       </view>
     </view>
@@ -23,12 +23,18 @@
         </view>
       </repeat>
     </view>
+    <view class="no-data" wx:if="{{result === '学生' && (!jobs || !jobs.length)}}">
+      <text>暂无数据</text>
+    </view>
     <view class="index-container" wx:if="{{result === '企业'}}">
       <repeat for='{{resumeList}}' item='resume' key='index'>
         <view class="jobs">
           <resume :resume.sync="resume" :userid.sync="resume.userid"></resume>
         </view>
       </repeat>
+    </view>
+    <view class="no-data" wx:if="{{result === '企业' && (!resumeList || !resumeList.length)}}">
+      <text>暂无数据</text>
     </view>
   </view>
 </template>
@@ -86,11 +92,11 @@ export default class Application extends wepy.page {
         row.date = (row.updatetime || row.updateat || row.createat || row.creationtime).substr(5, 5)
         row.avatar = row.img
         if (_row.status === 0) {
-          row.statusText = '进行中'
+          row.statusText = '在申请'
         } else if (_row.status === 1) {
-          row.statusText = '审核中'
+          row.statusText = '入职中'
         } else if (_row.status === 2) {
-          row.statusText = '已结束'
+          row.statusText = '结束'
         }
         row.status = _row.status
       })
@@ -138,5 +144,10 @@ page {
     height: 26rpx;
     vertical-align: middle;
   }
+}
+.no-data {
+  font-size: 40rpx;
+  text-align: center;
+  margin-top: 400rpx;
 }
 </style>

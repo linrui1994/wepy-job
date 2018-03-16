@@ -112,7 +112,8 @@ export default class Index extends wepy.page {
     resumeParams: {
       limit: 10,
       offset: 0,
-      education: undefined
+      education: undefined,
+      type: '兼职'
     },
     types: ['兼职', '实习'],
     mode: 'job'
@@ -175,7 +176,7 @@ export default class Index extends wepy.page {
     this.params.offset = this.jobs.length
     return new Promise(resolve => {
       getJobList(this.params).then(data => {
-        if (!data.rows) {
+        if (!data || !data.rows) {
           this.$parent.globalData.userInfo = null
           wx.removeStorageSync('userInfo')
           this.getUserInfo()
@@ -189,7 +190,7 @@ export default class Index extends wepy.page {
         wx.hideLoading()
         this.$apply()
         resolve()
-      })
+      }).catch(this.getUserInfo)
     })
   }
   getUserInfo() {

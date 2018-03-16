@@ -68,6 +68,8 @@ export default class extends wepy.app {
   }
 
   async getUserInfo() {
+    console.log('get')
+    debugger
     if (this.globalData.userInfo) {
       return this.globalData.userInfo
     }
@@ -76,6 +78,7 @@ export default class extends wepy.app {
       this.globalData.userInfo = userInfo
       return userInfo
     }
+    console.log('login')
     const { code } = await wxLogin()
     let { sessionid } = await getOpenid(code)
     if (sessionid) {

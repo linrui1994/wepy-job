@@ -176,7 +176,7 @@ export default class Index extends wepy.page {
     this.params.offset = this.jobs.length
     return new Promise(resolve => {
       getJobList(this.params).then(data => {
-        if (!data || !data.rows) {
+        if (!data || !data.rows || data.code === 500) {
           this.$parent.globalData.userInfo = null
           wx.removeStorageSync('userInfo')
           this.getUserInfo()

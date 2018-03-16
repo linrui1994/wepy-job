@@ -16,8 +16,8 @@
     <view class="index-container" wx:if="{{status === 2}}">
       <repeat for="{{invitionList}}" item="invition" key="index">
         <view class="invition">
-          <text class="block">{{invition.companyname}}</text>
-          <text class="block">{{invition.company}}</text>
+          <text class="block">{{invition.companyname || ''}}</text>
+          <text class="block">{{invition.company || ''}}</text>
           <button class='primary' type='primary' @tap="agree({{invition}})">接受招募</button>
         </view>
       </repeat>

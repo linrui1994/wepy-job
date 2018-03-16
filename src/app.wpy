@@ -131,4 +131,9 @@ button[disabled][type=primary] {
 text {
   word-wrap: break-word;
 }
+.no-data {
+  margin-top: 400rpx;
+  text-align: center;
+  font-size: 40rpx;
+}
 </style>

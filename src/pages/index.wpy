@@ -207,6 +207,9 @@ export default class Index extends wepy.page {
     const height = wx.getSystemInfoSync().windowHeight
     this.height = height
     this.$apply()
+    this.$parent.globalData.userInfo = null
+    wx.removeStorageSync('userInfo')
+    this.getUserInfo()
     this.getUserInfo()
   }
 }

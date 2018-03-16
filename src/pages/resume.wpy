@@ -20,34 +20,34 @@
       </view>
     </view> -->
     <view class="info-wrapper">
-      <text class="block">{{info.username}}</text>
+      <text class="block">{{info.username || '无'}}</text>
       <view class="flex c-flex">
         <view class="flex-left">
           <view class="text-item">
             <image src="../assets/profile/peoplePen.png"></image>
-            <text>{{info.sex}}</text>
+            <text>{{info.sex || ''}}</text>
           </view>
           <view class="text-item">
             <image src="../assets/profile/book.png"></image>
-            <text>{{info.specialty}}专业</text>
+            <text>{{info.specialty || ''}}</text>
           </view>
           <view class="text-item">
             <image src="../assets/profile/keypad.png"></image>
-            <text>{{info.tel}}</text>
+            <text>{{info.tel || ''}}</text>
           </view>
         </view>
         <view class="flex-right">
           <view class="text-item">
             <image src="../assets/profile/swim.png"></image>
-            <text>{{info.education}}</text>
+            <text>{{info.education || ''}}</text>
           </view>
           <view class="text-item">
             <image src="../assets/profile/info.png"></image>
-            <text>{{info.school}}</text>
+            <text>{{info.school || ''}}</text>
           </view>
           <view class="text-item">
             <image src="../assets/profile/send.png"></image>
-            <text>{{info.email}}</text>
+            <text>{{info.email || ''}}</text>
           </view>
         </view>
       </view>
@@ -59,7 +59,7 @@
       <view class='flex flex-center' style='padding-top: 60rpx; padding-bottom: 60rpx; position: relative'>
         <canvas canvas-id="firstCanvas" style="width: 320rpx; height: 320rpx;"></canvas>
         <repeat for={{labels}} key='index'>
-          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label}}</view>
+          <view class="absolute" style="left: {{item.left}}; top: {{item.top}}">{{item.label || ''}}</view>
         </repeat>
       </view>
     </view>
@@ -69,14 +69,14 @@
       </view>
       <view class="day-wrapper">
         <repeat for={{days}} key="item">
-          <text :class="{highlight: item.highlight}">{{item.day}}</text>
+          <text :class="{highlight: item.highlight}">{{item.day || ''}}</text>
         </repeat>
       </view>
       <view class='text-wrapper'>
         <text class="block hope gray" style='margin-top: 16rpx'>兼职类型</text>
       </view>
       <view style='text-align: center; margin-top: 16rpx;'>
-        <text>{{info.job}}</text>
+        <text>{{info.job || ''}}</text>
       </view>
     </view>
 
@@ -102,7 +102,7 @@
         <text class="block hope gray">自我评价</text>
       </view>
       <view style='text-indent: 2em;padding: 16rpx 0'>
-        <text>{{info.information}}</text>
+        <text>{{info.information || ''}}</text>
       </view>
     </view>
     <view class="footer-wrapper" wx:if={{!hire}}>

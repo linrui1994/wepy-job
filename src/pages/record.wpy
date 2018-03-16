@@ -7,6 +7,9 @@
         </view>
       </repeat>
     </view>
+    <view class="no-data" wx:if="{{!jobs || !jobs.length}}">
+      <text>暂无数据</text>
+    </view>
   </view>
 </template>
 

@@ -83,6 +83,11 @@ export function getAllRecruit(params = {}) {
   return http('/lh/userbyuser/selMyRecruit', params)
 }
 
+// 根据职位id获取投递简历列表
+export function getOrderToUserList (oid) {
+  return http('/lh/resume/web/getOrderToUserList', {oid}, 'get', true)
+}
+
 // 收藏职位
 export function starJob(oid) {
   return http('/lh/order/collectOrder', { oid }, 'post', true)

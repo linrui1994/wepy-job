@@ -1,14 +1,23 @@
 <template>
   <view>
     <view class='index-container' wx:if="{{status !== 2}}">
-      <view class='input-wrapper'>
+      <view class='input-wrapper' wx:if="{{oid === undefined || oid === null}}">
         <input type="text" placeholder="按人名搜索" @confirm="search">
       </view>
-      <repeat for='{{resumeList}}' item='resume' key='index'>
-        <view class="jobs" @tap='comment({{resume.userid}})'>
-          <resume :resume.sync="resume" :userid.sync="resume.userid"></resume>
-        </view>
-      </repeat>
+      <view wx:if="{{oid === undefined || oid === null}}">
+        <repeat for='{{resumeList}}' item='resume' key='index'>
+          <view class="jobs" @tap='comment({{resume.userid}})'>
+            <resume :resume.sync="resume" :userid.sync="resume.userid" :end="end"></resume>
+          </view>
+        </repeat>
+      </view>
+      <view wx:else>
+        <repeat for="{{resumeList}}" item='resume' key='index'>
+          <view class="jobs" @tap='toHire({{resume.userid}})'>
+            <resume :resume.sync="resume" :userid.sync="resume.userid" :end="end"></resume>
+          </view>
+        </repeat>
+      </view>
     </view>
     <view class="no-data" wx:if="{{status !== 2 && (!resumeList || !resumeList.length)}}">
       <text>暂无数据</text>
@@ -31,7 +40,7 @@
 <script>
 import wepy from 'wepy'
 import resume from '../components/resume-item'
-import { getAllRecruit, getSms, getInvitionList, hire } from '../api'
+import { getAllRecruit, getSms, getInvitionList, hire, getOrderToUserList } from '../api'
 // import toast from 'toast'
 
 export default class Application extends wepy.page {
@@ -45,17 +54,25 @@ export default class Application extends wepy.page {
   data = {
     resumeList: [],
     status: null,
-    invitionList: []
+    invitionList: [],
+    end: true,
+    oid: null
   }
-  onLoad() {
-    this.methods.search.call(this)
+  onLoad({oid}) {
+    this.oid = oid || null
+    if (oid) {
+      this.methods.getOrderToUserList.call(this, oid)
+    } else {
+      this.methods.search.call(this)
+    }
     getSms().then(res => {
       this.status = res.status
       this.$apply()
     })
     getInvitionList().then(res => {
       if (res.code === 0) {
-        invitionList = res.data || []
+        this.invitionList = res.data || []
+        this.$apply()
       }
     })
   }
@@ -94,6 +111,26 @@ export default class Application extends wepy.page {
             })
           }
         }
+      })
+    },
+    getOrderToUserList (oid) {
+      getOrderToUserList(oid).then(res => {
+        this.resumeList = (res.data || []).map(row => {
+          return row.resumeDO
+        })
+        this.$apply()
+      })
+    },
+    toHire (userid) {
+      if (!userid) {
+        wx.showToast({
+          icon: 'none',
+          title: '服务器错误，无法拿到简历id'
+        })
+        return
+      }
+      wx.navigateTo({
+        url: `resume?userid=${userid}&hire=true&oid=${this.oid}`
       })
     }
   }

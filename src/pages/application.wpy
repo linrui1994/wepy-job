@@ -26,19 +26,21 @@
     <view class="no-data" wx:if="{{result === '学生' && (!jobs || !jobs.length)}}">
       <text>暂无数据</text>
     </view>
-    <view class="index-container" wx:if="{{result === '企业'}}">
-      <!-- <repeat for='{{resumeList}}' item='resume' key='index'>
-        <view class="jobs">
-          <resume :resume.sync="resume" :userid.sync="resume.userid"></resume>
-        </view>
-      </repeat> -->
+    <!-- <view class="index-container" wx:if="{{result === '企业'}}">
       <repeat for={{jobs}} item='job' key='index'>
         <view class="jobs" wx:if='{{activeIndex === -1 || activeIndex === job.status}}'>
           <job :job="job" :labels="labels" :showstatus.sync="showstatus" :activeIndex.sync="activeIndex" :simple.sync="simple"></job>
         </view>
       </repeat>
+    </view> -->
+    <view class='index-container' wx:if="{{result === '企业'}}">
+      <repeat for='{{pubList}}' item='_job' key='index'>
+        <view class="jobs" @tap="goResumeList({{_job}})">
+          <job :job="_job" :labels="labels" :end="end" @refresh.user="refresh"></job>
+        </view>
+      </repeat>
     </view>
-    <view class="no-data" wx:if="{{result === '企业' && (!resumeList || !resumeList.length)}}">
+    <view class="no-data" wx:if="{{result === '企业' && !pubList.length}}">
       <text>暂无数据</text>
     </view>
   </view>
@@ -48,7 +50,7 @@
 import wepy from 'wepy'
 import job from '../components/job'
 import resume from '../components/resume-item'
-import { getAllOrderPersonaly, getSms, getAllRecruit } from '../api'
+import { getAllOrderPersonaly, getSms, getAllRecruit, getPubList } from '../api'
 
 export default class Application extends wepy.page {
   config = {
@@ -71,12 +73,29 @@ export default class Application extends wepy.page {
     activeIndex: -1,
     status: undefined,
     result: '学生',
-    resumeList: []
+    resumeList: [],
+    pubList: [],
+    end: true
   }
   methods = {
     activeIn(index) {
       this.activeIndex = parseInt(index)
       this.$apply()
+    },
+    refresh () {
+      this.getPubList()
+    },
+    goResumeList (job) {
+      if (job.id === undefined || job.id === null) {
+        wx.showToast({
+          icon: 'none',
+          title: '服务器错误，无法拿到职位id'
+        })
+        return
+      }
+      wx.navigateTo({
+        url: `resume-list?oid=${job.id}`
+      })
     }
   }
   onLoad() {
@@ -110,10 +129,31 @@ export default class Application extends wepy.page {
       })
       this.$apply()
     })
-    getAllRecruit().then(res => {
-      this.resumeList = (res.data || []).map(row => {
-        return row.resumeDO
-      })
+    this.getPubList()
+    // getAllRecruit().then(res => {
+    //   this.resumeList = (res.data || []).map(row => {
+    //     return row.resumeDO
+    //   })
+    //   this.$apply()
+    // })
+  }
+  getPubList () {
+    getPubList().then(res => {
+      if (!res.data || !res.data.length) {
+        this.pubList = []
+      } else {
+        if (res.data[0].introrderDO) {
+          // map it
+          res.data = (res.data || []).map(row => {
+            return row.introrderDO
+          })
+        }
+        res.data.forEach(row => {
+          row.date = (row.updatetime || row.updateat || row.createat || row.creationtime || '').substr(5, 5)
+          row.avatar = row.img
+        })
+        this.pubList = res.data
+      }
       this.$apply()
     })
   }

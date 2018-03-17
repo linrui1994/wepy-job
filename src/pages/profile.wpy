@@ -23,6 +23,7 @@
 <script>
 import wepy from 'wepy'
 import { getResume } from '../api'
+import {eventEmitter} from 'lv-util'
 
 export default class Profile extends wepy.page {
   config = {
@@ -75,6 +76,12 @@ export default class Profile extends wepy.page {
   }
 
   onLoad() {
+    eventEmitter.on('update-resume', () => {
+      getResume().then(res => {
+        this.info = res.data || {}
+        this.$apply()
+      })
+    })
     getResume().then(res => {
       this.info = res.data || {}
       this.$apply()

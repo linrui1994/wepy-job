@@ -109,9 +109,12 @@
       <button type='primary' class='primary' @tap='edit'>编辑简历</button>
     </view>
     <view class="footer-wrapper" wx:else>
-      <picker range={{jobs}} range-key="title" @change="hire">
+      <picker range={{jobs}} range-key="title" @change="hire" wx:if="{{presetOid === null || presetOid === undefined}}">
         <button type='primary' class='primary' style="width: 680rpx">招募</button>
       </picker>
+      <view @tap="hire" wx:else>
+        <button type='primary' class="primary" style="width: 680rpx">招募</button>
+      </view>
     </view>
     <!-- <toast /> -->
   </view>
@@ -154,7 +157,8 @@ export default class Resume extends wepy.page {
     skills: [],
     hire: undefined,
     jobs: [],
-    userid: undefined
+    userid: undefined,
+    presetOid: null
   }
   methods = {
     edit() {
@@ -163,8 +167,19 @@ export default class Resume extends wepy.page {
       })
     },
     hire(e) {
-      const v = e.detail.value
-      const oid = this.jobs[v].id
+      let oid
+      if (e.detail.value) {
+        oid = this.jobs[e.detail.value].id
+      } else {
+        oid = this.presetOid
+      }
+      if (oid === null || oid === undefined) {
+        wx.showToast({
+          icon: 'none',
+          title: '服务器错误，无法拿到职位id'
+        })
+        return
+      }
       const uid = this.info.userid
       wx.showModal({
         title: '提示',
@@ -183,7 +198,7 @@ export default class Resume extends wepy.page {
           }
         }
       })
-    }
+    },
   }
   draw(values) {
     console.log(values)
@@ -239,8 +254,9 @@ export default class Resume extends wepy.page {
       context.draw()
     }
   }
-  onLoad({hire, userid}) {
+  onLoad({hire, userid, oid}) {
     this.userid = userid
+    this.presetOid = oid || null
     console.log(hire, userid, 'onload')
     getResume(userid).then(res => {
       this.handleResume(res.data || {})
@@ -265,6 +281,7 @@ export default class Resume extends wepy.page {
   }
   handleResume(data) {
     data.hope = (data.workday || '').split(',')
+    this.days = []
     for (let i = 1; i <= 7; i++) {
       this.days.push({
         day: i,

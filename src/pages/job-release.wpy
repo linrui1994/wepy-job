@@ -410,6 +410,7 @@ export default class EditResume extends wepy.page {
       if (this.info.salary === '面议') {
         this.info.salary = ''
         this.info.rowSalary = []
+        this.startSalary = this.endSalary = ''
         return;
       }
       this.info.salary = '面议'

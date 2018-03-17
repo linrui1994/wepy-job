@@ -6,7 +6,7 @@
       </view>
       <view wx:if="{{oid === undefined || oid === null}}">
         <repeat for='{{resumeList}}' item='resume' key='index'>
-          <view class="jobs" @tap='comment({{resume.userid}})'>
+          <view class="jobs" @tap='comment({{resume.userid}}, {{resume.oid}})'>
             <resume :resume.sync="resume" :userid.sync="resume.userid" :end="end"></resume>
           </view>
         </repeat>
@@ -25,8 +25,8 @@
     <view class="index-container" wx:if="{{status === 2}}">
       <repeat for="{{invitionList}}" item="invition" key="index">
         <view class="invition">
-          <text class="block">{{invition.companyname || ''}}</text>
-          <text class="block">{{invition.company || ''}}</text>
+          <text class="block">公司名称:{{invition.introrderDO.intross || ''}}</text>
+          <text class="block">简介:{{invition.introrderDO.title || ''}}</text>
           <button class='primary' type='primary' @tap="agree({{invition}})">接受招募</button>
         </view>
       </repeat>
@@ -84,14 +84,22 @@ export default class Application extends wepy.page {
       }
       getAllRecruit(params).then(res => {
         this.resumeList = (res.data || []).map(row => {
+          row.resumeDO.oid = row.oid
           return row.resumeDO
         })
         this.$apply()
       })
     },
-    comment(id) {
+    comment(id, oid) {
+      if (id === null || id === undefined || oid === null || oid === undefined) {
+        wx.showToast({
+          icon: 'none',
+          title: '服务器错误，无法获取用户id和职位id'
+        })
+        return
+      }
       wx.navigateTo({
-        url: `comment?userid=${id}`
+        url: `comment?userid=${id}&oid=${oid}`
       })
     },
     agree({uid, oid}) {
@@ -165,5 +173,19 @@ page {
   margin-top: 400rpx;
   text-align: center;
   font-size: 40rpx;
+}
+.invition {
+  min-height: 120rpx;
+  padding: 20rpx;
+  background: #fff;
+  + & {
+    margin-top: 16rpx;
+  }
+}
+button.primary {
+  height: 84rpx;
+  font-size: 32rpx;
+  line-height: 84rpx;
+  margin-top: 16rpx;
 }
 </style>

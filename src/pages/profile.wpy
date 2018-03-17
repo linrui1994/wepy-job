@@ -51,7 +51,7 @@ export default class Profile extends wepy.page {
       url: 'resume-list'
     }, {
       src: '../assets/profile/check.png',
-      label: '我的认证',
+      label: '我的认证（切换身份）',
       url: 'authentication'
     }, {
       src: '../assets/profile/config.png',

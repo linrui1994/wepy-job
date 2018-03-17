@@ -357,14 +357,26 @@ export default class EditResume extends wepy.page {
           wx.requestPayment({
             ...data,
             success() {
-              publish(info).then(res => {
+              publishJob(info).then(res => {
                 if (res.code === 0) {
                   wx.showToast({
                     icon: 'none',
                     title: '已成功置顶'
                   })
                   setTimeout(wx.navigateBack, 500)
+                } else {
+                  wx.showToast({
+                    icon: 'none',
+                    title: '置顶错误，请联系管理员',
+                    duration: 200000
+                  })
                 }
+              }).catch(() => {
+                wx.showToast({
+                  icon: 'none',
+                  title: '置顶错误，请联系管理员',
+                  duration: 200000
+                })
               })
             },
             fail() {

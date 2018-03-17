@@ -71,11 +71,12 @@ export default class Comment extends wepy.page {
       communication: 5,
       major: 5,
       workstatus: 5,
-      honest: 5
+      honest: 5,
+      oid: undefined
     }
   }
 
-  onLoad({userid}) {
+  onLoad({userid, oid}) {
     this.draw([1, 1, 1, 1, 1])
     if (!userid) {
       wx.showToast({
@@ -85,6 +86,7 @@ export default class Comment extends wepy.page {
       return
     }
     this.params.touid = userid
+    this.params.oid = oid
     this.$apply()
   }
 
@@ -161,7 +163,7 @@ export default class Comment extends wepy.page {
       wx.showModal({
         title: '提示',
         content: '评价员工即代表该员工不再入职贵司，确认要开始评价吗？',
-        success (res) {
+        success: res => {
           if (res.confirm) {
             estimate(this.params).then(res => {
               if (res.code === 0) {

@@ -31,7 +31,7 @@ export function wxLogin() {
 // 获取职位列表
 export function getJobList(params) {
   params.limit = params.limit || 10
-  return http('/lh/introrder/list', params)
+  return http('/lh/introrder/list', params, 'get', false, true)
 }
 
 // 根据id获取职位详情
@@ -53,7 +53,9 @@ export function getOpenid(code) {
       appID: AppId,
       secret: AppSecret
     },
-    'post'
+    'post',
+    false,
+    true
   )
 }
 

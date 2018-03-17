@@ -5,12 +5,12 @@
         <image src='{{resume.imgArray && resume.imgArray[0]}}' class='avatar'></image>
       </view>
       <view class="detail-wrapper">
-        <text class='block grey'>{{resume.school}}</text>
+        <text class='block grey'>{{resume.school || ''}}</text>
         <!-- <view class='date grey'>
           <text>{{resume.date}}</text>
         </view> -->
-        <text class="title block">{{resume.username}}</text>
-        <text class="intro block grey">{{resume.specialty + '专业'}}</text>
+        <text class="title block">{{resume.username || ''}}</text>
+        <text class="intro block grey">{{resume.specialty || ''}}</text>
         <view class="salary">
           <text>{{resume.tel}}</text>
         </view>

@@ -22,7 +22,13 @@ export function ensureUrl(base, url) {
   return base + url
 }
 
-export function http(url, params = {}, method = 'get', toast = false) {
+export function http(
+  url,
+  params = {},
+  method = 'get',
+  toast = false,
+  silent = false
+) {
   params = JSON.parse(JSON.stringify(params))
   url = ensureUrl(baseUrl, url)
   Object.keys(params).forEach(key => {
@@ -46,8 +52,8 @@ export function http(url, params = {}, method = 'get', toast = false) {
       data: params,
       success: res => {
         const data = res.data
+        wx.hideLoading()
         if (toast && data.msg) {
-          wx.hideLoading()
           if (data.code === 0) {
             // success
             wx.showToast({
@@ -56,7 +62,7 @@ export function http(url, params = {}, method = 'get', toast = false) {
             })
           }
         }
-        if (!data || data.code === 500) {
+        if ((!data || data.code === 500) && !silent) {
           wx.showToast({
             icon: 'none',
             title: data.msg || '服务器错误，请联系管理员'

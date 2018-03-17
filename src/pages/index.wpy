@@ -195,22 +195,20 @@ export default class Index extends wepy.page {
   }
   getUserInfo() {
     this.$parent.getUserInfo().then(userInfo => {
+      console.log('success')
       this.userInfo = userInfo
       this.getJobs(true)
     }).catch(() => {
       this.$parent.globalData.userInfo = null
       wx.removeStorageSync('userInfo')
-      this.$parent.getUserInfo()
+      this.getUserInfo()
     })
   }
   onReady () {
     const height = wx.getSystemInfoSync().windowHeight
     this.height = height
     this.$apply()
-    this.$parent.globalData.userInfo = null
-    wx.removeStorageSync('userInfo')
-    this.getUserInfo()
-    this.getUserInfo()
+    this.getJobs()
   }
 }
 </script>

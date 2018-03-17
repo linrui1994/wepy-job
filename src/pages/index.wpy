@@ -100,7 +100,7 @@ export default class Index extends wepy.page {
       post: '职位',
       tel: '联系电话'
     },
-    educations: ['大专', '本科', '硕士', '博士', '无', '不限'],
+    educations: ['大专', '本科', '硕士', '博士', '不限'],
     resumes: [],
     height: 1000,
     params: {

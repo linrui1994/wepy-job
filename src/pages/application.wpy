@@ -27,9 +27,14 @@
       <text>暂无数据</text>
     </view>
     <view class="index-container" wx:if="{{result === '企业'}}">
-      <repeat for='{{resumeList}}' item='resume' key='index'>
+      <!-- <repeat for='{{resumeList}}' item='resume' key='index'>
         <view class="jobs">
           <resume :resume.sync="resume" :userid.sync="resume.userid"></resume>
+        </view>
+      </repeat> -->
+      <repeat for={{jobs}} item='job' key='index'>
+        <view class="jobs" wx:if='{{activeIndex === -1 || activeIndex === job.status}}'>
+          <job :job="job" :labels="labels" :showstatus.sync="showstatus" :activeIndex.sync="activeIndex" :simple.sync="simple"></job>
         </view>
       </repeat>
     </view>

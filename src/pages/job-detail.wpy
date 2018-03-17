@@ -28,12 +28,13 @@ export default class JobDetail extends wepy.page {
   data = {
     detail: {},
     showstatus: false,
-    slient: false
+    slient: false,
+    oid: null
   }
 
   methods = {
     applyOrder() {
-      applyOrder(this.detail.id)
+      applyOrder(this.detail.oid || this.oid)
     },
     star() {
       starJob(this.detail.id)
@@ -44,6 +45,7 @@ export default class JobDetail extends wepy.page {
     this.showstatus = Boolean(showstatus)
     this.slient = Boolean(slient)
     this.$apply()
+    this.oid = id;
     getJob(id).then(res => {
       res.data.date = (res.data.updatetime || res.data.updateat || res.data.createat || res.data.creationtime).substr(5, 5)
       res.data.avatar = res.data.img

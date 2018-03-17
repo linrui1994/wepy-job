@@ -16,7 +16,7 @@
           <button type='primary' class='primary' disabled="{{disabled}}" @tap="getCode">{{disabled ? countDown + 's' : '获取验证码'}}</button>
         </view>
         <view style='margin-top: 16rpx;'>
-          <input placeholder="请输入验证码" value="{{userCode}}" />
+          <input placeholder="请输入验证码" value="{{userCode}}" @input="change(userCode)"/>
         </view>
         <view style="margin-top: 16rpx;">
           <button class='primary' type="primary" @tap="authenPhone">认证</button>

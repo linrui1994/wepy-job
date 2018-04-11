@@ -339,12 +339,12 @@ page {
   .flex {
     display: flex;
     justify-content: space-between;
-    padding: 6rpx 40rpx;
+    padding: 6rpx 30rpx;
     .flex-left {
-      width: 45%;
+      width: 42%;
     }
     .flex-right {
-      width: 55%;
+      width: 58%;
     }
     .text-item {
       image {

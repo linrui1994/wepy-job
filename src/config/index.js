@@ -2,5 +2,5 @@
 // export const AppSecret = 'a9129f67ce94e97abb65a9044358ee0b'
 // export const baseUrl = 'http://123.207.114.77:8080'
 export const baseUrl = 'https://lh.yingxiaofanganzhe.com'
-export const AppId = 'wxc28fb3fa952224c6'
-export const AppSecret = '6499466b7590a8a5ce569b3bc21852ba'
+export const AppId = 'wx3ef393e5ee2aef58'
+export const AppSecret = '4f5dbf7a8f274184b51571f0adcc1d53'

@@ -47,8 +47,7 @@ module.exports = {
 }
 
 if (prod) {
-
-  delete module.exports.compilers.babel.sourcesMap;
+  delete module.exports.compilers.babel.sourcesMap
   // 压缩sass
   module.exports.compilers['sass'] = {outputStyle: 'compressed'}
 
@@ -61,17 +60,17 @@ if (prod) {
       filter: /\.js$/,
       config: {
       }
-    },
-    imagemin: {
-      filter: /\.(jpg|png|jpeg)$/,
-      config: {
-        jpg: {
-          quality: 80
-        },
-        png: {
-          quality: 80
-        }
-      }
     }
+    // imagemin: {
+    //   filter: /\.(jpg|png|jpeg)$/,
+    //   config: {
+    //     jpg: {
+    //       quality: 80
+    //     },
+    //     png: {
+    //       quality: 80
+    //     }
+    //   }
+    // }
   }
 }

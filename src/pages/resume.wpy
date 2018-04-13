@@ -45,10 +45,12 @@
             <image src="../assets/profile/info.png"></image>
             <text>{{info.school || ''}}</text>
           </view>
-          <view class="text-item">
-            <image src="../assets/profile/send.png"></image>
-            <text>{{info.email || ''}}</text>
-          </view>
+        </view>
+      </view>
+      <view class="flex c-flex" style="margin-top: -2rpx; margin-left:-2rpx;">
+        <view class="text-item">
+          <image src="../assets/profile/send.png"></image>
+          <text>{{info.email || ''}}</text>
         </view>
       </view>
     </view>

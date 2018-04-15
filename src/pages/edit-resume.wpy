@@ -1,12 +1,12 @@
 <template>
   <view class="container">
-    <view class="weui-cells__title">个人头像:</view>
+    <view class="weui-cells__title">* 个人头像:</view>
     <view class="weui-cells weui-cells_after-title avatar-wrapper" @tap="chooseImg">
       <image class="avatar" mode='aspectFit' src="{{info.imgArray && info.imgArray[0]}}" wx:if="{{info.imgArray && info.imgArray[0]}}"></image>
       <view class="avatar" wx:else>上传头像</view>
     </view>
     <view class="placeholder"></view>
-    <view class="weui-cells__title">性别:</view>
+    <view class="weui-cells__title">* 性别:</view>
     <view class="weui-cells weui-cells_after-title">
       <radio-group @change="change('sex')">
         <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="{{item.value}}">
@@ -65,7 +65,7 @@
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-          <view class="weui-label">姓名</view>
+          <view class="weui-label">* 姓名</view>
         </view>
         <view class="weui-cell__bd">
           <input class="weui-input" @change="change('username')" placeholder="请输入姓名" value='{{info.username}}'/>
@@ -91,7 +91,7 @@
       </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-          <view class="weui-label">学校</view>
+          <view class="weui-label">* 学校</view>
         </view>
         <view class="weui-cell__bd">
           <input class="weui-input" placeholder="请输入学校" value='{{info.school}}' @change="change('school')" />
@@ -99,7 +99,7 @@
       </view>
       <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
-          <view class="weui-label">手机号码</view>
+          <view class="weui-label">* 手机号码</view>
         </view>
         <view class="weui-cell__bd">
           <input class="weui-input" placeholder="请输入手机号码" value='{{info.tel}}' @change="change('tel')" />
@@ -310,6 +310,14 @@ export default class EditResume extends wepy.page {
       })
     },
     save() {
+      const { info } = this
+      if (!info.sex || info.sex === '未知' || !info.imgArray || !info.imgArray.length || !info.username || info.username === '未知' || !info.school || info.school === '未知' || info.tel === '未知' || !info.tel) {
+        wx.showToast({
+          icon: 'none',
+          title: '请输入信息，带星号为必填项'
+        })
+        return
+      }
       updateResume(this.info).then(res => {
         if (res.code === 0) {
           setTimeout(() => {

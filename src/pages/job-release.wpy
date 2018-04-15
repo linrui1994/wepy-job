@@ -3,7 +3,7 @@
     <view class="weui-cells__title">* 职位图片:</view>
     <view class="weui-cells weui-cells_after-title avatar-wrapper" @tap="chooseImg">
       <image class="avatar" mode="aspectFit" src="{{info.img}}" wx:if="{{info.img}}"></image>
-      <view class="avatar" wx:else>上传图片</view>
+      <view class="avatar" wx:else>上传企业logo</view>
     </view>
     <view class="placeholder"></view>
     <view class="weui-cells__title">学历要求:</view>
